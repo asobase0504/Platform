@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="システム">
+      <UniqueIdentifier>{2a674479-747d-4b98-a217-447af06c09f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="オブジェクト">
+      <UniqueIdentifier>{26276af0-11f7-4f23-aa68-0ba0442fe6fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="メイン">
+      <UniqueIdentifier>{4fe637f4-6403-45e0-a73e-5e1254665700}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル\ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="オブジェクト\便利なやーつ">
+      <UniqueIdentifier>{edcbadc0-3807-48ab-b433-99b91d2c70d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="メイン\画面遷移">
+      <UniqueIdentifier>{50f5e731-fd3b-4941-af9e-ece487b9fa44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="オブジェクト\魔法系">
+      <UniqueIdentifier>{2bbde2d8-12d3-436a-8e56-d004ae5bbc93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="オブジェクト\モデル系">
+      <UniqueIdentifier>{a769b689-bec5-49cb-b2fa-c4d659f98e33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="オブジェクト\モデル系\敵系統">
+      <UniqueIdentifier>{e415c547-7541-4293-8a35-ccf5620603ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="オブジェクト\モデル系\UI">
+      <UniqueIdentifier>{145a86af-5ff6-4807-9f6d-f2bec8c20e78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="オブジェクト\モデル系\UI\数字">
+      <UniqueIdentifier>{893ba109-c22b-4607-bdee-b9db01165e51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="オブジェクト\説明書">
+      <UniqueIdentifier>{4d7fd24e-a1f9-4a99-9cc9-c6db6ab29039}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="object.cpp">
+      <Filter>オブジェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="object2d.cpp">
+      <Filter>オブジェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="object3d.cpp">
+      <Filter>オブジェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="file.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
+    <ClCompile Include="inputkeyboard.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
+    <ClCompile Include="utility.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
+    <ClCompile Include="letter.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>メイン</Filter>
+    </ClCompile>
+    <ClCompile Include="3dpolygon.cpp">
+      <Filter>オブジェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="hamada.cpp">
+      <Filter>オブジェクト\便利なやーつ</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>メイン\画面遷移</Filter>
+    </ClCompile>
+    <ClCompile Include="result.cpp">
+      <Filter>メイン\画面遷移</Filter>
+    </ClCompile>
+    <ClCompile Include="title.cpp">
+      <Filter>メイン\画面遷移</Filter>
+    </ClCompile>
+    <ClCompile Include="manager.cpp">
+      <Filter>メイン</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_manager.cpp">
+      <Filter>オブジェクト\魔法系</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_emitter.cpp">
+      <Filter>オブジェクト\魔法系</Filter>
+    </ClCompile>
+    <ClCompile Include="particle.cpp">
+      <Filter>オブジェクト\魔法系</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>オブジェクト\モデル系</Filter>
+    </ClCompile>
+    <ClCompile Include="motion.cpp">
+      <Filter>オブジェクト\モデル系</Filter>
+    </ClCompile>
+    <ClCompile Include="score.cpp">
+      <Filter>オブジェクト\モデル系\UI\数字</Filter>
+    </ClCompile>
+    <ClCompile Include="number.cpp">
+      <Filter>オブジェクト\モデル系\UI\数字</Filter>
+    </ClCompile>
+    <ClCompile Include="bg.cpp">
+      <Filter>オブジェクト\モデル系</Filter>
+    </ClCompile>
+    <ClCompile Include="ranking.cpp">
+      <Filter>メイン\画面遷移</Filter>
+    </ClCompile>
+    <ClCompile Include="name.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
+    <ClCompile Include="nemeset.cpp">
+      <Filter>メイン\画面遷移</Filter>
+    </ClCompile>
+    <ClCompile Include="fade.cpp">
+      <Filter>メイン\画面遷移</Filter>
+    </ClCompile>
+    <ClCompile Include="sound.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorial.cpp">
+      <Filter>メイン\画面遷移</Filter>
+    </ClCompile>
+    <ClCompile Include="inputcontroller.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
+    <ClCompile Include="pause.cpp">
+      <Filter>メイン\画面遷移</Filter>
+    </ClCompile>
+    <ClCompile Include="text.cpp">
+      <Filter>オブジェクト\モデル系\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="2dpolygontemplate.cpp">
+      <Filter>オブジェクト\説明書</Filter>
+    </ClCompile>
+    <ClCompile Include="3dpolygontemplate.cpp">
+      <Filter>オブジェクト\説明書</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="object.h">
+      <Filter>オブジェクト</Filter>
+    </ClInclude>
+    <ClInclude Include="object2d.h">
+      <Filter>オブジェクト</Filter>
+    </ClInclude>
+    <ClInclude Include="object3d.h">
+      <Filter>オブジェクト</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="file.h">
+      <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="inputkeyboard.h">
+      <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="letter.h">
+      <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer.h">
+      <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>メイン</Filter>
+    </ClInclude>
+    <ClInclude Include="3dpolygon.h">
+      <Filter>オブジェクト</Filter>
+    </ClInclude>
+    <ClInclude Include="hamada.h">
+      <Filter>オブジェクト\便利なやーつ</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>メイン\画面遷移</Filter>
+    </ClInclude>
+    <ClInclude Include="result.h">
+      <Filter>メイン\画面遷移</Filter>
+    </ClInclude>
+    <ClInclude Include="title.h">
+      <Filter>メイン\画面遷移</Filter>
+    </ClInclude>
+    <ClInclude Include="manager.h">
+      <Filter>メイン</Filter>
+    </ClInclude>
+    <ClInclude Include="utility.h">
+      <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="particle_manager.h">
+      <Filter>オブジェクト\魔法系</Filter>
+    </ClInclude>
+    <ClInclude Include="particle_emitter.h">
+      <Filter>オブジェクト\魔法系</Filter>
+    </ClInclude>
+    <ClInclude Include="particle.h">
+      <Filter>オブジェクト\魔法系</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>オブジェクト\モデル系</Filter>
+    </ClInclude>
+    <ClInclude Include="motion.h">
+      <Filter>オブジェクト\モデル系</Filter>
+    </ClInclude>
+    <ClInclude Include="score.h">
+      <Filter>オブジェクト\モデル系\UI\数字</Filter>
+    </ClInclude>
+    <ClInclude Include="number.h">
+      <Filter>オブジェクト\モデル系\UI\数字</Filter>
+    </ClInclude>
+    <ClInclude Include="bg.h">
+      <Filter>オブジェクト\モデル系</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>リソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ranking.h">
+      <Filter>メイン\画面遷移</Filter>
+    </ClInclude>
+    <ClInclude Include="name.h">
+      <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="nemeset.h">
+      <Filter>メイン\画面遷移</Filter>
+    </ClInclude>
+    <ClInclude Include="fade.h">
+      <Filter>メイン\画面遷移</Filter>
+    </ClInclude>
+    <ClInclude Include="sound.h">
+      <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial.h">
+      <Filter>メイン\画面遷移</Filter>
+    </ClInclude>
+    <ClInclude Include="inputcontroller.h">
+      <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="pause.h">
+      <Filter>メイン\画面遷移</Filter>
+    </ClInclude>
+    <ClInclude Include="text.h">
+      <Filter>オブジェクト\モデル系\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="2dpolygontemplate.h">
+      <Filter>オブジェクト\説明書</Filter>
+    </ClInclude>
+    <ClInclude Include="3dpolygontemplate.h">
+      <Filter>オブジェクト\説明書</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="pori.rc">
+      <Filter>リソース ファイル</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="ico00001.ico">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="gonn.ico">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="gonnGif.ico">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
