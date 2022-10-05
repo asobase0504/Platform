@@ -80,7 +80,7 @@ void CParticle::Update()
 	myColor.a -= 1.0f / m_data.nMaxLife;
 
 	SetPos(m_pos);
-	SetCollar(D3DXCOLOR(myColor.r, myColor.g, myColor.b, myColor.a));
+	SetColar(D3DXCOLOR(myColor.r, myColor.g, myColor.b, myColor.a));
 	SetSize(D3DXVECTOR3(m_data.fWidth, m_data.fWidth,0.0f));
 
 	if (m_data.nLife <= 0)
@@ -148,7 +148,7 @@ CParticle* CParticle::Create(const Info& inParticle, const D3DXVECTOR3& inPos)
 		particle->SetPos(inPos);
 		particle->m_data = inParticle;
 		//particle->SetTexture(particle->m_data.nIdxTex);
-		particle->SetCollar(D3DXCOLOR(particle->m_data.color.colBigin.r, particle->m_data.color.colBigin.g, particle->m_data.color.colBigin.b, particle->m_data.color.colBigin.a));
+		particle->SetColar(D3DXCOLOR(particle->m_data.color.colBigin.r, particle->m_data.color.colBigin.g, particle->m_data.color.colBigin.b, particle->m_data.color.colBigin.a));
 		
 		particle->CObject2d::SetTexture(CTexture::TEXTURE_SMOKE);
 

@@ -8,18 +8,25 @@
 #ifndef _TITLE_H_
 #define _TITLE_H_
 
+//-----------------------------------------------------------------------------
+// include
+//-----------------------------------------------------------------------------
 #include"main.h"
 #include "object2d.h"
 
-
+//-----------------------------------------------------------------------------
+// 前方宣言
+//-----------------------------------------------------------------------------
 class CBg;
 class CPlayer;
 class CEnemy;
 class C3dpolygon;
 
+//=============================================================================
+// タイトルクラス
+//=============================================================================
 class CTitle :public CObject
 {
-
 	//画面(モード)の種類
 	enum MODE
 	{
@@ -39,27 +46,20 @@ public:
 	void Draw() override;
 	
 private:
-	CPlayer * m_Player;
 
-	CEnemy * m_Enemy[10];
-
-	CBg *m_Bg[4];
-
-	C3dpolygon *m_3dpolygon[4];
-
-	CObject2d *m_object2d[4];
-
-	CObject2d *m_list[2];
-
-	CObject2d *fade;
+	CPlayer* m_pPlayer;
+	CEnemy* m_pEnemy[10];
+	CBg* m_pBg[4];
+	C3dpolygon* m_p3dpolygon[4];
+	CObject2d* m_object2d[4];
+	CObject2d* m_list[2];
+	CObject2d* fade;
 	int m_addX;
 	int m_addY;
-	
 	MODE NextMode;
 	bool Sizcontroller;
 	bool ModeSelect;
 	float m_alpha;
-
 };
 
 #endif

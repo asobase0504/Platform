@@ -44,9 +44,9 @@ HRESULT CTitle::Init(void)
 	ModeSelect = false;
 	NextMode = MODE::MODE_GAME;
 
-	m_Player = nullptr;
-	m_Player = CPlayer::Create();
-	m_Player->SetUp(CObject::PLAYER);
+	m_pPlayer = nullptr;
+	m_pPlayer = CPlayer::Create();
+	m_pPlayer->SetUp(CObject::PLAYER);
 
 	EnemyPos.z -= 30.0f;
 
@@ -56,22 +56,22 @@ HRESULT CTitle::Init(void)
 
 
 	//星の背景
-	m_Bg[0] = CBg::Create();
-	m_Bg[0]->SetTexture(CTexture::TEXTURE_STARRY);
-	m_Bg[0]->SetSize(CManager::CENTER_POS);
-	m_Bg[0]->SetPos(BGPos);
-	m_Bg[0]->SetBgType(CBg::MOVE);
-	m_Bg[0]->SetMove(D3DXVECTOR3(0.0001f, 0.0f, 0.0f));
-	m_Bg[0]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	m_pBg[0] = CBg::Create();
+	m_pBg[0]->SetTexture(CTexture::TEXTURE_STARRY);
+	m_pBg[0]->SetSize(CManager::CENTER_POS);
+	m_pBg[0]->SetPos(BGPos);
+	m_pBg[0]->SetBgType(CBg::MOVE);
+	m_pBg[0]->SetMove(D3DXVECTOR3(0.0001f, 0.0f, 0.0f));
+	m_pBg[0]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 	
 	//GonFoxのTITLE文字
-	m_Bg[1] = CBg::Create();
-	m_Bg[1]->SetTexture(CTexture::TEXTURE_GAME);
-	m_Bg[1]->SetSize(CManager::CENTER_POS*0.8f);
-	m_Bg[1]->SetPos(BGPos);
-	m_Bg[1]->SetBgType(CBg::STOP);
-	m_Bg[1]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.7f));
+	m_pBg[1] = CBg::Create();
+	m_pBg[1]->SetTexture(CTexture::TEXTURE_GAME);
+	m_pBg[1]->SetSize(CManager::CENTER_POS*0.8f);
+	m_pBg[1]->SetPos(BGPos);
+	m_pBg[1]->SetBgType(CBg::STOP);
+	m_pBg[1]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.7f));
 
 	
 	//GonFoxのTITLE文字
@@ -79,7 +79,7 @@ HRESULT CTitle::Init(void)
 	m_list[0]->SetTexture(CTexture::TEXTURE_TITLE);
 	m_list[0]->SetSize(CManager::CENTER_POS);
 	m_list[0]->SetPos(CManager::CENTER_POS);
-	m_list[0]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	m_list[0]->SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 	
 	//ゲームスタートの文字
@@ -87,7 +87,7 @@ HRESULT CTitle::Init(void)
 	m_list[1]->SetTexture(CTexture::TEXTURE_FOXTITLE);
 	m_list[1]->SetSize(CManager::CENTER_POS);
 	m_list[1]->SetPos(CManager::CENTER_POS);
-	m_list[1]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	m_list[1]->SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 
 	//モード選択時の背景黒くするやつ
@@ -95,7 +95,7 @@ HRESULT CTitle::Init(void)
 	fade->SetTexture(CTexture::TEXTURE_NONE);
 	fade->SetSize(CManager::CENTER_POS);
 	fade->SetPos(CManager::CENTER_POS);
-	fade->SetCollar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
+	fade->SetColar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 
 	float y = 120.0f;
 
@@ -104,7 +104,7 @@ HRESULT CTitle::Init(void)
 	m_object2d[0]->SetTexture(CTexture::TEXTURE_TITLEGAME);
 	m_object2d[0]->SetSize(CManager::CENTER_POS);
 	m_object2d[0]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x, CManager::CENTER_POS.y - y, 0.0f));
-	m_object2d[0]->SetCollar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
+	m_object2d[0]->SetColar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 
 
 	//チュートリアルの文字
@@ -112,7 +112,7 @@ HRESULT CTitle::Init(void)
 	m_object2d[1]->SetTexture(CTexture::TEXTURE_TITLETUTORIAL);
 	m_object2d[1]->SetSize(CManager::CENTER_POS);
 	m_object2d[1]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x, CManager::CENTER_POS.y, 0.0f));
-	m_object2d[1]->SetCollar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
+	m_object2d[1]->SetColar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 
 
 
@@ -121,7 +121,7 @@ HRESULT CTitle::Init(void)
 	m_object2d[2]->SetTexture(CTexture::TEXTURE_TITLERANKIN);
 	m_object2d[2]->SetSize(CManager::CENTER_POS);
 	m_object2d[2]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x, CManager::CENTER_POS.y + y, 0.0f));
-	m_object2d[2]->SetCollar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
+	m_object2d[2]->SetColar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 
 	y += 120.0f;
 
@@ -130,7 +130,7 @@ HRESULT CTitle::Init(void)
 	m_object2d[3]->SetTexture(CTexture::TEXTURE_TITLEEND);
 	m_object2d[3]->SetSize(CManager::CENTER_POS);
 	m_object2d[3]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x, CManager::CENTER_POS.y + y, 0.0f));
-	m_object2d[3]->SetCollar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
+	m_object2d[3]->SetColar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_TITLE);
 
@@ -190,10 +190,10 @@ void CTitle::Uninit(void)
 	}
 	for (int i = 0; i < 4; i++)
 	{
-		if (m_3dpolygon[i] != nullptr)
+		if (m_p3dpolygon[i] != nullptr)
 		{
-			m_3dpolygon[i]->Uninit();
-			m_3dpolygon[i] = nullptr;
+			m_p3dpolygon[i]->Uninit();
+			m_p3dpolygon[i] = nullptr;
 		}
 	}*/
 	CModelManager::ReleaseAll();
@@ -237,10 +237,10 @@ void CTitle::Update(void)
 
 		//きつねをもちもちさせるやつ
 		D3DXVECTOR3 addPos = D3DXVECTOR3(1.0f + (float)m_addX, 1.0f + (float)m_addY, 0.0f);
-		m_Bg[1]->SetSize(CManager::CENTER_POS *0.8f + addPos);
+		m_pBg[1]->SetSize(CManager::CENTER_POS *0.8f + addPos);
 
 		//点滅させる
-		m_list[1]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, a));
+		m_list[1]->SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, a));
 	}
 	CInput *CInputpInput = CInput::GetKey();
 
@@ -275,16 +275,16 @@ void CTitle::Update(void)
 		else
 		{
 			//画面黒くする
-			fade->SetCollar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.5f));
+			fade->SetColar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.5f));
 
 			//文字を出し
 			for (int i = 0; i < 4; i++)
 			{
-				m_object2d[i]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f));
+				m_object2d[i]->SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f));
 			}
 
 			//今使ってるやつを明るく
-			m_object2d[NextMode]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+			m_object2d[NextMode]->SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 			ModeSelect = true;
 		}
 
@@ -295,7 +295,7 @@ void CTitle::Update(void)
 		{
 			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_NO);
 			//モード選択
-			m_object2d[NextMode]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f));
+			m_object2d[NextMode]->SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f));
 
 			NextMode = (MODE)(NextMode - 1);
 
@@ -306,13 +306,13 @@ void CTitle::Update(void)
 			}
 
 	
-			m_object2d[NextMode]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+			m_object2d[NextMode]->SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 		if (CInputpInput->Trigger(CInput::KEY_DOWN))
 		{
 			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_NO);
 			//モード選択
-			m_object2d[NextMode]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f));
+			m_object2d[NextMode]->SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f));
 
 			NextMode = (MODE)(NextMode + 1);
 
@@ -321,7 +321,7 @@ void CTitle::Update(void)
 				NextMode = MODE::MODE_GAME;
 			}
 
-			m_object2d[NextMode]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+			m_object2d[NextMode]->SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 	}
 #ifdef _DEBUG

@@ -186,12 +186,12 @@ void CObject2d::Update()
 					, U *(m_PatternAnimX)+U
 					, V * (m_PatternAnimY)
 					, V * (m_PatternAnimY)+V));
-				SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+				SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 			}
 		}
 		else
 		{
-			SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+			SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
 		}
 	}
 }
@@ -302,7 +302,7 @@ void CObject2d::SetTex(PositionVec4 Tex)
 	m_pVtxBuff->Unlock();
 }
 
-void CObject2d::SetCollar(D3DXCOLOR Collar)
+void CObject2d::SetColar(D3DXCOLOR Colar)
 {
 	VERTEX_2D *pVtx; //頂点へのポインタ
 
@@ -311,12 +311,12 @@ void CObject2d::SetCollar(D3DXCOLOR Collar)
 
 	//テクスチャの座標設定
 	//頂点カラーの設定
-	pVtx[0].col = D3DXCOLOR(Collar.r, Collar.g, Collar.b, Collar.a);
-	pVtx[1].col = D3DXCOLOR(Collar.r, Collar.g, Collar.b, Collar.a);
-	pVtx[2].col = D3DXCOLOR(Collar.r, Collar.g, Collar.b, Collar.a);
-	pVtx[3].col = D3DXCOLOR(Collar.r, Collar.g, Collar.b, Collar.a);
+	pVtx[0].col = D3DXCOLOR(Colar.r, Colar.g, Colar.b, Colar.a);
+	pVtx[1].col = D3DXCOLOR(Colar.r, Colar.g, Colar.b, Colar.a);
+	pVtx[2].col = D3DXCOLOR(Colar.r, Colar.g, Colar.b, Colar.a);
+	pVtx[3].col = D3DXCOLOR(Colar.r, Colar.g, Colar.b, Colar.a);
 
-	m_col = Collar;
+	m_col = Colar;
 	//頂点バッファをアンロック
 	m_pVtxBuff->Unlock();
 
@@ -337,6 +337,7 @@ void CObject2d::SetAnimation(const int U, const int V,const int Speed,const int 
 	m_Timar = Drawtimer;
 	m_OnAnimation = true;
 	m_Loop = loop;
+
 	//表示座標を更新
 	SetTex(PositionVec4(
 		1.0f / m_DivisionX * (m_PatternAnimX / (m_DivisionX))
