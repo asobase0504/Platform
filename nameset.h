@@ -4,8 +4,8 @@
 // Author : Hamada Ryuuga
 //
 //=============================================================================
-#ifndef _NEMESET_H_
-#define _NEMESET_H_
+#ifndef _NAMESET_H_
+#define _NAMESET_H_
 
 //-----------------------------------------------------------------------------
 // include
@@ -17,11 +17,11 @@
 //=============================================================================
 // ñºëOÇÃçÏê¨ÉNÉâÉX
 //=============================================================================
-class CNemeSet : public CObject
+class CNameSet : public CObject
 {
 public:
-	CNemeSet();
-	~CNemeSet();
+	CNameSet();
+	~CNameSet();
 
 	HRESULT Init() override;
 	void Uninit() override;

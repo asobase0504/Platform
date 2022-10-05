@@ -135,9 +135,6 @@
     <ClCompile Include="name.cpp">
       <Filter>01_System</Filter>
     </ClCompile>
-    <ClCompile Include="nemeset.cpp">
-      <Filter>00_Main\画面遷移</Filter>
-    </ClCompile>
     <ClCompile Include="fade.cpp">
       <Filter>00_Main\画面遷移</Filter>
     </ClCompile>
@@ -161,6 +158,9 @@
     </ClCompile>
     <ClCompile Include="3dpolygontemplate.cpp">
       <Filter>02_Object\説明書</Filter>
+    </ClCompile>
+    <ClCompile Include="nameset.cpp">
+      <Filter>00_Main\画面遷移</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -254,9 +254,6 @@
     <ClInclude Include="name.h">
       <Filter>01_System</Filter>
     </ClInclude>
-    <ClInclude Include="nemeset.h">
-      <Filter>00_Main\画面遷移</Filter>
-    </ClInclude>
     <ClInclude Include="fade.h">
       <Filter>00_Main\画面遷移</Filter>
     </ClInclude>
@@ -280,6 +277,9 @@
     </ClInclude>
     <ClInclude Include="3dpolygontemplate.h">
       <Filter>02_Object\説明書</Filter>
+    </ClInclude>
+    <ClInclude Include="nameset.h">
+      <Filter>00_Main\画面遷移</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

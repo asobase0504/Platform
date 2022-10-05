@@ -15,7 +15,7 @@
 #include "title.h"
 #include "result.h"
 #include "fade.h"
-#include "nemeset.h"
+#include "nameset.h"
 #include "sound.h"
 #include "texture.h"
 #include "ranking.h"
@@ -230,7 +230,7 @@ void CManager::SetMode(MODE mode)
 		m_Game = new CRanking;
 		break;
 	case CManager::MODE_NAMESET:
-		m_Game = new CNemeSet;
+		m_Game = new CNameSet;
 		break;
 	case CManager::MODE_TUTORIAL:
 		m_Game = new CTutorial;
