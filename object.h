@@ -1,19 +1,26 @@
 //=============================================================================
 //
 // オブジェクト
-// Author : 浜田琉雅
+// Author : Hamada Ryuuga
 //
 //=============================================================================
-
-
 #ifndef _OBJECT_H_			// このマクロ定義がされてなかったら
 #define _OBJECT_H_			// 二重インクルード防止のマクロ定義
 
+//-----------------------------------------------------------------------------
+// include
+//-----------------------------------------------------------------------------
 #include "renderer.h"
 
+//-----------------------------------------------------------------------------
+// 前方宣言
+//-----------------------------------------------------------------------------
 class CScore;
 class CBg;
 
+//=============================================================================
+// オブジェクトクラス
+//=============================================================================
 class CObject
 {
 public:
@@ -35,51 +42,46 @@ public:
 		NONE
 	};
 
-	
 	const static int MAX_OBJECT = 2560;
 	const static int MAX_LIST = 4;
-	CObject(int list = 0);
+	CObject(int inList = 0);
 	virtual ~CObject();
 	virtual HRESULT Init() = 0;
 	virtual void Uninit() = 0;
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
 
-
 	static void AllUpdate();
-	static void TypeUpdate(EObjectType Type);
+	static void TypeUpdate(const EObjectType inType);
 	static void AllDraw();
 	static void AllUninit();
 	static void AllCreate();
 	static void ModeNotUninit();
-	static void TypeDraw(EObjectType Type);
+	static void TypeDraw(const EObjectType inType);
 
-	static int& GetMaxEnemy() { return m_AllEnemy; };
-	static bool& GetMaxBoss() { return notBoss; };
-	static CBg* GetBg(int number) { return  Bg[number]; };
-	static void SetBossPop(bool Boss) { notBoss = Boss; };
-	int * GetId();
-	CObject ** GetObjectData(int nCount);
-	void SetUp(EObjectType Type);
+	static int& GetMaxEnemy() { return m_allEnemy; };
+	static bool& GetMaxBoss() { return m_notBoss; };
+	static CBg* GetBg(int inNumber) { return pBg[inNumber]; };
+	static void SetBossPop(bool inBoss) { m_notBoss = inBoss; };
+	int* GetId();
+	CObject** GetObjectData(int inCount);
+	void SetUp(const EObjectType inType);
 
 	void Release();
-	EObjectType GetType();
 
-	CScore*GetScore();
+	EObjectType GetType();
+	CScore* GetScore();
 
 protected:
 	static CObject *m_pObject[MAX_LIST][MAX_OBJECT];
-	int	m_nID;
+	int	m_id;
 	int m_list;
-	static int m_AllEnemy;
-	static bool notBoss;
+	static int m_allEnemy;
+	static bool m_notBoss;
 private:
-	//int	m_nID;
-	EObjectType m_Type;
-	static int m_AllMember;
-	static CScore * pScore;
-	static CBg * Bg[3];
-
-
+	EObjectType m_type;
+	static int m_allMember;
+	static CScore* pScore;
+	static CBg* pBg[3];
 };
 #endif

@@ -1,10 +1,12 @@
 //=============================================================================
 //
-// Object
-// Author : 浜田琉雅
+// オブジェクト
+// Author : Hamada Ryuuga
 //
 //=============================================================================
-
+//-----------------------------------------------------------------------------
+// include
+//-----------------------------------------------------------------------------
 #include "object.h"
 #include "object2d.h"
 #include "player.h"
@@ -17,15 +19,18 @@
 #include "game.h"
 #include "pause.h"
 
+//-----------------------------------------------------------------------------
+// 静的メンバ変数
+//-----------------------------------------------------------------------------
 CObject *CObject::m_pObject[MAX_LIST][MAX_OBJECT] = {};
-int CObject::m_AllMember = 0; 
-int CObject::m_AllEnemy = 0;
+int CObject::m_allMember = 0; 
+int CObject::m_allEnemy = 0;
 CScore * CObject::pScore;
-bool CObject::notBoss = false;
-CBg * CObject::Bg[3];
+bool CObject::m_notBoss = false;
+CBg * CObject::pBg[3];
 
 //=============================================================================
-// コンストラクト関数
+// コンストラクタ
 //=============================================================================
 CObject::CObject(int list)
 {
@@ -33,55 +38,54 @@ CObject::CObject(int list)
 	{
 		if (m_pObject[list][i] == nullptr)
 		{
-			m_Type = NONE;
+			m_type = NONE;
 			m_list = list;
-			m_nID = i;
+			m_id = i;
 			m_pObject[list][i] = this;
-			m_AllMember++;
+			m_allMember++;
 			break;
 		}
 	}
 }
 //=============================================================================
-// デストラクト関数
+// デストラクタ
 //=============================================================================
 CObject::~CObject()
 {
 }
 
 //=============================================================================
-// AllUpdate関数
+// 全ての更新
 //=============================================================================
 void CObject::AllUpdate()
 {
-	for (int j = 0; j < MAX_LIST; j++)
+	for (int i= 0; i < MAX_LIST; i++)
 	{
-		for (int i = 0; i < MAX_OBJECT; i++)
+		for (int j = 0; j < MAX_OBJECT; j++)
 		{
 
-			if (m_pObject[j][i] != nullptr)
+			if (m_pObject[i][j] != nullptr)
 			{
-				m_pObject[j][i]->Update();
+				m_pObject[i][j]->Update();
 			}
 		}
 	}
 }
 
 //=============================================================================
-// Typeのupdate関数
+// 種類の更新
 //=============================================================================
 void CObject::TypeUpdate(EObjectType Type)
 {
-	for (int j = 0; j < MAX_LIST; j++)
+	for (int i= 0; i < MAX_LIST; i++)
 	{
-		for (int i = 0; i < MAX_OBJECT; i++)
+		for (int j = 0; j < MAX_OBJECT; j++)
 		{
-
-			if (m_pObject[j][i] != nullptr)
+			if (m_pObject[i][j] != nullptr)
 			{
-				if (m_pObject[j][i]->m_Type == Type)
+				if (m_pObject[i][j]->m_type == Type)
 				{
-					m_pObject[j][i]->Update();
+					m_pObject[i][j]->Update();
 				}
 			}
 		}
@@ -89,106 +93,103 @@ void CObject::TypeUpdate(EObjectType Type)
 }
 
 //=============================================================================
-// AllDraw関数
+// 全ての描画
 //=============================================================================
 void CObject::AllDraw()
 {
-	for (int j = 0; j < MAX_LIST; j++)
+	for (int i = 0; i < MAX_LIST; i++)
 	{
-		for (int i = 0; i < MAX_OBJECT; i++)
+		for (int j = 0; j < MAX_OBJECT; j++)
 		{
-			if (m_pObject[j][i] != nullptr)
+			if (m_pObject[i][j] != nullptr)
 			{
-				m_pObject[j][i]->Draw();
+				m_pObject[i][j]->Draw();
 			}
 		}
 	}
 }
 
-
 //=============================================================================
-// NotBGDraw関数
+// 種類の描画
 //=============================================================================
 void CObject::TypeDraw(EObjectType Type)
 {
-	for (int j = 0; j < MAX_LIST; j++)
+	for (int i = 0; i < MAX_LIST; i++)
 	{
-		for (int i = 0; i < MAX_OBJECT; i++)
+		for (int j = 0; j < MAX_OBJECT; j++)
 		{
-
-			if (m_pObject[j][i] != nullptr)
+			if (m_pObject[i][j] != nullptr)
 			{
-				if (m_pObject[j][i]->m_Type == Type)
+				if (m_pObject[i][j]->m_type == Type)
 				{
-					m_pObject[j][i]->Draw();
+					m_pObject[i][j]->Draw();
 				}
 			}
 		}
 	}
 }
 
-
 //=============================================================================
-// AllUninit関数
+// 全ての終了
 //=============================================================================
 void CObject::AllUninit()
 {
-	for (int j = 0; j < MAX_LIST; j++)
+	for (int i = 0; i < MAX_LIST; i++)
 	{
-		for (int i = 0; i < MAX_OBJECT; i++)
+		for (int j = 0; j < MAX_OBJECT; j++)
 		{
-			if (m_pObject[j][i] != nullptr)
+			if (m_pObject[i][j] != nullptr)
 			{
-				m_pObject[j][i]->Uninit();
-				delete m_pObject[j][i];
-				m_pObject[j][i] = nullptr;
+				m_pObject[i][j]->Uninit();
+				delete m_pObject[i][j];
+				m_pObject[i][j] = nullptr;
 			}
 
 		}
 	}
-	m_AllMember = 0;
+	m_allMember = 0;
 }
 
 //=============================================================================
-// ModeNotUninit関数
+// モード以外の終了
 //=============================================================================
 void CObject::ModeNotUninit()
 {
-	for (int j = 0; j < MAX_LIST; j++)
+	for (int i = 0; i < MAX_LIST; i++)
 	{
-		for (int i = 0; i < MAX_OBJECT; i++)
+		for (int j = 0; j < MAX_OBJECT; j++)
 		{
-			if (m_pObject[j][i] != nullptr)
+			if (m_pObject[i][i] != nullptr)
 			{
-				if (m_pObject[j][i]->m_Type != MODE)
+				if (m_pObject[i][j]->m_type != MODE)
 				{
-					m_pObject[j][i]->Uninit();
-					delete m_pObject[j][i];
-					m_pObject[j][i] = nullptr;
+					m_pObject[i][j]->Uninit();
+					delete m_pObject[i][j];
+					m_pObject[i][j] = nullptr;
 				}
 			}
 		}
 	}
-	m_AllMember = 1;
+	m_allMember = 1;
 }
 //=============================================================================
-// AllCreate関数
+// 全ての生成
 //=============================================================================
 void CObject::AllCreate()
 {
-	Bg[0] = CBg::Create();
-	Bg[0]->SetMove(D3DXVECTOR3(0.0001f, 0.0f, 0.0f));
-	Bg[0]->SetTexture(CTexture::TEXTURE_STARRY);
-	Bg[0]->SetBgType(CBg::MOVE);
+	pBg[0] = CBg::Create();
+	pBg[0]->SetMove(D3DXVECTOR3(0.0001f, 0.0f, 0.0f));
+	pBg[0]->SetTexture(CTexture::TEXTURE_STARRY);
+	pBg[0]->SetBgType(CBg::MOVE);
 
-	Bg[1] = CBg::Create();
-	Bg[1]->SetMove(D3DXVECTOR3(0.001f, 0.0f, 0.0f));
-	Bg[1]->SetTexture(CTexture::TEXTURE_TOWN);
-	Bg[1]->SetBgType(CBg::MOVE);
+	pBg[1] = CBg::Create();
+	pBg[1]->SetMove(D3DXVECTOR3(0.001f, 0.0f, 0.0f));
+	pBg[1]->SetTexture(CTexture::TEXTURE_TOWN);
+	pBg[1]->SetBgType(CBg::MOVE);
 
-	Bg[2] = CBg::Create();
-	Bg[2]->SetTexture(CTexture::TEXTURE_MOON);
-	Bg[2]->SetBgType(CBg::STOP);
+	pBg[2] = CBg::Create();
+	pBg[2]->SetTexture(CTexture::TEXTURE_MOON);
+	pBg[2]->SetBgType(CBg::STOP);
 	
 
 	pScore = CScore::Create(D3DXVECTOR3(500.0f, 30.0f, 0.0f));
@@ -196,95 +197,89 @@ void CObject::AllCreate()
 }
 
 //=============================================================================
-// Set関数
+// タイプの設定
 //=============================================================================
-void CObject::SetUp(EObjectType Type)
+void CObject::SetUp(EObjectType inType)
 {
-	switch (Type)
+	switch (inType)
 	{
 	case EObjectType::ENEMY:
-	{
-		m_Type = ENEMY;
-		m_AllEnemy++;
+		m_type = ENEMY;
+		m_allEnemy++;
 		break;
-	}
 	case EObjectType::PLAYER:
-	{
-		m_Type = PLAYER;
+		m_type = PLAYER;
 		break;
-	}
 	case EObjectType::BULLET:
-		m_Type = BULLET;
+		m_type = BULLET;
 		break;
 	case EObjectType::GON:
-		m_Type = GON;
+		m_type = GON;
 		break;
 	case EObjectType::MAGIC:
-		m_Type = MAGIC;
+		m_type = MAGIC;
 		break;
 	case EObjectType::CRYSTAL:
-		m_Type = CRYSTAL;
+		m_type = CRYSTAL;
 		break;
 	case EObjectType::BG:
-		m_Type = BG;
+		m_type = BG;
 		break;
 	case EObjectType::MODE:
-		m_Type = MODE;
+		m_type = MODE;
 		break;
 	case EObjectType::PAUSE:
-		m_Type = PAUSE;
+		m_type = PAUSE;
 		break;
 	default:
+		assert(false);
 		break;
 	}
-	
 }
 
-
 //=============================================================================
-// release関数
+// 解放
 //=============================================================================
 void CObject::Release()
 {
-	if (m_pObject[m_list][m_nID] != nullptr)
+	if (m_pObject[m_list][m_id] != nullptr)
 	{
-		const int nID = m_nID;
+		const int nID = m_id;
 		const int nlist = m_list;
 		delete m_pObject[nlist][nID];
 		m_pObject[nlist][nID] = nullptr;
-		m_AllMember--;
+		m_allMember--;
 	}
 }
 
 //=============================================================================
-// objectのデータを取得する関数
+// オブジェクトの取得
 //=============================================================================
-CObject**CObject::GetObjectData(int nCount)
+CObject** CObject::GetObjectData(int inCount)
 {
-	return m_pObject[nCount];
+	return m_pObject[inCount];
 }
 
 //=============================================================================
-// スコアのデータを取得する関数
+// スコアの取得
 //=============================================================================
-CScore*CObject::GetScore()
+CScore* CObject::GetScore()
 {
 	return pScore;
 }
 
 //=============================================================================
-// objectのIdを取得する関数
+// 番号の取得
 //=============================================================================
-int * CObject::GetId()
+int* CObject::GetId()
 {
-	return &m_nID;
+	return &m_id;
 }
 
 //=============================================================================
-// objectのタイプの取得関数
+// タイプの取得
 //=============================================================================
 CObject::EObjectType CObject::GetType()
 {
-	return m_Type;
+	return m_type;
 }
-
