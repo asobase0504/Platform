@@ -1,42 +1,53 @@
-//============================
+//=============================================================================
 //
 // ゲーム画面のヘッダー
-// Author:hamada ryuuga
+// Author:Hamada Ryuuga
 //
-//============================
+//=============================================================================
 #ifndef _GAME_H_		//このマクロが定義されてなかったら
 #define _GAME_H_		//2重インクルード防止のマクロ定義
 
+//-----------------------------------------------------------------------------
+// include
+//-----------------------------------------------------------------------------
 #include "object.h"
 
+//-----------------------------------------------------------------------------
+// 前方宣言
+//-----------------------------------------------------------------------------
 class CMagicBox;
 class CParticleManager;
 class CPlayer;
 class CPause; 
 
+//=============================================================================
+// ゲームクラス
+//=============================================================================
 class CGame :public CObject
 {
 public:
 	CGame();
 	~CGame();
+
 	HRESULT Init() override;
 	void Uninit() override;
 	void Update() override;
 	void Draw() override;
 
-	static CMagicBox*GetMagicBox() { return m_MagicBox; };
-	static CParticleManager* GetParticleManager() { return m_PaticleManager; }
-	static CPlayer * GetPlayer() { return m_Player; };
-	static CPause * GetPause() { return m_Pause; };
+	// Getter
+	static CMagicBox* GetMagicBox() { return m_pMagicBox; };
+	static CParticleManager* GetParticleManager() { return m_pPaticleManager; }
+	static CPlayer* GetPlayer() { return m_pPlayer; };
+	static CPause* GetPause() { return m_pPause; };
 	
 private:
 
-	static CMagicBox* m_MagicBox;
-	static CPlayer* m_Player;
-	static CParticleManager* m_PaticleManager;	// パーティクルマネジャー
-	static CPause *m_Pause;
+	static CMagicBox* m_pMagicBox;
+	static CPlayer* m_pPlayer;
+	static CParticleManager* m_pPaticleManager;	// パーティクルマネジャー
+	static CPause *m_pPause;
 
-	int m_GameCount;
-	int m_SpeedUp;
+	int m_gameCount;
+	int m_speedUp;
 };
 #endif
