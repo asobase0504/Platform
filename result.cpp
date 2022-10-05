@@ -1,16 +1,12 @@
-//============================
+//=============================================================================
 //
 // リザルト画面
-// Author:hamada ryuuga
+// Author:Hamada Ryuuga
 //
-//============================
-
-
-
-
-//------------------------
-// インクルード
-//------------------------
+//=============================================================================
+//-----------------------------------------------------------------------------
+// include
+//-----------------------------------------------------------------------------
 #include "result.h"
 #include "input.h"
 #include "manager.h"
@@ -20,22 +16,23 @@
 #include "motion.h"
 #include "bg.h"
 
-//========================
-// コンストラクター
-//========================
+//=============================================================================
+// コンストラクタ
+//=============================================================================
 CResult::CResult()
 {
 }
-//========================
-// デストラクト
-//========================
+
+//=============================================================================
+// デストラクタ
+//=============================================================================
 CResult::~CResult()
 {
 }
 
-//========================
-// リザルトの初期化処理
-//========================
+//=============================================================================
+// 初期化
+//=============================================================================
 HRESULT CResult::Init(void)
 {
 	D3DXVECTOR3 BGPos;
@@ -46,59 +43,55 @@ HRESULT CResult::Init(void)
 
 	D3DXVECTOR3 Size(3.8f, 3.8f, 3.8f);
 
-	m_Bg[0] = CBg::Create();
-	m_Bg[0]->SetTexture(CTexture::TEXTURE_ENDBG);
-	m_Bg[0]->SetSize(CManager::CENTER_POS);
-	m_Bg[0]->SetPos(BGPos);
+	m_pBg[0] = CBg::Create();
+	m_pBg[0]->SetTexture(CTexture::TEXTURE_ENDBG);
+	m_pBg[0]->SetSize(CManager::CENTER_POS);
+	m_pBg[0]->SetPos(BGPos);
 
-	m_Bg[1] = CBg::Create();
-	m_Bg[1]->SetTexture(CTexture::TEXTURE_GAME);
-	m_Bg[1]->SetSize(CManager::CENTER_POS*0.8f);
-	m_Bg[1]->SetPos(BGPos);
+	m_pBg[1] = CBg::Create();
+	m_pBg[1]->SetTexture(CTexture::TEXTURE_GAME);
+	m_pBg[1]->SetSize(CManager::CENTER_POS*0.8f);
+	m_pBg[1]->SetPos(BGPos);
 
-
-	m_object2d[0] = CObject2d::Create(2);
-	m_object2d[0]->SetTexture(CTexture::TEXTURE_CLEAR);
-	m_object2d[0]->SetSize(D3DXVECTOR3(500.0f, 200.0f, 0.0f));
-	m_object2d[0]->SetPos(CManager::CENTER_POS);
-	m_object2d[0]->SetMove(D3DXVECTOR3(1.0f, -1.0f, 0.0f));
+	m_pObject2d[0] = CObject2d::Create(2);
+	m_pObject2d[0]->SetTexture(CTexture::TEXTURE_CLEAR);
+	m_pObject2d[0]->SetSize(D3DXVECTOR3(500.0f, 200.0f, 0.0f));
+	m_pObject2d[0]->SetPos(CManager::CENTER_POS);
+	m_pObject2d[0]->SetMove(D3DXVECTOR3(1.0f, -1.0f, 0.0f));
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RESET);
 
-	m_Player = nullptr;
-	m_Player = CPlayer::Create();
-	m_Player->SetUp(CObject::PLAYER);
+	m_pPlayer = nullptr;
+	m_pPlayer = CPlayer::Create();
+	m_pPlayer->SetUp(CObject::PLAYER);
 
-
-	
 	return S_OK;
-
 }
 
-//========================
-// リザルトの終了処理
-//========================
+//=============================================================================
+// 終了
+//=============================================================================
 void CResult::Uninit(void)
 {
 	CManager::GetInstance()->GetSound()->Stop();
 	//for (int i = 0; i < 4; i++)
 	//{
-	//	if (m_Bg[i] != nullptr)
+	//	if (m_pBg[i] != nullptr)
 	//	{
-	//		m_Bg[i]->Uninit();
+	//		m_pBg[i]->Uninit();
 	//		
 	//	}
 	//}
 	CModelManager::ReleaseAll();
 }
 
-//========================
-// リザルトの更新処理
-//========================
+//=============================================================================
+// 更新
+//=============================================================================
 void CResult::Update(void)
 {
-	D3DXVECTOR3 DataPos = *m_object2d[0]->GetPos();
-	D3DXVECTOR3 DataMove = m_object2d[0]->GetMove();
-	D3DXVECTOR3 DataSize = m_object2d[0]->GetSize();
+	D3DXVECTOR3 DataPos = *m_pObject2d[0]->GetPos();
+	D3DXVECTOR3 DataMove = m_pObject2d[0]->GetMove();
+	D3DXVECTOR3 DataSize = m_pObject2d[0]->GetSize();
 
 	if (DataPos.x < 0.0f + DataSize.x)
 	{
@@ -118,8 +111,8 @@ void CResult::Update(void)
 		DataMove.y *= -1.0f;
 	}
 
-	m_object2d[0]->SetPos(DataPos + DataMove);
-	m_object2d[0]->SetMove(DataMove);
+	m_pObject2d[0]->SetPos(DataPos + DataMove);
+	m_pObject2d[0]->SetMove(DataMove);
 	CInput *CInputpInput = CInput::GetKey();
 	if (CInputpInput->Trigger(CInput::KEY_DECISION))
 	{
@@ -137,9 +130,9 @@ void CResult::Update(void)
 #endif // DEBUG
 }
 
-//========================
-// リザルトの描画処理
-//========================
+//=============================================================================
+// 描画
+//=============================================================================
 void CResult::Draw(void)
 {
 

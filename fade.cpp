@@ -80,7 +80,7 @@ void CFade::Update(void)
 
 			return;
 		}
-		SetCollar(D3DXCOLOR(0.0f, 0.0f, 0.0f, m_fadeSet));
+		SetColar(D3DXCOLOR(0.0f, 0.0f, 0.0f, m_fadeSet));
 	}
 }
 
@@ -104,7 +104,7 @@ CFade* CFade::Create()
 		pObject->Init();
 		pObject->m_nextMode = CManager::MODE_TITLE;
 		pObject->SetSize(D3DXVECTOR3(1280.0f, 720.0f, 0.0f));
-		pObject->SetCollar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
+		pObject->SetColar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 		pObject->SetUp(CObject::MODE);
 		pObject->fade = FADENON;
 	}
@@ -127,6 +127,6 @@ void CFade::NextMode(CManager::MODE nextMode)
 	Init();
 	m_nextMode = nextMode;
 	SetSize(D3DXVECTOR3(1280.0f, 720.0f, 0.0f));
-	SetCollar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
+	SetColar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 	fade = FADEIN;
 }

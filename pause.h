@@ -1,26 +1,26 @@
-//=========================================
+//=============================================================================
 // 
-// pauseの作成(ヘッダーファイル)
-// Author HAMAD
+// ポーズの作成(ヘッダーファイル)
+// Author Hamada Ryuuga
 // 
-//=========================================
+//=============================================================================
 #ifndef _PAUSE_H_
 #define _PAUSE_H_
 
-
+//-----------------------------------------------------------------------------
+// include
+//-----------------------------------------------------------------------------
 #include "object.h"
 #include "object2d.h"
 
-//------------------------------------
-// プロトタイプ宣言
-//------------------------------------
-
+//=============================================================================
+// ポーズクラス
+//=============================================================================
 class CPause :public CObject
 {
 public:
-
 	//画面(モード)の種類
-	enum MODE
+	enum EMode
 	{
 		MODE_GAME = 0,			//ゲーム画面	
 		MODE_RETURN,
@@ -31,20 +31,23 @@ public:
 
 	CPause();
 	~CPause();
+
 	HRESULT Init() override;
 	void Uninit() override;
 	void Update() override;
 	void Draw() override;
-	void Set() { m_OnPause = !m_OnPause; };
-	bool Get() { return m_OnPause; };
+
+	// Setter
+	void Set() { m_onPause = !m_onPause; };
+
+	// Getter
+	bool Get() { return m_onPause; };
+
 private:
-	bool m_OnPause;
-	int m_NextMode;
-	CObject2d *m_Bg;
-	CObject2d *m_object2d[4];
-
+	bool m_onPause;
+	int m_nextMode;
+	CObject2d* m_pBg;
+	CObject2d* m_pObject2d[4];
 };
-
-
 
 #endif 
