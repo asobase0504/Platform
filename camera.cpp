@@ -96,7 +96,7 @@ void CCamera::Set(int Type)
 	pDevice->SetTransform(D3DTS_VIEW, &m_MtxView);
 
 	//プロジェクションマトリックスを初期化
-	D3DXMatrixIdentity(&m_MtxProje);
+	D3DXMatrixIdentity(&m_MtxProject);
 
 	//if (Type == 0)
 	//{
@@ -110,14 +110,14 @@ void CCamera::Set(int Type)
 	//else
 	{
 		// プロジェクションマトリックスの作成(平行投影)
-		D3DXMatrixOrthoLH(&m_MtxProje,					// プロジェクションマトリックス
+		D3DXMatrixOrthoLH(&m_MtxProject,					// プロジェクションマトリックス
 			(float)SCREEN_WIDTH,								// 幅
 			(float)SCREEN_HEIGHT,								// 高さ
 			-100.0f,											// ニア
 			2000.0f);											// ファー
 	}
 	//適用
-	pDevice->SetTransform(D3DTS_PROJECTION, &m_MtxProje);
+	pDevice->SetTransform(D3DTS_PROJECTION, &m_MtxProject);
 }
 
 //=============================================================================
@@ -141,7 +141,7 @@ D3DXVECTOR3 * CCamera::GetRot()
 //=============================================================================
 D3DXMATRIX *CCamera::GetMtxProje()
 {
-	return &m_MtxProje;
+	return &m_MtxProject;
 }
 
 //=============================================================================

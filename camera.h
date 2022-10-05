@@ -47,7 +47,7 @@ private:
 	D3DXVECTOR3 m_directionR;			// 回転の向き注視点
 	D3DXVECTOR3 m_rot;					// 位置回転
 	D3DVIEWPORT9 m_viewport;			   
-	D3DXMATRIX m_MtxProje;				// プロジェクションマトリックス//ポリゴンの位置や回転行列すべてをつめてるナニカ
+	D3DXMATRIX m_MtxProject;			// プロジェクションマトリックス//ポリゴンの位置や回転行列すべてをつめてるナニカ
 	D3DXMATRIX m_MtxView;				// ビューマトリックス//ポリゴンの位置や回転行列すべてをつめてるナニカ
 	float m_Speed;
 	float m_rotSpeed;
