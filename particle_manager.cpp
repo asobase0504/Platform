@@ -84,7 +84,7 @@ int CParticleManager::Create(const D3DXVECTOR3& pos, const int& index,int Type)
 	emitter->Init();		// ‰Šú‰»
 	emitter->SetPos(pos);	// ˆÊ’u‚ÌXV
 
-	if (m_bundledData[Type].size() <= index)
+	if ((int)m_bundledData[Type].size() <= index)
 	{
 		assert(false);
 		return 0;

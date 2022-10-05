@@ -1,16 +1,20 @@
 //=============================================================================
 //
-// レンダラー
+// マネジャー
 // Author : 浜田琉雅
 //
 //=============================================================================
-
-
 #ifndef _MANEAGER_H_			// このマクロ定義がされてなかったら
 #define _MANEAGER_H_			// 二重インクルード防止のマクロ定義
 
+//-----------------------------------------------------------------------------
+// include
+//-----------------------------------------------------------------------------
 #include "renderer.h"
 
+//-----------------------------------------------------------------------------
+// 前方宣言
+//-----------------------------------------------------------------------------
 class CRenderer;
 class CInput;
 class CTexture;
@@ -20,27 +24,30 @@ class CTitle;
 class CFade;
 class CSound;
 
+//=============================================================================
+// マネジャークラス
+//=============================================================================
 class CManager
 {
 public:
 
-	static const D3DXVECTOR3 Pos;
+	static const D3DXVECTOR3 CENTER_POS;	// 中央位置
 
 	//画面(モード)の種類
 	enum MODE
 	{
-		MODE_TITLE = 0,		//タイトル画面
-		MODE_GAME,			//ゲーム画面
-		MODE_RESULT,		//リザルト画面
-		MODE_FADE,			//フェード画面
-		MODE_RANKING,		//ランキング画面
-		MODE_GAMEOVER,
+		MODE_TITLE = 0,		// タイトル画面
+		MODE_GAME,			// ゲーム画面
+		MODE_RESULT,		// リザルト画面
+		MODE_FADE,			// フェード画面
+		MODE_RANKING,		// ランキング画面
+		MODE_GAMEOVER,		// ゲームオーバー画面
 		MODE_TUTORIAL,
 		MODE_NAMESET,
 		MODE_MAX
 	};
 
-public: // 静的メンバー変数
+private: // 静的メンバー変数
 	static CManager* m_manager;
 
 public: // 静的関数
@@ -59,8 +66,8 @@ public:	// メンバー関数
 
 	CRenderer *GetRenderer();
 	CTexture* GetTexture();	// テクスチャの情報の取得
-	CFade* GetFade();	// 
-	MODE* GetMode();	//
+	CFade* GetFade();	// フェードの取得
+	MODE* GetMode();	// モードの取得
 	void SetMode(CManager::MODE mode);
 	CSound * CManager::GetSound();
 
@@ -71,9 +78,7 @@ private:
 	CObject*m_Game;
 	CSound*m_Sound;
 	MODE m_mode;
-
 	CInput *m_Input;
-
 };
 
 

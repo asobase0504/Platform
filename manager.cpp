@@ -4,10 +4,11 @@
 // Author : 浜田琉雅
 //
 //=============================================================================
-
+//-----------------------------------------------------------------------------
+// include
+//-----------------------------------------------------------------------------
 #include "manager.h"
 #include "main.h"
-
 #include "renderer.h"
 #include "input.h"
 #include "game.h"
@@ -16,19 +17,16 @@
 #include "fade.h"
 #include "nemeset.h"
 #include "sound.h"
-
 #include "texture.h"
-
 #include "ranking.h"
 #include "tutorial.h"
-
 #include "multiply.h"
 
 //-----------------------------------------------------------------------------
 // 静的メンバー変数の初期化
 //-----------------------------------------------------------------------------
 CManager * CManager::m_manager = nullptr;
-const D3DXVECTOR3 CManager::Pos = D3DXVECTOR3(1280.0f * 0.5f, 720.0f * 0.5f, 0.0f);
+const D3DXVECTOR3 CManager::CENTER_POS = D3DXVECTOR3(1280.0f * 0.5f, 720.0f * 0.5f, 0.0f);
 
 //=============================================================================
 // シングルトンでのインスタンスの取得

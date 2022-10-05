@@ -44,11 +44,6 @@ namespace
 const int SCREEN_WIDTH = 1280;
 // スクリーンの高さ
 const int SCREEN_HEIGHT = 720;
-// 頂点フォーマット
-const DWORD FVF_VERTEX_2D = (D3DFVF_XYZRHW | D3DFVF_DIFFUSE| D3DFVF_TEX1);
-
-const DWORD FVF_VERTEX_3D(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE | D3DFVF_TEX1);
-
 
 //頂点情報「3ｄ」の構造体を定義
 struct VERTEX_3D

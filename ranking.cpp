@@ -99,7 +99,7 @@ inline HRESULT CRanking::Init(void)
 	{
 		m_Name[i] = "";
 	}
-	D3DXVECTOR3 pos = D3DXVECTOR3(CManager::Pos.x, 100.0f, 0.0f);
+	D3DXVECTOR3 pos = D3DXVECTOR3(CManager::CENTER_POS.x, 100.0f, 0.0f);
 	for (int i = 0; i < MAX_RANK - 1; i++)
 	{
 		m_Ranking[i] = CScore::Create(pos);
@@ -118,13 +118,13 @@ inline HRESULT CRanking::Init(void)
 
 	m_Object2d[0] = CObject2d::Create();
 	m_Object2d[0]->SetTexture(CTexture::TEXTURE_RANKINBG);
-	m_Object2d[0]->SetSize(CManager::Pos);
-	m_Object2d[0]->SetPos(CManager::Pos);
+	m_Object2d[0]->SetSize(CManager::CENTER_POS);
+	m_Object2d[0]->SetPos(CManager::CENTER_POS);
 
 	m_Object2d[1] = CObject2d::Create();
 	m_Object2d[1]->SetTexture(CTexture::TEXTURE_RANKIN);
 	m_Object2d[1]->SetSize(D3DXVECTOR3(100.0f, 300.0f, 0.0f));
-	m_Object2d[1]->SetPos(D3DXVECTOR3(CManager::Pos.x - 120.0f, 350.0f, 0.0f));
+	m_Object2d[1]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x - 120.0f, 350.0f, 0.0f));
 
 	m_Object2d[2] = CObject2d::Create();
 	m_Object2d[2]->SetTexture(CTexture::TEXTURE_RANKINTITLEOFF);

@@ -35,7 +35,7 @@ HRESULT CTitle::Init(void)
 	BGPos.x = 0.0f;
 	BGPos.y = 0.0f;
 	BGPos.z -= 30.0f;
-	D3DXVECTOR3 EnemyPos = CManager::Pos;
+	D3DXVECTOR3 EnemyPos = CManager::CENTER_POS;
 	m_alpha = 1.2f;
 
 	
@@ -58,7 +58,7 @@ HRESULT CTitle::Init(void)
 	//星の背景
 	m_Bg[0] = CBg::Create();
 	m_Bg[0]->SetTexture(CTexture::TEXTURE_STARRY);
-	m_Bg[0]->SetSize(CManager::Pos);
+	m_Bg[0]->SetSize(CManager::CENTER_POS);
 	m_Bg[0]->SetPos(BGPos);
 	m_Bg[0]->SetBgType(CBg::MOVE);
 	m_Bg[0]->SetMove(D3DXVECTOR3(0.0001f, 0.0f, 0.0f));
@@ -68,7 +68,7 @@ HRESULT CTitle::Init(void)
 	//GonFoxのTITLE文字
 	m_Bg[1] = CBg::Create();
 	m_Bg[1]->SetTexture(CTexture::TEXTURE_GAME);
-	m_Bg[1]->SetSize(CManager::Pos*0.8f);
+	m_Bg[1]->SetSize(CManager::CENTER_POS*0.8f);
 	m_Bg[1]->SetPos(BGPos);
 	m_Bg[1]->SetBgType(CBg::STOP);
 	m_Bg[1]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.7f));
@@ -77,24 +77,24 @@ HRESULT CTitle::Init(void)
 	//GonFoxのTITLE文字
 	m_list[0] = CObject2d::Create(1);
 	m_list[0]->SetTexture(CTexture::TEXTURE_TITLE);
-	m_list[0]->SetSize(CManager::Pos);
-	m_list[0]->SetPos(CManager::Pos);
+	m_list[0]->SetSize(CManager::CENTER_POS);
+	m_list[0]->SetPos(CManager::CENTER_POS);
 	m_list[0]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 	
 	//ゲームスタートの文字
 	m_list[1] = CObject2d::Create(1);
 	m_list[1]->SetTexture(CTexture::TEXTURE_FOXTITLE);
-	m_list[1]->SetSize(CManager::Pos);
-	m_list[1]->SetPos(CManager::Pos);
+	m_list[1]->SetSize(CManager::CENTER_POS);
+	m_list[1]->SetPos(CManager::CENTER_POS);
 	m_list[1]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 
 	//モード選択時の背景黒くするやつ
 	fade = CObject2d::Create(2);
 	fade->SetTexture(CTexture::TEXTURE_NONE);
-	fade->SetSize(CManager::Pos);
-	fade->SetPos(CManager::Pos);
+	fade->SetSize(CManager::CENTER_POS);
+	fade->SetPos(CManager::CENTER_POS);
 	fade->SetCollar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 
 	float y = 120.0f;
@@ -102,16 +102,16 @@ HRESULT CTitle::Init(void)
 	//ゲームの文字
 	m_object2d[0] = CObject2d::Create(2);
 	m_object2d[0]->SetTexture(CTexture::TEXTURE_TITLEGAME);
-	m_object2d[0]->SetSize(CManager::Pos);
-	m_object2d[0]->SetPos(D3DXVECTOR3(CManager::Pos.x, CManager::Pos.y - y, 0.0f));
+	m_object2d[0]->SetSize(CManager::CENTER_POS);
+	m_object2d[0]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x, CManager::CENTER_POS.y - y, 0.0f));
 	m_object2d[0]->SetCollar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 
 
 	//チュートリアルの文字
 	m_object2d[1] = CObject2d::Create(2);
 	m_object2d[1]->SetTexture(CTexture::TEXTURE_TITLETUTORIAL);
-	m_object2d[1]->SetSize(CManager::Pos);
-	m_object2d[1]->SetPos(D3DXVECTOR3(CManager::Pos.x, CManager::Pos.y, 0.0f));
+	m_object2d[1]->SetSize(CManager::CENTER_POS);
+	m_object2d[1]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x, CManager::CENTER_POS.y, 0.0f));
 	m_object2d[1]->SetCollar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 
 
@@ -119,8 +119,8 @@ HRESULT CTitle::Init(void)
 	//ランキングの文字
 	m_object2d[2] = CObject2d::Create(2);
 	m_object2d[2]->SetTexture(CTexture::TEXTURE_TITLERANKIN);
-	m_object2d[2]->SetSize(CManager::Pos);
-	m_object2d[2]->SetPos(D3DXVECTOR3(CManager::Pos.x, CManager::Pos.y + y, 0.0f));
+	m_object2d[2]->SetSize(CManager::CENTER_POS);
+	m_object2d[2]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x, CManager::CENTER_POS.y + y, 0.0f));
 	m_object2d[2]->SetCollar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 
 	y += 120.0f;
@@ -128,8 +128,8 @@ HRESULT CTitle::Init(void)
 	//おわりの文字
 	m_object2d[3] = CObject2d::Create(2);
 	m_object2d[3]->SetTexture(CTexture::TEXTURE_TITLEEND);
-	m_object2d[3]->SetSize(CManager::Pos);
-	m_object2d[3]->SetPos(D3DXVECTOR3(CManager::Pos.x, CManager::Pos.y + y, 0.0f));
+	m_object2d[3]->SetSize(CManager::CENTER_POS);
+	m_object2d[3]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x, CManager::CENTER_POS.y + y, 0.0f));
 	m_object2d[3]->SetCollar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_TITLE);
@@ -237,7 +237,7 @@ void CTitle::Update(void)
 
 		//きつねをもちもちさせるやつ
 		D3DXVECTOR3 addPos = D3DXVECTOR3(1.0f + (float)m_addX, 1.0f + (float)m_addY, 0.0f);
-		m_Bg[1]->SetSize(CManager::Pos *0.8f + addPos);
+		m_Bg[1]->SetSize(CManager::CENTER_POS *0.8f + addPos);
 
 		//点滅させる
 		m_list[1]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, a));

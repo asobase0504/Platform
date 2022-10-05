@@ -48,19 +48,19 @@ HRESULT CResult::Init(void)
 
 	m_Bg[0] = CBg::Create();
 	m_Bg[0]->SetTexture(CTexture::TEXTURE_ENDBG);
-	m_Bg[0]->SetSize(CManager::Pos);
+	m_Bg[0]->SetSize(CManager::CENTER_POS);
 	m_Bg[0]->SetPos(BGPos);
 
 	m_Bg[1] = CBg::Create();
 	m_Bg[1]->SetTexture(CTexture::TEXTURE_GAME);
-	m_Bg[1]->SetSize(CManager::Pos*0.8f);
+	m_Bg[1]->SetSize(CManager::CENTER_POS*0.8f);
 	m_Bg[1]->SetPos(BGPos);
 
 
 	m_object2d[0] = CObject2d::Create(2);
 	m_object2d[0]->SetTexture(CTexture::TEXTURE_CLEAR);
 	m_object2d[0]->SetSize(D3DXVECTOR3(500.0f, 200.0f, 0.0f));
-	m_object2d[0]->SetPos(CManager::Pos);
+	m_object2d[0]->SetPos(CManager::CENTER_POS);
 	m_object2d[0]->SetMove(D3DXVECTOR3(1.0f, -1.0f, 0.0f));
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RESET);
 

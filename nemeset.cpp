@@ -52,30 +52,30 @@ HRESULT CNemeSet::Init(void)
 {
 	m_PlayName = "";
 	m_NowPlay = 0;
-	m_NemePos = D3DXVECTOR3(CManager::Pos.x-300.0f, 100.0f, 0.0f);
+	m_NemePos = D3DXVECTOR3(CManager::CENTER_POS.x-300.0f, 100.0f, 0.0f);
 
 	m_object2d[0] = CObject2d::Create();
 	m_object2d[0]->SetTexture(CTexture::TEXTURE_TITLEBG);
-	m_object2d[0]->SetSize(CManager::Pos);
-	m_object2d[0]->SetPos(CManager::Pos);
+	m_object2d[0]->SetSize(CManager::CENTER_POS);
+	m_object2d[0]->SetPos(CManager::CENTER_POS);
 
 	m_object2d[1] = CObject2d::Create();
 	m_object2d[1]->SetTexture(CTexture::TEXTURE_NAMETITLE);
 	m_object2d[1]->SetSize(D3DXVECTOR3(500.0f, 175.0f, 0.0f));
-	m_object2d[1]->SetPos(D3DXVECTOR3(CManager::Pos.x, 575.0f, 0.0f));
+	m_object2d[1]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x, 575.0f, 0.0f));
 
 	m_ListName[0] = CName::Create();
 	m_ListName[0]->SetSize(D3DXVECTOR3(50.0f, 50.0f, 0.0f));
-	m_ListName[0]->SetPos(D3DXVECTOR3(CManager::Pos.x -125.0f, 375.0f, 0.0f));
+	m_ListName[0]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x -125.0f, 375.0f, 0.0f));
 	m_ListName[0]->SetAlphabet(CName::MAX);
 
 	m_ListName[1] = CName::Create();
 	m_ListName[1]->SetSize(D3DXVECTOR3(75.0f, 75.0f, 0.0f));
-	m_ListName[1]->SetPos(D3DXVECTOR3(CManager::Pos.x, 350.0f, 0.0f));
+	m_ListName[1]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x, 350.0f, 0.0f));
 
 	m_ListName[2] = CName::Create();
 	m_ListName[2]->SetSize(D3DXVECTOR3(50.0f, 50.0f, 0.0f));
-	m_ListName[2]->SetPos(D3DXVECTOR3(CManager::Pos.x + 125.0f, 375.0f, 0.0f));
+	m_ListName[2]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x + 125.0f, 375.0f, 0.0f));
 	m_ListName[2]->SetAlphabet(CName::B);
 
 

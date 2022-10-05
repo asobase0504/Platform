@@ -22,6 +22,9 @@ struct PositionVec4
 
 class CObject2d : public CObject
 {
+public:
+	// 頂点フォーマット
+	const DWORD FVF_VERTEX_2D = (D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1);
 private:
 	//polygonの拡大サイズ
 	static const D3DXVECTOR3 m_Vtx[4];

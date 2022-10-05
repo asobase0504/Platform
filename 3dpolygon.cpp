@@ -4,7 +4,9 @@
 // Author : 浜田琉雅
 //
 //=============================================================================
-
+//-----------------------------------------------------------------------------
+// include
+//-----------------------------------------------------------------------------
 #include "object.h"
 #include "3dpolygon.h"
 #include "manager.h"
@@ -13,7 +15,10 @@
 #include "camera.h"
 #include "hamada.h"
 
-int C3dpolygon::m_MaxPolygon;
+//-----------------------------------------------------------------------------
+// 静的メンバ変数
+//-----------------------------------------------------------------------------
+int C3dpolygon::m_maxPolygon;
 const D3DXVECTOR3 C3dpolygon::m_Vtx[4] =
 {
 	D3DXVECTOR3(-1.0f, +1.0f, 0.0f),
@@ -23,15 +28,17 @@ const D3DXVECTOR3 C3dpolygon::m_Vtx[4] =
 };
 
 //=============================================================================
-// コンストラクト関数
+// コンストラクタ
 //=============================================================================
-C3dpolygon::C3dpolygon(int list):CObject(list)
+C3dpolygon::C3dpolygon(int list) :
+	CObject(list),
+	m_pVtxBuff(nullptr)
 {
 	
 }
 
 //=============================================================================
-// デストラクト関数
+// デストラクタ
 //=============================================================================
 C3dpolygon::~C3dpolygon()
 {
@@ -42,10 +49,10 @@ C3dpolygon::~C3dpolygon()
 //=============================================================================
 HRESULT C3dpolygon::Init()
 {
-	m_Size = D3DXVECTOR3(50.0f, 50.0f, 0.0f);
-	m_nScale = 10.0f;
+	m_size = D3DXVECTOR3(50.0f, 50.0f, 0.0f);
+	m_scale = 10.0f;
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_nTimer = 0;
+	m_time = 0;
 	
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();	//デバイスの取得
 
@@ -58,7 +65,6 @@ HRESULT C3dpolygon::Init()
 		D3DPOOL_MANAGED,
 		&m_pVtxBuff,
 		NULL);
-
 
 	VERTEX_3D*pVtx;		//頂点情報へのポインタ
 
@@ -101,11 +107,11 @@ void C3dpolygon::Uninit()
 //=============================================================================
 void C3dpolygon::Update()
 {
-	m_nTimer++;
+	m_time++;
 	m_rot.z = -D3DXToRadian(TIMER);
 
-	m_MaxPolygon++;
-	m_pos.z = -0.01f*m_MaxPolygon;
+	m_maxPolygon++;
+	m_pos.z = -0.01f*m_maxPolygon;
 }
 
 //=============================================================================
@@ -211,7 +217,7 @@ void C3dpolygon::SetTex(PositionVec4 Tex)
 //---------------------------------------
 void  C3dpolygon::SetSize(const D3DXVECTOR3 &size)
 {
-	m_Size = size;
+	m_size = size;
 
 	VERTEX_3D*pVtx;		//頂点情報へのポインタ
 
@@ -224,8 +230,8 @@ void  C3dpolygon::SetSize(const D3DXVECTOR3 &size)
 	//頂点座標
 	for (int i = 0; i < 4; ++i)
 	{
-		pVtx[i].pos.x = m_Vtx[i].x * m_Size.x; // TODO: これなおす。
-		pVtx[i].pos.y = m_Vtx[i].y * m_Size.y; // TODO: これなおす。
+		pVtx[i].pos.x = m_Vtx[i].x * m_size.x; // TODO: これなおす。
+		pVtx[i].pos.y = m_Vtx[i].y * m_size.y; // TODO: これなおす。
 		pVtx[i].pos.z = 0.0f;
 	}
 
@@ -258,7 +264,7 @@ void C3dpolygon::SetCollar(D3DXCOLOR Collar)
 //---------------------------------------
 //Vtxの取得
 //---------------------------------------
-LPDIRECT3DVERTEXBUFFER9 &C3dpolygon::GetVtx()
+LPDIRECT3DVERTEXBUFFER9 C3dpolygon::GetVtx()
 {
 	return m_pVtxBuff;
 }

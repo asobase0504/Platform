@@ -23,9 +23,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 int g_nCountFPS;
 #endif // _DEBUG
 
-//CRenderer *cRenderer = nullptr;
-//CInput *p_Input;
-
 CManager* pManeager;
 
 //=============================================================================

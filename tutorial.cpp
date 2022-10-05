@@ -65,7 +65,7 @@ HRESULT CTutorial::Init(void)
 
 	m_Bg[0] = CBg::Create();
 	m_Bg[0]->SetTexture(CTexture::TEXTURE_TUTORIAL);
-	m_Bg[0]->SetSize(CManager::Pos);
+	m_Bg[0]->SetSize(CManager::CENTER_POS);
 
 	m_Bg[0]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
