@@ -48,7 +48,7 @@ public:
 	};
 
 private: // 静的メンバー変数
-	static CManager* m_manager;
+	static CManager* m_pManager;
 
 public: // 静的関数
 	static CManager* GetInstance();
@@ -64,23 +64,20 @@ public:	// メンバー関数
 	void Update();
 	void Draw();
 
-	CRenderer *GetRenderer();
-	CTexture* GetTexture();	// テクスチャの情報の取得
-	CFade* GetFade();	// フェードの取得
-	MODE* GetMode();	// モードの取得
-	void SetMode(CManager::MODE mode);
-	CSound * CManager::GetSound();
+	CRenderer* GetRenderer();
+	CTexture* GetTexture();
+	CFade* GetFade();
+	MODE* GetMode();
+	void SetMode(CManager::MODE inMode);
+	CSound* GetSound();
 
 private:
-	CTexture *m_pTexture;
-	CRenderer * m_cRenderer;
-	CFade* m_Fade;
-	CObject*m_Game;
-	CSound*m_Sound;
+	CTexture* m_pTexture;
+	CRenderer* m_pRenderer;
+	CFade* m_pFade;
+	CObject* m_pGame;
+	CSound* m_pSound;
 	MODE m_mode;
-	CInput *m_Input;
+	CInput* m_Input;
 };
-
-
-
 #endif

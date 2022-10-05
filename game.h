@@ -39,9 +39,8 @@ public:
 	static CParticleManager* GetParticleManager() { return m_pPaticleManager; }
 	static CPlayer* GetPlayer() { return m_pPlayer; };
 	static CPause* GetPause() { return m_pPause; };
-	
-private:
 
+private:
 	static CMagicBox* m_pMagicBox;
 	static CPlayer* m_pPlayer;
 	static CParticleManager* m_pPaticleManager;	// パーティクルマネジャー

@@ -25,7 +25,7 @@
 //-----------------------------------------------------------------------------
 // 静的メンバー変数の初期化
 //-----------------------------------------------------------------------------
-CManager * CManager::m_manager = nullptr;
+CManager * CManager::m_pManager = nullptr;
 const D3DXVECTOR3 CManager::CENTER_POS = D3DXVECTOR3(1280.0f * 0.5f, 720.0f * 0.5f, 0.0f);
 
 //=============================================================================
@@ -33,11 +33,11 @@ const D3DXVECTOR3 CManager::CENTER_POS = D3DXVECTOR3(1280.0f * 0.5f, 720.0f * 0.
 //=============================================================================
 CManager * CManager::GetInstance()
 {
-	if (m_manager == nullptr)
+	if (m_pManager == nullptr)
 	{
-		m_manager = new CManager;
+		m_pManager = new CManager;
 	}
-	return m_manager;
+	return m_pManager;
 }
 
 //=============================================================================
@@ -45,10 +45,10 @@ CManager * CManager::GetInstance()
 //=============================================================================
 CManager::CManager() :
 	m_pTexture(nullptr),
-	m_cRenderer(nullptr),
-	m_Fade(nullptr),
-	m_Game(nullptr),
-	m_Sound(nullptr)
+	m_pRenderer(nullptr),
+	m_pFade(nullptr),
+	m_pGame(nullptr),
+	m_pSound(nullptr)
 {
 }
 
@@ -65,12 +65,12 @@ CManager::~CManager()
 //=============================================================================
 HRESULT CManager::Init(HWND hWnd, bool bWindow, HINSTANCE hInstance)
 {
-	m_cRenderer = new CRenderer;
+	m_pRenderer = new CRenderer;
 
 	m_Input = CInput::Create();
 
 	// 初期化処理
-	if (FAILED(m_cRenderer->Init(hWnd, TRUE)))	//画面サイズ
+	if (FAILED(m_pRenderer->Init(hWnd, TRUE)))	//画面サイズ
 	{//初期化処理が失敗した場合
 		return -1;
 	}
@@ -80,11 +80,11 @@ HRESULT CManager::Init(HWND hWnd, bool bWindow, HINSTANCE hInstance)
 		return E_FAIL;
 	}
 
-	m_Sound = nullptr;
-	m_Sound = new CSound;
+	m_pSound = nullptr;
+	m_pSound = new CSound;
 
 	//入力処理の初期化処理
-	if (FAILED(m_Sound->Init(hWnd)))
+	if (FAILED(m_pSound->Init(hWnd)))
 	{
 		return E_FAIL;
 	}
@@ -97,7 +97,7 @@ HRESULT CManager::Init(HWND hWnd, bool bWindow, HINSTANCE hInstance)
 	//モードの設定
 	SetMode(m_mode);
 
-	m_Fade = CFade::Create();
+	m_pFade = CFade::Create();
 
 	
 	
@@ -117,19 +117,19 @@ void CManager::Uninit()
 		delete m_pTexture;
 		m_pTexture = nullptr;
 	}
-	if (m_cRenderer != nullptr)
+	if (m_pRenderer != nullptr)
 	{// 終了処理
 
-		m_cRenderer->Uninit();
-		delete m_cRenderer;
-		m_cRenderer = nullptr;
+		m_pRenderer->Uninit();
+		delete m_pRenderer;
+		m_pRenderer = nullptr;
 	}
-	if (m_Sound != nullptr)
+	if (m_pSound != nullptr)
 	{// 終了処理
 
-		m_Sound->Uninit();
-		delete m_Sound;
-		m_Sound = nullptr;
+		m_pSound->Uninit();
+		delete m_pSound;
+		m_pSound = nullptr;
 	}
 	
 	//入力処理の終了処理
@@ -144,7 +144,7 @@ void CManager::Update()
 {
 	//入力処理の更新処理
 	m_Input->Update();
-	m_cRenderer->Update();
+	m_pRenderer->Update();
 }
 
 //=============================================================================
@@ -153,7 +153,7 @@ void CManager::Update()
 void CManager::Draw()
 {
 	// 描画処理	
-	m_cRenderer->Draw();
+	m_pRenderer->Draw();
 }
 
 
@@ -162,7 +162,7 @@ void CManager::Draw()
 //=============================================================================
 CRenderer *CManager::GetRenderer()
 {
-	return m_cRenderer;
+	return m_pRenderer;
 }
 
 
@@ -179,7 +179,7 @@ CTexture *CManager::GetTexture()
 //=============================================================================
 CFade * CManager::GetFade()
 {
-	return m_Fade;
+	return m_pFade;
 }
 
 
@@ -196,7 +196,7 @@ CManager::MODE * CManager::GetMode()
 //=============================================================================
 CSound * CManager::GetSound()
 {
-	return m_Sound;
+	return m_pSound;
 }
 
 
@@ -206,10 +206,10 @@ CSound * CManager::GetSound()
 void CManager::SetMode(MODE mode)
 {
 	m_mode = mode;
-	if (m_Game != nullptr)
+	if (m_pGame != nullptr)
 	{
-		m_Game->Uninit();
-		m_Game->Release();
+		m_pGame->Uninit();
+		m_pGame->Release();
 	}
 
 	// ポリゴンの終了処理
@@ -218,33 +218,33 @@ void CManager::SetMode(MODE mode)
 	switch (mode)
 	{
 	case CManager::MODE_TITLE:
-		m_Game = new CTitle;
+		m_pGame = new CTitle;
 		break;
 	case CManager::MODE_GAME:
-		m_Game = new CGame;
+		m_pGame = new CGame;
 		break;
 	case CManager::MODE_RESULT:
-		m_Game = new CResult;
+		m_pGame = new CResult;
 		break;
 	case CManager::MODE_RANKING:
-		m_Game = new CRanking;
+		m_pGame = new CRanking;
 		break;
 	case CManager::MODE_NAMESET:
-		m_Game = new CNameSet;
+		m_pGame = new CNameSet;
 		break;
 	case CManager::MODE_TUTORIAL:
-		m_Game = new CTutorial;
+		m_pGame = new CTutorial;
 		break;
 	default:
 		break;
 	}
 
 	// 初期化処理
-	if (FAILED(m_Game->Init()))	//画面サイズ
+	if (FAILED(m_pGame->Init()))	//画面サイズ
 	{//初期化処理が失敗した場合
 		return ;
 	}
-	m_Game->SetUp(CObject::MODE);
+	m_pGame->SetUp(CObject::MODE);
 }
 
 

@@ -27,13 +27,13 @@ class C3dpolygon;
 //=============================================================================
 class CTitle :public CObject
 {
-	//画面(モード)の種類
+	// 画面(モード)の種類
 	enum MODE
 	{
-		MODE_GAME = 0,			//ゲーム画面	
-		MODE_TUTORIAL,
-		MODE_RANKING,		//ランキング画面
-		MODE_END,
+		MODE_GAME = 0,		// ゲーム画面	
+		MODE_TUTORIAL,		// チュートリアル画面
+		MODE_RANKING,		// ランキング画面
+		MODE_END,			// 終了
 		MODE_MAX
 	};
 
@@ -46,7 +46,6 @@ public:
 	void Draw() override;
 	
 private:
-
 	CPlayer* m_pPlayer;
 	CEnemy* m_pEnemy[10];
 	CBg* m_pBg[4];

@@ -31,6 +31,8 @@ class CName;
 //=============================================================================
 class CRanking : public CObject
 {
+public: /* ’è‹` */
+
 public:
 	CRanking();
 	~CRanking();

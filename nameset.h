@@ -36,7 +36,6 @@ private:
 	static std::string m_PlayName;
 	CName* m_ListName[3];
 	CName* m_PlayNameSet[10];
-	D3DXVECTOR3 Collar;
 	D3DXVECTOR3 m_NemePos;
 
 	int m_NowPlay;

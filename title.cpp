@@ -1,9 +1,9 @@
-//**************************************************
+//=============================================================================
 //
 // 制作 ( タイトル )
 // Author : hamada ryuuga
 //
-//**************************************************
+//=============================================================================
 #include "title.h"
 #include "input.h"
 #include "manager.h"
@@ -13,22 +13,24 @@
 #include "sound.h"
 #include "ranking.h"
 #include "2dpolygontemplate.h"
-//========================
+
+//=============================================================================
 // コンストラクター
-//========================
+//=============================================================================
 CTitle::CTitle()
 {
 }
-//========================
+
+//=============================================================================
 // デストラクト
-//========================
+//=============================================================================
 CTitle::~CTitle()
 {
 }
 
-//================
-//初期化処理
-//================
+//=============================================================================
+// 初期化処理
+//=============================================================================
 HRESULT CTitle::Init(void)
 {
 	D3DXVECTOR3 BGPos;
@@ -38,7 +40,6 @@ HRESULT CTitle::Init(void)
 	D3DXVECTOR3 EnemyPos = CManager::CENTER_POS;
 	m_alpha = 1.2f;
 
-	
 	m_addX = 0;
 	m_addY = 0;
 	ModeSelect = false;
@@ -53,8 +54,6 @@ HRESULT CTitle::Init(void)
 	D3DXVECTOR3 Size(3.8f, 3.8f, 3.8f);
 	D3DXVECTOR3 Rot(0.0f, 1.57f, 0.0f);
 
-
-
 	//星の背景
 	m_pBg[0] = CBg::Create();
 	m_pBg[0]->SetTexture(CTexture::TEXTURE_STARRY);
@@ -64,7 +63,6 @@ HRESULT CTitle::Init(void)
 	m_pBg[0]->SetMove(D3DXVECTOR3(0.0001f, 0.0f, 0.0f));
 	m_pBg[0]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
-	
 	//GonFoxのTITLE文字
 	m_pBg[1] = CBg::Create();
 	m_pBg[1]->SetTexture(CTexture::TEXTURE_GAME);
@@ -73,7 +71,6 @@ HRESULT CTitle::Init(void)
 	m_pBg[1]->SetBgType(CBg::STOP);
 	m_pBg[1]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.7f));
 
-	
 	//GonFoxのTITLE文字
 	m_list[0] = CObject2d::Create(1);
 	m_list[0]->SetTexture(CTexture::TEXTURE_TITLE);
@@ -81,14 +78,12 @@ HRESULT CTitle::Init(void)
 	m_list[0]->SetPos(CManager::CENTER_POS);
 	m_list[0]->SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
-	
 	//ゲームスタートの文字
 	m_list[1] = CObject2d::Create(1);
 	m_list[1]->SetTexture(CTexture::TEXTURE_FOXTITLE);
 	m_list[1]->SetSize(CManager::CENTER_POS);
 	m_list[1]->SetPos(CManager::CENTER_POS);
 	m_list[1]->SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-
 
 	//モード選択時の背景黒くするやつ
 	fade = CObject2d::Create(2);
@@ -106,15 +101,12 @@ HRESULT CTitle::Init(void)
 	m_object2d[0]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x, CManager::CENTER_POS.y - y, 0.0f));
 	m_object2d[0]->SetColar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 
-
 	//チュートリアルの文字
 	m_object2d[1] = CObject2d::Create(2);
 	m_object2d[1]->SetTexture(CTexture::TEXTURE_TITLETUTORIAL);
 	m_object2d[1]->SetSize(CManager::CENTER_POS);
 	m_object2d[1]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x, CManager::CENTER_POS.y, 0.0f));
 	m_object2d[1]->SetColar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
-
-
 
 	//ランキングの文字
 	m_object2d[2] = CObject2d::Create(2);
@@ -141,67 +133,18 @@ HRESULT CTitle::Init(void)
 	return S_OK;
 }
 
-//================
-//破棄
-//================
+//=============================================================================
+// 破棄
+//=============================================================================
 void CTitle::Uninit(void)
 {
 	CManager::GetInstance()->GetSound()->Stop();
-	/*for (int i = 0; i < 4; i++)
-	{
-		if (m_pBg[i] !=nullptr)
-		{
-			m_pBg[i]->Uninit();
-			m_pBg[i] = nullptr;
-		}
-	}
-
-	for (int i = 0; i < 4; i++)
-	{
-		if (m_pObject2d[i] != nullptr)
-		{
-			m_pObject2d[i]->Uninit();
-			m_pObject2d[i] = nullptr;
-		}
-	}
-
-	for (int i = 0; i < 2; i++)
-	{
-		if (m_list[i] != nullptr)
-		{
-			m_list[i]->Uninit();
-			m_list[i] = nullptr;
-		}
-	}
-
-	if (m_pPlayer != nullptr)
-	{
-		m_pPlayer->Uninit();
-		m_pPlayer = nullptr;
-	}
-
-	for (int i = 0; i < 10; i++)
-	{
-		if (m_pEnemy[i] != nullptr)
-		{
-			m_pEnemy[i]->Uninit();
-			m_pEnemy[i] = nullptr;
-		}
-	}
-	for (int i = 0; i < 4; i++)
-	{
-		if (m_p3dpolygon[i] != nullptr)
-		{
-			m_p3dpolygon[i]->Uninit();
-			m_p3dpolygon[i] = nullptr;
-		}
-	}*/
 	CModelManager::ReleaseAll();
 }
 
-//==================
-//更新処理
-//==================
+//=============================================================================
+// 更新処理
+//=============================================================================
 void CTitle::Update(void)
 {
 	//きつねをもちもちさせるやつ
@@ -218,13 +161,13 @@ void CTitle::Update(void)
 		}
 
 		float a;
+
 		if (Sizcontroller)
 		{
 			m_addY++;
 			m_addX--;
 			a = sinf((float)m_alpha);
 			m_alpha -= 1.0f / 60;
-
 		}
 		else
 		{
@@ -233,7 +176,6 @@ void CTitle::Update(void)
 			a = sinf((float)m_alpha);
 			m_alpha += 1.0f / 60;
 		}
-
 
 		//きつねをもちもちさせるやつ
 		D3DXVECTOR3 addPos = D3DXVECTOR3(1.0f + (float)m_addX, 1.0f + (float)m_addY, 0.0f);
@@ -299,13 +241,11 @@ void CTitle::Update(void)
 
 			NextMode = (MODE)(NextMode - 1);
 
-
 			if (NextMode < MODE::MODE_GAME)
 			{
 				NextMode = MODE::MODE_END;
 			}
 
-	
 			m_object2d[NextMode]->SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 		if (CInputpInput->Trigger(CInput::KEY_DOWN))
@@ -339,9 +279,10 @@ void CTitle::Update(void)
 
 #endif // DEBUG
 }
-//==================
-//描画処理
-//==================
+
+//=============================================================================
+// 描画処理
+//=============================================================================
 void CTitle::Draw(void)
 {
 

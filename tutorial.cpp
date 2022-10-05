@@ -1,12 +1,12 @@
-//============================
+//=============================================================================
 //
 // リザルト画面
 // Author:hamada ryuuga
 //
-//============================
-//------------------------
-// インクルード
-//------------------------
+//=============================================================================
+//-----------------------------------------------------------------------------
+// include
+//-----------------------------------------------------------------------------
 #include "tutorial.h"
 #include "input.h"
 #include "manager.h"
@@ -25,59 +25,62 @@
 
 #include "multiply.h"
 
-CMagicBox* CTutorial::m_MagicBox;	
-CParticleManager* CTutorial::m_PaticleManager;
-CPlayer* CTutorial::m_Player;
+//-----------------------------------------------------------------------------
+// 静的メンバー変数の宣言
+//-----------------------------------------------------------------------------
+CMagicBox* CTutorial::m_pMagicBox;
+CParticleManager* CTutorial::m_pPaticleManager;
+CPlayer* CTutorial::m_pPlayer;
 
-//========================
-// コンストラクター
-//========================
+//=============================================================================
+// コンストラクタ
+//=============================================================================
 CTutorial::CTutorial()
 {
 }
 
-//========================
-// デストラクト
-//========================
+//=============================================================================
+// デストラクタ
+//=============================================================================
 CTutorial::~CTutorial()
 {
 }
 
-//========================
-// 初期化処理
-//========================
+//=============================================================================
+// 初期化
+//=============================================================================
 HRESULT CTutorial::Init(void)
 {
-	m_MoveClear = false;
-	m_AttackClear = false;
-	m_MagicClear = false;
-	m_NextTaskCount = 0;
+	m_isMoveClear = false;
+	m_isAttackClear = false;
+	m_isMagicClear = false;
+	m_nextTaskCount = 0;
 	D3DXVECTOR3 BGPos;
 	BGPos.x = 0.0f;
 	BGPos.y = 0.0f;
 	BGPos.z -= 0.0f;
-	m_Magic = 2;
+	m_magic = 2;
 
-	m_Bg[0] = CBg::Create();
-	m_Bg[0]->SetTexture(CTexture::TEXTURE_TUTORIAL);
-	m_Bg[0]->SetSize(CManager::CENTER_POS);
+	m_pBg[0] = CBg::Create();
+	m_pBg[0]->SetTexture(CTexture::TEXTURE_TUTORIAL);
+	m_pBg[0]->SetSize(CManager::CENTER_POS);
 
-	m_Bg[0]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	m_pBg[0]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
-	m_Player = nullptr;
-	m_Player = CPlayer::Create();
-	m_Player->SetUp(CObject::PLAYER);
+	m_pPlayer = nullptr;
+	m_pPlayer = CPlayer::Create();
+	m_pPlayer->SetUp(CObject::PLAYER);
 
 
-	m_PaticleManager = new CParticleManager;
+	m_pPaticleManager = new CParticleManager;
 	// パーティクル
-	if (FAILED(m_PaticleManager->Init()))
+	if (FAILED(m_pPaticleManager->Init()))
 	{
 		return E_FAIL;
 	}
 
-	pScore = CScore::Create(D3DXVECTOR3(500.0f, 30.0f, 0.0f));
-	pScore->Set(0);
+	m_pScore = CScore::Create(D3DXVECTOR3(500.0f, 30.0f, 0.0f));
+	m_pScore->Set(0);
 
 	
 
@@ -90,26 +93,26 @@ HRESULT CTutorial::Init(void)
 
 }
 
-//========================
-// 終了処理
-//========================
+//=============================================================================
+// 終了
+//=============================================================================
 void CTutorial::Uninit(void)
 {
 	CManager::GetInstance()->GetSound()->Stop();
 	
-	if (m_Bg[0] != nullptr)
+	if (m_pBg[0] != nullptr)
 	{
-		m_Bg[0]->Uninit();
+		m_pBg[0]->Uninit();
 	}
 	
 
 
 
-	if (m_PaticleManager != nullptr)
+	if (m_pPaticleManager != nullptr)
 	{
-		m_PaticleManager->Uninit();
-		delete m_PaticleManager;
-		m_PaticleManager = nullptr;
+		m_pPaticleManager->Uninit();
+		delete m_pPaticleManager;
+		m_pPaticleManager = nullptr;
 
 	}
 
@@ -117,13 +120,13 @@ void CTutorial::Uninit(void)
 	CModelManager::ReleaseAll();
 }
 
-//========================
-// 更新処理
-//========================
+//=============================================================================
+// 更新
+//=============================================================================
 void CTutorial::Update(void)
 {
-	m_NextTaskCount++;
-	m_PaticleManager->Update();
+	m_nextTaskCount++;
+	m_pPaticleManager->Update();
 
 	CInput *CInputpInput = CInput::GetKey();
 	if (CInputpInput->Trigger(CInput::KEY_DELETE))
@@ -134,20 +137,20 @@ void CTutorial::Update(void)
 
 	if (CInputpInput->Trigger(CInput::KEY_RELOAD))
 	{
-		if (m_PaticleManager->GetEmitter().size() == 0)
+		if (m_pPaticleManager->GetEmitter().size() == 0)
 		{
-			/*	m_pMagicBox->CMagicBox::Magicplay((CTexture::TEXTURE)m_Magic);
-			m_Magic++; 
-			if (m_Magic >= 6)
+			/*	m_pMagicBox->CMagicBox::Magicplay((CTexture::TEXTURE)m_magic);
+			m_magic++; 
+			if (m_magic >= 6)
 			{
-				m_Magic = 2;
+				m_magic = 2;
 			}*/
 		}
 	}
 
-	if (m_NextTaskCount >= 300)
+	if (m_nextTaskCount >= 300)
 	{
-		if (!m_MoveClear
+		if (!m_isMoveClear
 			&& (CInputpInput->Press(CInput::KEY_UP)
 				|| CInputpInput->Press(CInput::KEY_DOWN)
 				|| CInputpInput->Press(CInput::KEY_RIGHT)
@@ -155,27 +158,27 @@ void CTutorial::Update(void)
 			)
 		{
 			CText::Create(CText::GON, 300,10, "ナイス！！うまいのじゃ！\nタマをうってみるのじゃ！");
-			m_MoveClear = true;
-			m_NextTaskCount = 0;
+			m_isMoveClear = true;
+			m_nextTaskCount = 0;
 		}
-		else if (!m_AttackClear && CInputpInput->Press(CInput::KEY_SHOT)&& m_MoveClear)
+		else if (!m_isAttackClear && CInputpInput->Press(CInput::KEY_SHOT)&& m_isMoveClear)
 		{
 			CText::Create(CText::GON, 300,10, "ナイス！！うまいのじゃ！\nつぎはマホウをハツドウしてみのじゃ！");
-			m_AttackClear = true;
-			m_NextTaskCount = 0;
+			m_isAttackClear = true;
+			m_nextTaskCount = 0;
 		}
-		else if (!m_MagicClear && CInputpInput->Trigger(CInput::KEY_DECISION)&& m_AttackClear)
+		else if (!m_isMagicClear && CInputpInput->Trigger(CInput::KEY_DECISION)&& m_isAttackClear)
 		{
 			CText::Create(CText::GON, 500,10, "ナイス！！うまいのじゃ！\nさあこれでチュートリアルはおわりじゃ！\nぶっとばしにいくのじゃ！");
-			m_MagicClear = true;
-			m_NextTaskCount = 0;
+			m_isMagicClear = true;
+			m_nextTaskCount = 0;
 		}
 	}
 }
 
-//========================
-// 描画処理
-//========================
+//=============================================================================
+// 描画
+//=============================================================================
 void CTutorial::Draw(void)
 {
 

@@ -41,7 +41,6 @@ private:
 	CBg* m_pBg[4];
 	int m_addX;
 	int m_addY;
-	bool isSizeController;
 };
 
 #endif
