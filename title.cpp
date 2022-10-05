@@ -149,19 +149,19 @@ void CTitle::Uninit(void)
 	CManager::GetInstance()->GetSound()->Stop();
 	/*for (int i = 0; i < 4; i++)
 	{
-		if (m_Bg[i] !=nullptr)
+		if (m_pBg[i] !=nullptr)
 		{
-			m_Bg[i]->Uninit();
-			m_Bg[i] = nullptr;
+			m_pBg[i]->Uninit();
+			m_pBg[i] = nullptr;
 		}
 	}
 
 	for (int i = 0; i < 4; i++)
 	{
-		if (m_object2d[i] != nullptr)
+		if (m_pObject2d[i] != nullptr)
 		{
-			m_object2d[i]->Uninit();
-			m_object2d[i] = nullptr;
+			m_pObject2d[i]->Uninit();
+			m_pObject2d[i] = nullptr;
 		}
 	}
 
