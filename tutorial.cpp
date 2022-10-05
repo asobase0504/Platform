@@ -4,10 +4,6 @@
 // Author:hamada ryuuga
 //
 //============================
-
-
-
-
 //------------------------
 // インクルード
 //------------------------
@@ -27,12 +23,11 @@
 
 #include "text.h"
 
-
-
 #include "multiply.h"
+
 CMagicBox* CTutorial::m_MagicBox;	
 CParticleManager* CTutorial::m_PaticleManager;
-CPlayer * CTutorial::m_Player;
+CPlayer* CTutorial::m_Player;
 
 //========================
 // コンストラクター
@@ -141,19 +136,14 @@ void CTutorial::Update(void)
 	{
 		if (m_PaticleManager->GetEmitter().size() == 0)
 		{
-
-			
-		/*	m_MagicBox->CMagicBox::Magicplay((CTexture::TEXTURE)m_Magic);
+			/*	m_pMagicBox->CMagicBox::Magicplay((CTexture::TEXTURE)m_Magic);
 			m_Magic++; 
 			if (m_Magic >= 6)
 			{
 				m_Magic = 2;
 			}*/
 		}
-
 	}
-	
-
 
 	if (m_NextTaskCount >= 300)
 	{
@@ -181,11 +171,6 @@ void CTutorial::Update(void)
 			m_NextTaskCount = 0;
 		}
 	}
-#ifdef _DEBUG
-
-	
-
-#endif // DEBUG
 }
 
 //========================

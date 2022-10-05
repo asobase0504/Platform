@@ -1,13 +1,13 @@
-//============================
+//=============================================================================
 //
 // ゲーム画面
-// Author:hamada ryuuga
+// Author : Hamada Ryuuga
 //
-//============================
+//=============================================================================
 
-//------------------------
+//-----------------------------------------------------------------------------
 // インクルード
-//------------------------
+//-----------------------------------------------------------------------------
 #include "game.h"
 #include "input.h"
 #include "manager.h"
@@ -31,100 +31,95 @@
 #include "text.h"
 
 
+//-----------------------------------------------------------------------------
+// 静的メンバ変数の宣言
+//-----------------------------------------------------------------------------
+CMagicBox* CGame::m_pMagicBox = nullptr;
+CParticleManager*CGame::m_pPaticleManager = nullptr;
+CPlayer*CGame::m_pPlayer = nullptr;
+CPause *CGame::m_pPause = nullptr;
 
-
-CMagicBox* CGame::m_MagicBox = nullptr;
-CParticleManager*CGame::m_PaticleManager = nullptr;
-CPlayer*CGame::m_Player = nullptr;
-CPause *CGame::m_Pause = nullptr;
-
-//========================
-// コンストラクター
-//========================
-//========================
+//=============================================================================
+// コンストラクタ
+//=============================================================================
 CGame::CGame()
 {
 }
-//========================
-// デストラクト
-//========================
+
+//=============================================================================
+// デストラクタ
+//=============================================================================
 CGame::~CGame()
 {
 }
 
-//========================
+//=============================================================================
 // ゲームの初期化処理
-//========================
+//=============================================================================
 HRESULT CGame::Init(void)
 {
-	m_GameCount = 0;
-	m_SpeedUp = 300;
+	m_gameCount = 0;
+	m_speedUp = 300;
 
 	srand((unsigned int)time(NULL)); // 現在時刻の情報で初期化
 
-	m_PaticleManager = new CParticleManager;
 	// パーティクル
-	if (FAILED(m_PaticleManager->Init()))
+	m_pPaticleManager = new CParticleManager;
+	if (FAILED(m_pPaticleManager->Init()))
 	{
 		return E_FAIL;
 	}
 
 	CObject::AllCreate();
 
-
-	m_Player = CPlayer::Create();
-	m_Player->SetUp(CObject::PLAYER);
+	m_pPlayer = CPlayer::Create();
+	m_pPlayer->SetUp(CObject::PLAYER);
 
 	SetBossPop(false);
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
 
-	m_Pause = new CPause;
-	m_Pause->Init();
-	m_Pause->SetUp(CObject::PAUSE);
+	m_pPause = new CPause;
+	m_pPause->Init();
+	m_pPause->SetUp(CObject::PAUSE);
 
-	
-	
 	return S_OK;
 }
 
-//========================
+//=============================================================================
 // ゲームの終了処理
-//========================
+//=============================================================================
 void CGame::Uninit(void)
 {
 	CManager::GetInstance()->GetSound()->Stop();
 	CModelManager::ReleaseAll();
 	CRanking::SetScore(CScore::GetScore());
 
-	if (m_PaticleManager != nullptr)
+	if (m_pPaticleManager != nullptr)
 	{
-		m_PaticleManager->Uninit();
-		delete m_PaticleManager;
-		m_PaticleManager = nullptr;
+		m_pPaticleManager->Uninit();
+		delete m_pPaticleManager;
+		m_pPaticleManager = nullptr;
 
 	}
 
-	
-
-	if (m_Pause != nullptr)
+	if (m_pPause != nullptr)
 	{
-		m_Pause->Uninit();
-		m_Pause = nullptr;
+		m_pPause->Uninit();
+		m_pPause = nullptr;
 	}
-
 }
 
-//========================
+//=============================================================================
 // ゲームの更新処理
-//========================
+//=============================================================================
 void CGame::Update(void)
 {
-	m_GameCount++;
+	m_gameCount++;
 	// 更新処理
-	if (m_GameCount == m_SpeedUp&&!GetMaxBoss())
+	if (m_gameCount == m_speedUp&&!GetMaxBoss())
 	{
-		m_GameCount = 0;
-		m_SpeedUp += 250;
+		m_gameCount = 0;
+		m_speedUp += 250;
 	}
 
 	CInput *CInputpInput = CInput::GetKey();
@@ -153,12 +148,12 @@ void CGame::Update(void)
 			
 		}
 	}
-	m_PaticleManager->Update();
+	m_pPaticleManager->Update();
 }
 
-//========================
+//=============================================================================
 // ゲームの描画処理
-//========================
+//=============================================================================
 void CGame::Draw(void)
 {
 

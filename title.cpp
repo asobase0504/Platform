@@ -174,10 +174,10 @@ void CTitle::Uninit(void)
 		}
 	}
 
-	if (m_Player != nullptr)
+	if (m_pPlayer != nullptr)
 	{
-		m_Player->Uninit();
-		m_Player = nullptr;
+		m_pPlayer->Uninit();
+		m_pPlayer = nullptr;
 	}
 
 	for (int i = 0; i < 10; i++)
