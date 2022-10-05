@@ -182,10 +182,10 @@ void CTitle::Uninit(void)
 
 	for (int i = 0; i < 10; i++)
 	{
-		if (m_Enemy[i] != nullptr)
+		if (m_pEnemy[i] != nullptr)
 		{
-			m_Enemy[i]->Uninit();
-			m_Enemy[i] = nullptr;
+			m_pEnemy[i]->Uninit();
+			m_pEnemy[i] = nullptr;
 		}
 	}
 	for (int i = 0; i < 4; i++)

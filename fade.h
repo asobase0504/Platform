@@ -32,8 +32,8 @@ public:
 	//âÊñ (ÉÇÅ[Éh)ÇÃéÌóﬁ
 	enum FADE
 	{
-		FADEIN = 0,		
-		FADEOUT,			
+		FADEIN = 0,
+		FADEOUT,
 		FADENON,
 		FADEMAX
 	};
