@@ -16,7 +16,6 @@
 #include "object2d.h"
 #include "name.h"
 #include "fade.h"
-
 // playfab
 #include "playfab/PlayFabError.h"
 #include "playfab/PlayFabClientDataModels.h"
@@ -27,11 +26,8 @@
 #include <functional>
 #include <iphlpapi.h>
 #include <string>
-
 #include <thread>
-
 #include "sound.h"
-
 #include "text.h"
 
 #pragma comment(lib, "iphlpapi.lib")
@@ -126,20 +122,22 @@ inline HRESULT CRanking::Init(void)
 	m_nowPlay = 0;
 	m_namePos = D3DXVECTOR3(30.0f, 100.0f, 0.0f);
 
-	m_pObject2d[0] = CObject2d::Create();
-	m_pObject2d[0]->SetTexture(CTexture::TEXTURE_RANKINBG);
-	m_pObject2d[0]->SetSize(CManager::CENTER_POS);
-	m_pObject2d[0]->SetPos(CManager::CENTER_POS);
+	{ // オブジェクトの作成
+		m_pObject2d[0] = CObject2d::Create();
+		m_pObject2d[0]->SetTexture(CTexture::TEXTURE_RANKINBG);
+		m_pObject2d[0]->SetSize(CManager::CENTER_POS);
+		m_pObject2d[0]->SetPos(CManager::CENTER_POS);
 
-	m_pObject2d[1] = CObject2d::Create();
-	m_pObject2d[1]->SetTexture(CTexture::TEXTURE_RANKIN);
-	m_pObject2d[1]->SetSize(D3DXVECTOR3(100.0f, 300.0f, 0.0f));
-	m_pObject2d[1]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x - 120.0f, 350.0f, 0.0f));
+		m_pObject2d[1] = CObject2d::Create();
+		m_pObject2d[1]->SetTexture(CTexture::TEXTURE_RANKIN);
+		m_pObject2d[1]->SetSize(D3DXVECTOR3(100.0f, 300.0f, 0.0f));
+		m_pObject2d[1]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x - 120.0f, 350.0f, 0.0f));
 
-	m_pObject2d[2] = CObject2d::Create();
-	m_pObject2d[2]->SetTexture(CTexture::TEXTURE_RANKINTITLEOFF);
-	m_pObject2d[2]->SetSize(D3DXVECTOR3(200.0f, 100.0f, 0.0f));
-	m_pObject2d[2]->SetPos(D3DXVECTOR3(200.0f, 150.0f, 0.0f));
+		m_pObject2d[2] = CObject2d::Create();
+		m_pObject2d[2]->SetTexture(CTexture::TEXTURE_RANKINTITLEOFF);
+		m_pObject2d[2]->SetSize(D3DXVECTOR3(200.0f, 100.0f, 0.0f));
+		m_pObject2d[2]->SetPos(D3DXVECTOR3(200.0f, 150.0f, 0.0f));
+	}
 
 	finished = false;
 	m_isStop = false;

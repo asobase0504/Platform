@@ -1,9 +1,9 @@
-//**************************************************
+//=============================================================================
 //
 // 制作 ( ランキング )
 // Author  : hamada ryuuga
 //
-//**************************************************
+//=============================================================================
 #ifndef _RANKING_H_
 #define _RANKING_H_
 
@@ -26,11 +26,15 @@ class CScore;
 class CObject2d;
 class CName;
 
+//=============================================================================
+// ランキングクラス
+//=============================================================================
 class CRanking : public CObject
 {
 public:
 	CRanking();
 	~CRanking();
+
 	HRESULT Init();
 	void Uninit();
 	void Update();
@@ -50,9 +54,9 @@ public:
 private:
 
 	static int m_score;
-	static CScore *m_pRanking[MAX_RANK];
+	static CScore* m_pRanking[MAX_RANK];
 	static std::string m_playName;
-	static	std::string m_name[5];
+	static std::string m_name[5];
 	static bool m_isStop;
 	CObject2d* m_pObject2d[4];
 
