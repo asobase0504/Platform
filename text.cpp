@@ -100,7 +100,7 @@ void CText::Update()
 			}
 			m_AddCount = 0;
 		}
-		//col.P3 -= 1.0f / m_DesTimarMax;
+		//color.P3 -= 1.0f / m_desTimarMax;
 
 		//m_pos.y -= 1.0f;
 

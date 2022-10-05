@@ -32,10 +32,10 @@ public:
 
 	void Set(int Type);
 
-	D3DXMATRIX *GetMtxProje();
-	D3DXMATRIX *GetMtxView();
-	D3DXVECTOR3 *GetPos();
-	D3DXVECTOR3 *GetRot();
+	D3DXMATRIX* GetMtxProje();
+	D3DXMATRIX* GetMtxView();
+	D3DXVECTOR3* GetPos();
+	D3DXVECTOR3* GetRot();
 
 private:
 	D3DXVECTOR3 m_posV;					// ˆÊ’u

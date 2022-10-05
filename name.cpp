@@ -31,19 +31,19 @@ HRESULT CName::Init()
 {
 	CObject2d::Init();
 	CObject2d::SetTexture(CTexture::TEXTURE_ALPHABET);
-	col = PositionVec4(1.0f, 1.0f, 1.0f, 1.0f);
+	color = PositionVec4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	m_DivisionX = 7;
-	m_DivisionY = 4;
-	m_DivisionMAX = m_DivisionX*m_DivisionY;
-	m_Type = A;
+	m_divisionX = 7;
+	m_divisionY = 4;
+	m_divisionMAX = m_divisionX*m_divisionY;
+	m_type = A;
 	SetColar(D3DXCOLOR(0.8f, 0.0f, 0.0f, 1.0f));
-	int X = m_Type%m_DivisionX;
-	int Y = m_Type/m_DivisionX;
-	float DivisionX = (1.0f / m_DivisionX);
-	float DivisionY = (1.0f / m_DivisionY);
+	int X = m_type%m_divisionX;
+	int Y = m_type/m_divisionX;
+	float DivisionX = (1.0f / m_divisionX);
+	float DivisionY = (1.0f / m_divisionY);
 
-	m_Move = true;
+	m_isMove = true;
 
 	SetTex(PositionVec4(
 		DivisionX*X,
@@ -74,11 +74,11 @@ void CName::Update()
 
 	CInput *CInputpInput = CInput::GetKey();
 
-	if (m_Move)
+	if (m_isMove)
 	{
 		if (CInputpInput->Trigger(CInput::KEY_RIGHT))
 		{
-			int nextType = m_Type + 1;
+			int nextType = m_type + 1;
 			if (nextType > MAX)
 			{
 				nextType = 0;
@@ -112,12 +112,12 @@ void CName::Update()
 				SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 				break;
 			}
-			SetAlphabet((ALPHABET)nextType);
+			SetAlphabet((EAlphabet)nextType);
 
 		}
 		if (CInputpInput->Trigger(CInput::KEY_LEFT))
 		{
-			int nextType = m_Type - 1;
+			int nextType = m_type - 1;
 			if (nextType <= -1)
 			{
 				nextType = 26;
@@ -150,7 +150,7 @@ void CName::Update()
 				SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 				break;
 			}
-			SetAlphabet((ALPHABET)nextType);
+			SetAlphabet((EAlphabet)nextType);
 		}
 	}
 }
@@ -195,13 +195,13 @@ CName *CName::Create()
 }
 
 //=============================================================================
-// ALPHABET•ÏX‚·‚éŠÖ”
+// EAlphabet•ÏX‚·‚éŠÖ”
 //=============================================================================
-void CName::SetAlphabet(const ALPHABET Alphabet)
+void CName::SetAlphabet(const EAlphabet Alphabet)
 {
-	m_Type = Alphabet;
+	m_type = Alphabet;
 
-	switch (m_Type / 4)
+	switch (m_type / 4)
 	{
 	case 0:
 		SetColar(D3DXCOLOR(0.8f, 0.0f, 0.0f, 1.0f));
@@ -229,10 +229,10 @@ void CName::SetAlphabet(const ALPHABET Alphabet)
 		break;
 
 	}
-	int X = m_Type%m_DivisionX;
-	int Y = m_Type / m_DivisionX;
-	float DivisionX = (1.0f / m_DivisionX);
-	float DivisionY = (1.0f / m_DivisionY);
+	int X = m_type%m_divisionX;
+	int Y = m_type / m_divisionX;
+	float DivisionX = (1.0f / m_divisionX);
+	float DivisionY = (1.0f / m_divisionY);
 
 	SetTex(PositionVec4(
 		DivisionX*X,
@@ -246,13 +246,13 @@ void CName::SetAlphabet(const ALPHABET Alphabet)
 //=============================================================================
 void CName::SetMoveSwitch(bool move)
 {
-	m_Move = move;
+	m_isMove = move;
 }
 
 //=============================================================================
 // AlphabetŽæ“¾‚·‚éŠÖ”
 //=============================================================================
-CName::ALPHABET CName::GetAlphabet()
+CName::EAlphabet CName::GetAlphabet()
 {
-	return m_Type;
+	return m_type;
 }

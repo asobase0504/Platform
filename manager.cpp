@@ -67,7 +67,7 @@ HRESULT CManager::Init(HWND hWnd, bool bWindow, HINSTANCE hInstance)
 {
 	m_pRenderer = new CRenderer;
 
-	m_Input = CInput::Create();
+	m_pInput = CInput::Create();
 
 	// 初期化処理
 	if (FAILED(m_pRenderer->Init(hWnd, TRUE)))	//画面サイズ
@@ -75,7 +75,7 @@ HRESULT CManager::Init(HWND hWnd, bool bWindow, HINSTANCE hInstance)
 		return -1;
 	}
 	//入力処理の初期化処理
-	if (FAILED(m_Input->Init(hInstance, hWnd)))
+	if (FAILED(m_pInput->Init(hInstance, hWnd)))
 	{
 		return E_FAIL;
 	}
@@ -133,7 +133,7 @@ void CManager::Uninit()
 	}
 	
 	//入力処理の終了処理
-	m_Input->Uninit();
+	m_pInput->Uninit();
 
 }
 
@@ -143,7 +143,7 @@ void CManager::Uninit()
 void CManager::Update()
 {
 	//入力処理の更新処理
-	m_Input->Update();
+	m_pInput->Update();
 	m_pRenderer->Update();
 }
 

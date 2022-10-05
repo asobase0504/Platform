@@ -143,7 +143,7 @@ void CNameSet::Draw(void)
 //=============================================================================
 void CNameSet::RankingNeme()
 {
-	CName::ALPHABET Type = m_ListName[1]->GetAlphabet();
+	CName::EAlphabet Type = m_ListName[1]->GetAlphabet();
 
 	if (Type >= CName::A && Type <= CName::Z)
 	{

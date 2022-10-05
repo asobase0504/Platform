@@ -1,22 +1,25 @@
-//============================
+//=============================================================================
 //
-// なまえきめるやーつ
-// Author:hamada ryuuga
+// 名前の決定
+// Author : Hamada Ryuuga
 //
-//============================
-
+//=============================================================================
 #ifndef _NAME_H_
 #define _NAME_H_
 
+//-----------------------------------------------------------------------------
+// include
+//-----------------------------------------------------------------------------
 #include "object2d.h"
 
-
-
+//=============================================================================
+// 名前の決定クラス
+//=============================================================================
 class CName : public CObject2d
 {
 public:
 
-	enum ALPHABET
+	enum EAlphabet
 	{
 		A = 0,
 		B,
@@ -49,29 +52,33 @@ public:
 
 	CName(int list);
 	~CName();
+
 	HRESULT Init() override;
 	void Uninit() override;
 	void Update() override;
 	void Draw() override;
-	static CName* Create();
-	void SetAlphabet(const ALPHABET Alphabet);
-	void SetMoveSwitch(bool move);
-	ALPHABET GetAlphabet();
 
+	static CName* Create();
+
+	// Setter
+	void SetAlphabet(const EAlphabet Alphabet);
+	void SetMoveSwitch(bool move);
+
+	// Getter
+	EAlphabet GetAlphabet();
 
 private:
-	PositionVec4 col;
-	int m_DesTimarMax;
-	int m_DesTimar;
+	PositionVec4 color;
+	int m_desTimarMax;
+	int m_desTimar;
 
-	int m_DivisionX;
-	int m_DivisionY;
-	int m_DivisionMAX;
+	int m_divisionX;
+	int m_divisionY;
+	int m_divisionMAX;
 
-	ALPHABET m_Type;
+	EAlphabet m_type;
 
-	bool m_Move;
-
+	bool m_isMove;
 };
 
 

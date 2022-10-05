@@ -78,6 +78,6 @@ private:
 	CObject* m_pGame;
 	CSound* m_pSound;
 	MODE m_mode;
-	CInput* m_Input;
+	CInput* m_pInput;
 };
 #endif

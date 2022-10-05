@@ -123,7 +123,7 @@ void CCamera::Set(int Type)
 //=============================================================================
 // GetPos
 //=============================================================================
-D3DXVECTOR3 *CCamera::GetPos()
+D3DXVECTOR3* CCamera::GetPos()
 {
 	return &m_posV;
 }
@@ -131,7 +131,7 @@ D3DXVECTOR3 *CCamera::GetPos()
 //=============================================================================
 // GetRot
 //=============================================================================
-D3DXVECTOR3 * CCamera::GetRot()
+D3DXVECTOR3* CCamera::GetRot()
 {
 	return &m_rot;
 }
@@ -139,7 +139,7 @@ D3DXVECTOR3 * CCamera::GetRot()
 //=============================================================================
 // MtxProje
 //=============================================================================
-D3DXMATRIX *CCamera::GetMtxProje()
+D3DXMATRIX* CCamera::GetMtxProje()
 {
 	return &m_MtxProject;
 }
@@ -147,7 +147,7 @@ D3DXMATRIX *CCamera::GetMtxProje()
 //=============================================================================
 // MtxView
 //=============================================================================
-D3DXMATRIX *CCamera::GetMtxView()
+D3DXMATRIX* CCamera::GetMtxView()
 {
 	return &m_MtxView;
 }
