@@ -99,8 +99,6 @@ HRESULT CManager::Init(HWND hWnd, bool bWindow, HINSTANCE hInstance)
 
 	m_pFade = CFade::Create();
 
-	
-	
 	return S_OK;
 }
 
@@ -209,7 +207,8 @@ void CManager::SetMode(MODE mode)
 	if (m_pGame != nullptr)
 	{
 		m_pGame->Uninit();
-		m_pGame->Release();
+		delete m_pGame;
+		m_pGame = nullptr;
 	}
 
 	// ƒ|ƒŠƒSƒ“‚ÌI—¹ˆ—
@@ -244,7 +243,6 @@ void CManager::SetMode(MODE mode)
 	{//‰Šú‰»ˆ—‚ªŽ¸”s‚µ‚½ê‡
 		return ;
 	}
-	m_pGame->SetUp(CObject::MODE);
 }
 
 

@@ -73,7 +73,7 @@ HRESULT CGame::Init(void)
 	m_pPlayer = CPlayer::Create();
 	m_pPlayer->SetUp(CObject::PLAYER);
 
-	SetBossPop(false);
+	CObject::SetBossPop(false);
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
 
 	m_pPause = new CPause;
@@ -114,7 +114,7 @@ void CGame::Update(void)
 {
 	m_gameCount++;
 	// XVˆ—
-	if (m_gameCount == m_speedUp&&!GetMaxBoss())
+	if ((m_gameCount == m_speedUp) && !CObject::GetMaxBoss())
 	{
 		m_gameCount = 0;
 		m_speedUp += 250;
@@ -136,9 +136,9 @@ void CGame::Update(void)
 		CManager::GetInstance()->GetFade()->NextMode(CManager::MODE_NAMESET);
 		return;
 	}
-	if (GetMaxEnemy() <= 0)
+	if (CObject::GetMaxEnemy() <= 0)
 	{
-		if (GetMaxBoss())
+		if (CObject::GetMaxBoss())
 		{
 		}
 		else

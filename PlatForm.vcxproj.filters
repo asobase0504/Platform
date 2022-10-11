@@ -162,6 +162,9 @@
     <ClCompile Include="nameset.cpp">
       <Filter>00_Main\画面遷移</Filter>
     </ClCompile>
+    <ClCompile Include="mode.cpp">
+      <Filter>00_Main\画面遷移</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="object.h">
@@ -283,6 +286,9 @@
     </ClInclude>
     <ClInclude Include="task.h">
       <Filter>00_Main</Filter>
+    </ClInclude>
+    <ClInclude Include="mode.h">
+      <Filter>00_Main\画面遷移</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

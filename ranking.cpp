@@ -16,12 +16,6 @@
 #include "object2d.h"
 #include "name.h"
 #include "fade.h"
-// playfab
-#include "playfab/PlayFabError.h"
-#include "playfab/PlayFabClientDataModels.h"
-#include "playfab/PlayFabClientApi.h"
-#include "playfab/PlayFabSettings.h"
-#include "playfab/PlayFabApiSettings.h"
 #include <windows.h>
 #include <functional>
 #include <iphlpapi.h>
@@ -29,6 +23,14 @@
 #include <thread>
 #include "sound.h"
 #include "text.h"
+#include "score.h"
+
+// playfab
+#include "playfab/PlayFabError.h"
+#include "playfab/PlayFabClientDataModels.h"
+#include "playfab/PlayFabClientApi.h"
+#include "playfab/PlayFabSettings.h"
+#include "playfab/PlayFabApiSettings.h"
 
 #pragma comment(lib, "iphlpapi.lib")
 

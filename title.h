@@ -4,15 +4,15 @@
 // Author : hamada ryuuga
 //
 //**************************************************
-#pragma once
 #ifndef _TITLE_H_
 #define _TITLE_H_
 
 //-----------------------------------------------------------------------------
 // include
 //-----------------------------------------------------------------------------
-#include"main.h"
+#include "main.h"
 #include "object2d.h"
+#include "mode.h"
 
 //-----------------------------------------------------------------------------
 // 前方宣言
@@ -25,7 +25,7 @@ class C3dpolygon;
 //=============================================================================
 // タイトルクラス
 //=============================================================================
-class CTitle :public CObject
+class CTitle :public CMode
 {
 	// 画面(モード)の種類
 	enum MODE
@@ -39,7 +39,7 @@ class CTitle :public CObject
 
 public:
 	CTitle();
-	~CTitle();
+	~CTitle() override;
 	HRESULT Init() override;
 	void Uninit() override;
 	void Update() override;

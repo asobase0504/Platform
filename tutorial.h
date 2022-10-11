@@ -11,6 +11,7 @@
 // include
 //-----------------------------------------------------------------------------
 #include "main.h"
+#include "mode.h"
 #include "object.h"
 #include "object2d.h"
 
@@ -28,7 +29,7 @@ class CScore;
 //=============================================================================
 // チュートリアル画面のクラス
 //=============================================================================
-class CTutorial :public CObject
+class CTutorial :public CMode
 {
 public:
 	CTutorial();

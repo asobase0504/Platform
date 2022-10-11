@@ -18,7 +18,7 @@
 class CRenderer;
 class CInput;
 class CTexture;
-class CObject;
+class CMode;
 class CResult;
 class CTitle;
 class CFade;
@@ -75,7 +75,7 @@ private:
 	CTexture* m_pTexture;
 	CRenderer* m_pRenderer;
 	CFade* m_pFade;
-	CObject* m_pGame;
+	CMode* m_pGame;
 	CSound* m_pSound;
 	MODE m_mode;
 	CInput* m_pInput;

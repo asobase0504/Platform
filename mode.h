@@ -1,45 +1,31 @@
 //=============================================================================
 //
-// 制作 ( 名前 )
-// Author : Hamada Ryuuga
+// モードクラスのヘッダー
+// Author:Hamada Ryuuga
 //
 //=============================================================================
-#ifndef _NAMESET_H_
-#define _NAMESET_H_
+#ifndef _MODE_H_		//このマクロが定義されてなかったら
+#define _MODE_H_		//2重インクルード防止のマクロ定義
 
 //-----------------------------------------------------------------------------
 // include
 //-----------------------------------------------------------------------------
-#include "main.h"
-#include "object2d.h"
-#include "name.h"
-#include "mode.h"
+#include "task.h"
 
 //=============================================================================
-// 名前の作成クラス
+// ゲームクラス
 //=============================================================================
-class CNameSet : public CMode
+class CMode : public CTask
 {
 public:
-	CNameSet();
-	~CNameSet();
+	CMode() {}
+	~CMode() override {}
 
-	HRESULT Init() override;
-	void Uninit() override;
-	void Update() override;
-	void Draw() override;
-
-private:
-	void RankingNeme();
+	virtual HRESULT Init() override = 0;
+	virtual void Uninit() override = 0;
+	virtual void Update() override = 0;
+	virtual void Draw() override = 0;
 
 private:
-	CObject2d* m_object2d[2];
-	static std::string m_PlayName;
-	CName* m_ListName[3];
-	CName* m_PlayNameSet[10];
-	D3DXVECTOR3 m_NemePos;
-
-	int m_NowPlay;
 };
-
 #endif
