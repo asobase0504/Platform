@@ -1,13 +1,13 @@
-//**************************************************************************************************
+//=============================================================================
 //
 // モーション処理(motion.cpp)
 // Auther：唐﨑結斗
 //
-//**************************************************************************************************
+//=============================================================================
 
-//***************************************************************************
-// インクルード
-//***************************************************************************
+//-----------------------------------------------------------------------------
+// include
+//-----------------------------------------------------------------------------
 #include <stdio.h>
 #include <assert.h>
 #include "manager.h"
@@ -68,7 +68,7 @@ void CMotion::Init(void)
 		(m_parts + i)->rotOrigin = (m_parts + i)->rot;
 
 		// パーツ情報の初期化
-		(m_parts + i)->mtxWorld = {};												// ワールドマトリックス
+		(m_parts + i)->mtxWorld = {};		// ワールドマトリックス
 		
 		CModelManager *Manager = CModelManager::GetManager();
 
@@ -99,32 +99,22 @@ void CMotion::SetParts(D3DXMATRIX mtxWorld, CMotion::MODELCOLLAR Type)
 	for (int i = 0; i < m_nMaxParts; i++)
 	{// ワールドマトリックスの初期化
 
-		D3DXMatrixIdentity(&(m_parts + i)->mtxWorld);			// 行列初期化関数
+		CMotion::Parts* parts = m_parts + i;
+
+		D3DXMatrixIdentity(&parts->mtxWorld);	// 行列初期化関数
 
 		// 向きの反映
-		D3DXMatrixRotationYawPitchRoll(&mtxRot,
-			(m_parts + i)->rot.y,
-			(m_parts + i)->rot.x,
-			(m_parts + i)->rot.z);								// 行列回転関数
-
-		D3DXMatrixMultiply(&(m_parts + i)->mtxWorld,
-			&(m_parts + i)->mtxWorld,
-			&mtxRot);											// 行列掛け算関数 
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, parts->rot.y, parts->rot.x, parts->rot.z);	// 行列回転関数
+		D3DXMatrixMultiply(&parts->mtxWorld, &parts->mtxWorld, &mtxRot);					// 行列掛け算関数 
 
 		// 位置を反映
-		D3DXMatrixTranslation(&mtxTrans,
-			(m_parts + i)->pos.x,
-			(m_parts + i)->pos.y,
-			(m_parts + i)->pos.z);								// 行列移動関数
-
-		D3DXMatrixMultiply(&(m_parts + i)->mtxWorld,
-			&(m_parts + i)->mtxWorld,
-			&mtxTrans);											// 行列掛け算関数
+		D3DXMatrixTranslation(&mtxTrans, parts->pos.x, parts->pos.y, parts->pos.z);			// 行列移動関数
+		D3DXMatrixMultiply(&parts->mtxWorld, &parts->mtxWorld, &mtxTrans);					// 行列掛け算関数
 
 		// 親パーツのワールドマトリックスを保持
 		D3DXMATRIX mtxParent;
 
-		if ((m_parts + i)->nIdxModelParent == -1)
+		if (parts->nIdxModelParent == -1)
 		{// 親モデルのインデックス数が-1の時
 		 // 新規深度値とZバッファの深度値が同じ値ならテスト成功にする
 		 //pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
@@ -133,27 +123,26 @@ void CMotion::SetParts(D3DXMATRIX mtxWorld, CMotion::MODELCOLLAR Type)
 		else
 		{// 新規深度値とZバッファの深度値が同じ値ならテスト成功にする
 			//pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_GREATEREQUAL);
-			mtxParent = (m_parts + (m_parts + i)->nIdxModelParent)->mtxWorld;
+			mtxParent = (m_parts + parts->nIdxModelParent)->mtxWorld;
 		}
 
 		// 自分の親マトリックスとの掛け算
-		D3DXMatrixMultiply(&(m_parts + i)->mtxWorld, &(m_parts + i)->mtxWorld, &mtxParent);
+		D3DXMatrixMultiply(&parts->mtxWorld, &parts->mtxWorld, &mtxParent);
 
 		//// サイズの反映
 		//D3DXMatrixScaling()
 
 		// ワールドマトリックスの設定
-		pDevice->SetTransform(D3DTS_WORLD, &(m_parts + i)->mtxWorld);
+		pDevice->SetTransform(D3DTS_WORLD, &parts->mtxWorld);
 
 		// 現在のマテリアルを保持
 		pDevice->GetMaterial(&matDef);
 
 		// マテリアルデータへのポインタを取得
-		pMat = (D3DXMATERIAL*)(m_parts + i)->pBuffer->GetBufferPointer();
+		pMat = (D3DXMATERIAL*)parts->pBuffer->GetBufferPointer();
 
 		DWORD ambient;
 		pDevice->GetRenderState(D3DRS_AMBIENT, &ambient);
-
 
 		switch (Type)
 		{
@@ -178,7 +167,7 @@ void CMotion::SetParts(D3DXMATRIX mtxWorld, CMotion::MODELCOLLAR Type)
 		}
 		//
 
-		for (int nCntMat = 0; nCntMat < (int)(m_parts + i)->nNumMat; nCntMat++)
+		for (int nCntMat = 0; nCntMat < (int)parts->nNumMat; nCntMat++)
 		{
 			pMat[nCntMat].MatD3D.Ambient = pMat[nCntMat].MatD3D.Diffuse;
 			// マテリアルの設定

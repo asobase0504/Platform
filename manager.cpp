@@ -142,6 +142,7 @@ void CManager::Update()
 {
 	//“ü—Íˆ—‚ÌXVˆ—
 	m_pInput->Update();
+	m_pGame->Update();
 	m_pRenderer->Update();
 }
 
