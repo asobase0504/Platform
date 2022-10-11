@@ -13,7 +13,6 @@
 #include "input.h"
 #include "utility.h"
 #include "camera.h"
-#include "hamada.h"
 
 //-----------------------------------------------------------------------------
 // 静的メンバ変数
@@ -66,7 +65,7 @@ HRESULT C3dpolygon::Init()
 		&m_pVtxBuff,
 		NULL);
 
-	VERTEX_3D*pVtx;		//頂点情報へのポインタ
+	VERTEX_3D* pVtx;		//頂点情報へのポインタ
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
@@ -119,9 +118,8 @@ void C3dpolygon::Update()
 //=============================================================================
 void C3dpolygon::Draw()
 {
-	
-	//デバイスへのポインタ
-	//デバイスの取得
+	// デバイスへのポインタ
+	// デバイスの取得
  	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
@@ -129,19 +127,17 @@ void C3dpolygon::Draw()
 	// ワールド座標行列の設定
 	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
 
-	//頂点バッファをデータストリームに設定
+	// 頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_3D));
 
-	//頂点フォーマットの設定
+	// 頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_3D);
 
 	// テクスチャの設定
 	pDevice->SetTexture(0, CManager::GetInstance()->GetTexture()->GetTexture(m_texture));
 
-	//ポリゴンの描画
-	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,		//プリミティブの種類
-		0,
-		2);						//プリミティブ(ポリゴン)数
+	// ポリゴンの描画
+	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);	// プリミティブ(ポリゴン)数
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 

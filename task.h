@@ -29,12 +29,11 @@ public:
 
 	// Getter
 	CTask* GetParent() { return m_parent; }
-	std::list<CTask*> GetChildrens() { return m_childrens; }
+	CTask* GetNextTask() { return m_Next; }
 
 private:
-
 	CTask* m_parent;
-	std::list<CTask*> m_childrens;
+	CTask* m_Next;
 };
 
 #endif

@@ -163,7 +163,6 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="hamada.cpp" />
     <ClCompile Include="inputcontroller.cpp" />
     <ClCompile Include="file.cpp" />
     <ClCompile Include="input.cpp" />
@@ -204,7 +203,6 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="hamada.h" />
     <ClInclude Include="inputcontroller.h" />
     <ClInclude Include="file.h" />
     <ClInclude Include="input.h" />

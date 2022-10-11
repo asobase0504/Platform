@@ -165,3 +165,46 @@ bool CollisionCircle(D3DXVECTOR3 Pos1, float fRadius1, D3DXVECTOR3 Pos2, float f
 	return false;
 }
 
+//--------------------------------------------------
+// マトリックスの計算
+// Author : Hamada Ryuuga
+//--------------------------------------------------
+D3DXMATRIX * GiftMtx(D3DXMATRIX * pOut, D3DXVECTOR3 inPos, D3DXVECTOR3 inRot)
+{
+	// 計算用マトリックス
+	D3DXMATRIX mtxRot, mtxTrans;
+
+	// ワールドマトリックスの初期化
+	// 行列初期化関数(第1引数の行列を単位行列に初期化)
+	D3DXMatrixIdentity(pOut);
+
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, inRot.x, inRot.y, inRot.z);
+	// 行列掛け算関数(第2引数×第3引数第を１引数に格納)
+	D3DXMatrixMultiply(pOut, pOut, &mtxRot);
+
+	// 位置を反映
+	// 行列移動関数(第１引数にX,Y,Z方向の移動行列を作成)
+	D3DXMatrixTranslation(&mtxTrans, inPos.x, inPos.y, inPos.z);
+	// 行列掛け算関数(第2引数×第3引数第を１引数に格納)
+	D3DXMatrixMultiply(pOut, pOut, &mtxTrans);
+	return pOut;
+}
+
+//--------------------------------------------------
+// イージングサイン計算
+// Author : Hamada Ryuuga
+//--------------------------------------------------
+float easeInSine(float X)
+{
+	return 1 - cos((X * D3DX_PI) * 0.5f);
+}
+
+//--------------------------------------------------
+// イージング累乗計算
+// Author : Hamada Ryuuga
+//--------------------------------------------------
+float easeInQuad(float X)
+{
+	return X * X;
+}
+

@@ -6,7 +6,7 @@
 //============================
 
 #include "bg.h"
-#include "hamada.h"
+#include "utility.h"
 #include "manager.h"
 
 
@@ -67,7 +67,7 @@ void CBg::Draw()
 	//pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	//pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 
-	m_mtxWorld = *hmd::giftmtx(&m_mtxWorld, m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	m_mtxWorld = *GiftMtx(&m_mtxWorld, m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	C3dpolygon::Draw();
 
