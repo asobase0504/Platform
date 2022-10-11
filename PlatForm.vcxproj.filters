@@ -28,9 +28,6 @@
     <Filter Include="02_Object\便利なやーつ">
       <UniqueIdentifier>{edcbadc0-3807-48ab-b433-99b91d2c70d4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02_Object\魔法系">
-      <UniqueIdentifier>{2bbde2d8-12d3-436a-8e56-d004ae5bbc93}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02_Object\モデル系">
       <UniqueIdentifier>{a769b689-bec5-49cb-b2fa-c4d659f98e33}</UniqueIdentifier>
     </Filter>
@@ -43,7 +40,10 @@
     <Filter Include="02_Object\モデル系\UI\数字">
       <UniqueIdentifier>{893ba109-c22b-4607-bdee-b9db01165e51}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02_Object\説明書">
+    <Filter Include="02_Object\Particle">
+      <UniqueIdentifier>{2bbde2d8-12d3-436a-8e56-d004ae5bbc93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Object\Templeate">
       <UniqueIdentifier>{4d7fd24e-a1f9-4a99-9cc9-c6db6ab29039}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -106,13 +106,13 @@
       <Filter>00_Main</Filter>
     </ClCompile>
     <ClCompile Include="particle_manager.cpp">
-      <Filter>02_Object\魔法系</Filter>
+      <Filter>02_Object\Particle</Filter>
     </ClCompile>
     <ClCompile Include="particle_emitter.cpp">
-      <Filter>02_Object\魔法系</Filter>
+      <Filter>02_Object\Particle</Filter>
     </ClCompile>
     <ClCompile Include="particle.cpp">
-      <Filter>02_Object\魔法系</Filter>
+      <Filter>02_Object\Particle</Filter>
     </ClCompile>
     <ClCompile Include="player.cpp">
       <Filter>02_Object\モデル系</Filter>
@@ -154,10 +154,10 @@
       <Filter>02_Object\モデル系\UI</Filter>
     </ClCompile>
     <ClCompile Include="2dpolygontemplate.cpp">
-      <Filter>02_Object\説明書</Filter>
+      <Filter>02_Object\Templeate</Filter>
     </ClCompile>
     <ClCompile Include="3dpolygontemplate.cpp">
-      <Filter>02_Object\説明書</Filter>
+      <Filter>02_Object\Templeate</Filter>
     </ClCompile>
     <ClCompile Include="nameset.cpp">
       <Filter>00_Main\画面遷移</Filter>
@@ -222,13 +222,13 @@
       <Filter>01_System</Filter>
     </ClInclude>
     <ClInclude Include="particle_manager.h">
-      <Filter>02_Object\魔法系</Filter>
+      <Filter>02_Object\Particle</Filter>
     </ClInclude>
     <ClInclude Include="particle_emitter.h">
-      <Filter>02_Object\魔法系</Filter>
+      <Filter>02_Object\Particle</Filter>
     </ClInclude>
     <ClInclude Include="particle.h">
-      <Filter>02_Object\魔法系</Filter>
+      <Filter>02_Object\Particle</Filter>
     </ClInclude>
     <ClInclude Include="player.h">
       <Filter>02_Object\モデル系</Filter>
@@ -273,13 +273,16 @@
       <Filter>02_Object\モデル系\UI</Filter>
     </ClInclude>
     <ClInclude Include="2dpolygontemplate.h">
-      <Filter>02_Object\説明書</Filter>
+      <Filter>02_Object\Templeate</Filter>
     </ClInclude>
     <ClInclude Include="3dpolygontemplate.h">
-      <Filter>02_Object\説明書</Filter>
+      <Filter>02_Object\Templeate</Filter>
     </ClInclude>
     <ClInclude Include="nameset.h">
       <Filter>00_Main\画面遷移</Filter>
+    </ClInclude>
+    <ClInclude Include="task.h">
+      <Filter>00_Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

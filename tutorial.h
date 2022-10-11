@@ -23,6 +23,7 @@ class CBg;
 class CMagicBox;
 class CParticleManager;
 class CMultiply;
+class CScore;
 
 //=============================================================================
 // チュートリアル画面のクラス

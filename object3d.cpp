@@ -4,31 +4,28 @@
 // Author:hamada ryuuga
 //
 //============================
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <assert.h>
 
 #include "object3d.h"
-#include "input.h"
 #include "camera.h"
 #include "motion.h"
 #include "manager.h"
 #include "motion.h"
 
-#include "score.h"
-
 #include "multiply.h"
 
-#include "player.h"
 #include "manager.h"
 #include "fade.h"
 #include "sound.h"
-#include "game.h"
 
-#include "tutorial.h"
+//------------------------------------
+// constメンバー変数の宣言
+//------------------------------------
 int CObject3d::m_drop = 0;
+
 //------------------------------------
 // コンストラクタ
 //------------------------------------
@@ -111,7 +108,6 @@ void CObject3d::Uninit(void)
 //------------------------------------
 void CObject3d::Update(void)
 {
-
 	// 現在のモーション番号の保管
 	m_motionTypeOld = m_motionType;
 
@@ -164,10 +160,8 @@ void CObject3d::Update(void)
 		if (m_damagecollar == 60)
 		{
 			m_damagecollar = 0;
-
 		}
 		m_damagecollar++;
-	
 	}
 }
 
@@ -176,49 +170,47 @@ void CObject3d::Update(void)
 //------------------------------------
 void CObject3d::Draw(void)
 {
-
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
 	D3DXMATRIX mtxScale, mtxTrans, mtxRot;	// 計算用マトリックス
 	D3DMATERIAL9 marDef;
 	D3DXVECTOR3 scale(1.8f, 1.8f, 1.8f);
 
-	
-		// ワールドマトリックスの初期化
-		// 行列初期化関数(第1引数の行列を単位行列に初期化)
-		D3DXMatrixIdentity(&m_mtxWorld);
-		
-		// 行列拡縮関数
-		D3DXMatrixScaling(&mtxScale, m_nScale.x, m_nScale.y, m_nScale.z);
-	
-		// 行列掛け算関数(第2引数×第3引数第を１引数に格納)
-		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxScale);
+	// ワールドマトリックスの初期化
+	// 行列初期化関数(第1引数の行列を単位行列に初期化)
+	D3DXMatrixIdentity(&m_mtxWorld);
 
-		// 向きを反映
-		// 行列回転関数(第1引数にヨー(y)ピッチ(x)ロール(z)方向の回転行列を作成)
-		D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
-		// 行列掛け算関数(第2引数×第3引数第を１引数に格納)
-		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
+	// 行列拡縮関数
+	D3DXMatrixScaling(&mtxScale, m_nScale.x, m_nScale.y, m_nScale.z);
 
-		// 位置を反映
-		// 行列移動関数(第１引数にX,Y,Z方向の移動行列を作成)
-		D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
-		// 行列掛け算関数(第2引数×第3引数第を１引数に格納)
-		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
+	// 行列掛け算関数(第2引数×第3引数第を１引数に格納)
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxScale);
 
-		if (m_pos.x <=SCREEN_WIDTH)
+	// 向きを反映
+	// 行列回転関数(第1引数にヨー(y)ピッチ(x)ロール(z)方向の回転行列を作成)
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+	// 行列掛け算関数(第2引数×第3引数第を１引数に格納)
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
+
+	// 位置を反映
+	// 行列移動関数(第１引数にX,Y,Z方向の移動行列を作成)
+	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
+	// 行列掛け算関数(第2引数×第3引数第を１引数に格納)
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
+
+	if (m_pos.x <= SCREEN_WIDTH)
+	{
+		// テクスチャの設定
+		pDevice->SetTexture(0, NULL);
+
+		if (m_pMotion)
 		{
-			// テクスチャの設定
-			pDevice->SetTexture(0, NULL);
-
-			if (m_pMotion)
-			{
-				// パーツの描画設定
-				m_pMotion->SetParts(m_mtxWorld, m_ModelCollar);
-			}
+			// パーツの描画設定
+			m_pMotion->SetParts(m_mtxWorld, m_ModelCollar);
 		}
-		// 行列掛け算関数(第2引数×第3引数第を１引数に格納)
-		pDevice->SetMaterial(&marDef);
-	
+	}
+
+	// 行列掛け算関数(第2引数×第3引数第を１引数に格納)
+	pDevice->SetMaterial(&marDef);
 }
 
 
@@ -270,6 +262,7 @@ const D3DXVECTOR3 * CObject3d::GetPos() const
 {
 	return &m_pos;
 }
+
 //------------------------------------
 // GetSize
 //------------------------------------
@@ -277,6 +270,7 @@ const D3DXVECTOR3 * CObject3d::GetSize() const
 {
 	return &m_nScale;
 }
+
 //------------------------------------
 //GetRot
 //------------------------------------
@@ -311,11 +305,12 @@ void CObject3d::HitLife(int Damage)
 	m_Damegeis = DAMEGE_DAMAGE;
 
 	m_Invincible = INVINCIBLE;
-	EObjectType Type =  GetType();
+	EType Type =  GetType();
 
 	OnHit();
 	if (Type != PLAYER)
 	{//Player以外の処理
+
 		if (m_drop % 3 == 0)
 		{//音管理
 			CManager::GetInstance()->GetSound()->Stop(CSound::LABEL_SE_HIT);
@@ -334,28 +329,19 @@ void CObject3d::HitLife(int Damage)
 				
 				break;
 			}
-		
 
 			for (int i = 0; i < 5; i++)
 			{
-				
-				GetScore()->Add(50);
-				
-				
 				D3DXVECTOR3 scale(3.8f, 3.8f, 3.8f);
-				
 			}
 			m_drop++;
 			if (m_drop >= CreateDrop)
 			{	
 				m_drop = 0;
-				
 			}
 			//objectの破棄
 			Uninit();
-		
 		}
-
 	}
 	else
 	{

@@ -25,7 +25,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 int g_nCountFPS;
 #endif // _DEBUG
 
-CManager* pManeager;
+//-----------------------------------------------------------------------------
+// ê√ìIïœêî
+//-----------------------------------------------------------------------------
+static CManager* pManeager;
 
 //=============================================================================
 // ÉÅÉCÉìä÷êî

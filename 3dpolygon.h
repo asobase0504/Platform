@@ -27,6 +27,14 @@ class  C3dpolygon : public CObject
 public:
 	const DWORD FVF_VERTEX_3D = (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE | D3DFVF_TEX1);
 
+	//頂点情報「3D」の構造体を定義
+	struct VERTEX_3D
+	{
+		D3DXVECTOR3 pos;//頂点座標
+		D3DXVECTOR3 nor;//ベクトル
+		D3DCOLOR col;//カラー
+		D3DXVECTOR2 tex;//テクスチャ
+	};
 protected:
 	//polygonの基準サイズ
 	static const D3DXVECTOR3 m_Vtx[4];
@@ -46,7 +54,7 @@ public:
 	virtual void SetPos(const D3DXVECTOR3& inPos);
 	virtual void SetMove(const D3DXVECTOR3& inMove) { m_move = inMove; };
 	void SetTexture(CTexture::TEXTURE inTexture);
-	void SetTex(PositionVec4 Tex);
+	void SetTex(PositionVec4 inTex);
 	void SetSize(const D3DXVECTOR3& inSize);
 	void SetCollar(D3DXCOLOR inCollar);
 	void SetRot(D3DXVECTOR3 inRot) { m_rot = inRot; }

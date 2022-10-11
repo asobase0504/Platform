@@ -98,6 +98,7 @@ void CMotion::SetParts(D3DXMATRIX mtxWorld, CMotion::MODELCOLLAR Type)
 
 	for (int i = 0; i < m_nMaxParts; i++)
 	{// ワールドマトリックスの初期化
+
 		D3DXMatrixIdentity(&(m_parts + i)->mtxWorld);			// 行列初期化関数
 
 		// 向きの反映
@@ -388,7 +389,7 @@ void CMotion::LoodSetMotion(char * pFileName)
 
 						// メモリの解放
 						m_parts = new Parts[m_nMaxParts];
-  						m_motion = new MyMotion[MAX_MOTION];
+						m_motion = new MyMotion[MAX_MOTION];
 						assert(m_parts != nullptr && m_motion != nullptr);
 					}
 

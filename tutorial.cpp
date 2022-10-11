@@ -82,12 +82,7 @@ HRESULT CTutorial::Init(void)
 	m_pScore = CScore::Create(D3DXVECTOR3(500.0f, 30.0f, 0.0f));
 	m_pScore->Set(0);
 
-	
-
-
 	CText::Create(CText::GON, 300,10, "まずはイドウをしてみよう！");
-
-	
 
 	return S_OK;
 

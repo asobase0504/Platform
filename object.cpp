@@ -25,9 +25,7 @@
 CObject *CObject::m_pObject[MAX_LIST][MAX_OBJECT] = {};
 int CObject::m_allMember = 0; 
 int CObject::m_allEnemy = 0;
-CScore * CObject::pScore;
 bool CObject::m_notBoss = false;
-CBg * CObject::pBg[3];
 
 //=============================================================================
 // コンストラクタ
@@ -75,7 +73,7 @@ void CObject::AllUpdate()
 //=============================================================================
 // 種類の更新
 //=============================================================================
-void CObject::TypeUpdate(EObjectType Type)
+void CObject::TypeUpdate(EType Type)
 {
 	for (int i= 0; i < MAX_LIST; i++)
 	{
@@ -112,7 +110,7 @@ void CObject::AllDraw()
 //=============================================================================
 // 種類の描画
 //=============================================================================
-void CObject::TypeDraw(EObjectType Type)
+void CObject::TypeDraw(EType Type)
 {
 	for (int i = 0; i < MAX_LIST; i++)
 	{
@@ -172,63 +170,40 @@ void CObject::ModeNotUninit()
 	}
 	m_allMember = 1;
 }
-//=============================================================================
-// 全ての生成
-//=============================================================================
-void CObject::AllCreate()
-{
-	pBg[0] = CBg::Create();
-	pBg[0]->SetMove(D3DXVECTOR3(0.0001f, 0.0f, 0.0f));
-	pBg[0]->SetTexture(CTexture::TEXTURE_STARRY);
-	pBg[0]->SetBgType(CBg::MOVE);
-
-	pBg[1] = CBg::Create();
-	pBg[1]->SetMove(D3DXVECTOR3(0.001f, 0.0f, 0.0f));
-	pBg[1]->SetTexture(CTexture::TEXTURE_TOWN);
-	pBg[1]->SetBgType(CBg::MOVE);
-
-	pBg[2] = CBg::Create();
-	pBg[2]->SetTexture(CTexture::TEXTURE_MOON);
-	pBg[2]->SetBgType(CBg::STOP);
-	
-
-	pScore = CScore::Create(D3DXVECTOR3(500.0f, 30.0f, 0.0f));
-	pScore->Set(0);
-}
 
 //=============================================================================
 // タイプの設定
 //=============================================================================
-void CObject::SetUp(EObjectType inType)
+void CObject::SetUp(EType inType)
 {
 	switch (inType)
 	{
-	case EObjectType::ENEMY:
+	case EType::ENEMY:
 		m_type = ENEMY;
 		m_allEnemy++;
 		break;
-	case EObjectType::PLAYER:
+	case EType::PLAYER:
 		m_type = PLAYER;
 		break;
-	case EObjectType::BULLET:
+	case EType::BULLET:
 		m_type = BULLET;
 		break;
-	case EObjectType::GON:
+	case EType::GON:
 		m_type = GON;
 		break;
-	case EObjectType::MAGIC:
+	case EType::MAGIC:
 		m_type = MAGIC;
 		break;
-	case EObjectType::CRYSTAL:
+	case EType::CRYSTAL:
 		m_type = CRYSTAL;
 		break;
-	case EObjectType::BG:
+	case EType::BG:
 		m_type = BG;
 		break;
-	case EObjectType::MODE:
+	case EType::MODE:
 		m_type = MODE;
 		break;
-	case EObjectType::PAUSE:
+	case EType::PAUSE:
 		m_type = PAUSE;
 		break;
 	default:
@@ -261,14 +236,6 @@ CObject** CObject::GetObjectData(int inCount)
 }
 
 //=============================================================================
-// スコアの取得
-//=============================================================================
-CScore* CObject::GetScore()
-{
-	return pScore;
-}
-
-//=============================================================================
 // 番号の取得
 //=============================================================================
 int* CObject::GetId()
@@ -279,7 +246,7 @@ int* CObject::GetId()
 //=============================================================================
 // タイプの取得
 //=============================================================================
-CObject::EObjectType CObject::GetType()
+CObject::EType CObject::GetType()
 {
 	return m_type;
 }

@@ -11,20 +11,15 @@
 // include
 //-----------------------------------------------------------------------------
 #include "renderer.h"
-
-//-----------------------------------------------------------------------------
-// 前方宣言
-//-----------------------------------------------------------------------------
-class CScore;
-class CBg;
+#include "task.h"
 
 //=============================================================================
 // オブジェクトクラス
 //=============================================================================
-class CObject
+class CObject : public CTask
 {
 public:
-	enum EObjectType
+	enum EType
 	{
 		ENEMY = 0,
 		PLAYER,
@@ -44,33 +39,35 @@ public:
 
 	const static int MAX_OBJECT = 2560;
 	const static int MAX_LIST = 4;
+
+public:
 	CObject(int inList = 0);
-	virtual ~CObject();
-	virtual HRESULT Init() = 0;
-	virtual void Uninit() = 0;
-	virtual void Update() = 0;
-	virtual void Draw() = 0;
+	virtual ~CObject() override;
+
+	virtual HRESULT Init() override = 0;
+	virtual void Uninit() override = 0;
+	virtual void Update() override = 0;
+	virtual void Draw() override = 0;
 
 	static void AllUpdate();
-	static void TypeUpdate(const EObjectType inType);
+	static void TypeUpdate(const EType inType);
 	static void AllDraw();
 	static void AllUninit();
-	static void AllCreate();
 	static void ModeNotUninit();
-	static void TypeDraw(const EObjectType inType);
+	static void TypeDraw(const EType inType);
 
+	// Setter
+	static void SetBossPop(bool inBoss) { m_notBoss = inBoss; };
+	void SetUp(const EType inType);
+
+	// Getter
 	static int& GetMaxEnemy() { return m_allEnemy; };
 	static bool& GetMaxBoss() { return m_notBoss; };
-	static CBg* GetBg(int inNumber) { return pBg[inNumber]; };
-	static void SetBossPop(bool inBoss) { m_notBoss = inBoss; };
 	int* GetId();
 	CObject** GetObjectData(int inCount);
-	void SetUp(const EObjectType inType);
+	EType GetType();
 
 	void Release();
-
-	EObjectType GetType();
-	CScore* GetScore();
 
 protected:
 	static CObject *m_pObject[MAX_LIST][MAX_OBJECT];
@@ -79,9 +76,7 @@ protected:
 	static int m_allEnemy;
 	static bool m_notBoss;
 private:
-	EObjectType m_type;
+	EType m_type;
 	static int m_allMember;
-	static CScore* pScore;
-	static CBg* pBg[3];
 };
 #endif

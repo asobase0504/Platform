@@ -70,8 +70,6 @@ HRESULT CGame::Init(void)
 		return E_FAIL;
 	}
 
-	CObject::AllCreate();
-
 	m_pPlayer = CPlayer::Create();
 	m_pPlayer->SetUp(CObject::PLAYER);
 
