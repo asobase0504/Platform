@@ -37,35 +37,30 @@ public:
 		NONE
 	};
 
-	const static int MAX_OBJECT = 2560;
-	const static int MAX_LIST = 4;
-
 public:
 	CObject(int inList = 0);
 	virtual ~CObject() override;
 
-	virtual HRESULT Init() override = 0;
-	virtual void Uninit() override = 0;
-	virtual void Update() override = 0;
-	virtual void Draw() override = 0;
-
 	// Setter
-	static void SetBossPop(bool inBoss) { m_notBoss = inBoss; };
+	virtual void SetPos(const D3DXVECTOR3 &inPos) { m_pos = inPos; }
+	void SumPos(const D3DXVECTOR3 &inPos) { SetPos(m_pos + inPos); }
+	void MulPos(const float inRatio) { SetPos(m_pos * inRatio); }
+
+	virtual void SetMove(const D3DXVECTOR3 &inMove) { m_move = inMove; }
+	void SumMove(const D3DXVECTOR3 &inMove) { SumMove(m_move += inMove); }
+	void MulMove(const float &inRatio) { SumMove(m_move * inRatio); }
+
 	void SetUp(const EType inType);
 
 	// Getter
-	static int& GetMaxEnemy() { return m_allEnemy; };
-	static bool& GetMaxBoss() { return m_notBoss; };
-	int* GetId();
-	CObject** GetObjectData(int inCount);
+	const D3DXVECTOR3 *GetPos() const { return &m_pos; }
+	const D3DXVECTOR3 *GetMove() const { return &m_move; }
+
 	EType GetType();
 
 protected:
-	static CObject *m_pObject[MAX_LIST][MAX_OBJECT];
-	int	m_id;
-	int m_list;
-	static int m_allEnemy;
-	static bool m_notBoss;
+	D3DXVECTOR3 m_pos;	// ˆÊ’u
+	D3DXVECTOR3 m_move;	// ˆÚ“®—Ê
 private:
 	EType m_type;
 	static int m_allMember;

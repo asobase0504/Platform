@@ -36,57 +36,57 @@ public:
 	void Uninit() override;
 	void Update() override;
 	void Draw() override;
-	virtual const D3DXVECTOR3 *GetPos() const;
 
-	virtual void SetPos(const D3DXVECTOR3 &pos);
-	virtual void SetMove(const D3DXVECTOR3 &move);
-
+	// Setter
+	virtual void SetPos(const D3DXVECTOR3 &pos) override;
+	virtual void SetMove(const D3DXVECTOR3 &move) override;
+	void SetRot(D3DXVECTOR3 Rot) { m_rot = Rot; };
+	void SetSize(D3DXVECTOR3 Size) { m_size = Size; };
 	void SetTexture(CTexture::TEXTURE texture);
 	void SetTex(PositionVec4 Tex);
-	CTexture::TEXTURE GetTexture(); 
-	void SetColar(D3DXCOLOR Collar);
-
-	D3DXCOLOR GetCollar() { return m_col; };
-	D3DXVECTOR3 GetSize() { return m_Size; };
-
-	void SetSize(D3DXVECTOR3 Size) { m_Size = Size; };
-	D3DXVECTOR3 &GetMove() { return m_move; };
-
-	LPDIRECT3DVERTEXBUFFER9 &GetVtx() { return m_pVtxBuff; };
-	void SetRot(D3DXVECTOR3 Rot) { m_rot = Rot; };
-
+	void SetColar(const D3DXCOLOR& inColar);
 	void SetAnimation(const int U, const int V, const int Speed, const int Drawtimer, const bool loop);
+
+	CTexture::TEXTURE GetTexture();
+	D3DXCOLOR GetCollar() { return m_col; }
+	D3DXVECTOR3 GetSize() { return m_size; }
+	LPDIRECT3DVERTEXBUFFER9 &GetVtx() { return m_pVtxBuff; }
+
+private:
+	void Animation();
 
 protected:
 	int  m_nTimer;
 	float m_nScale;
-	D3DXVECTOR3 m_Size;
-	D3DXVECTOR3 m_move; //polygonの位置
-	D3DXVECTOR3 m_pos; //polygonの位置
+	D3DXVECTOR3 m_size;	// 大きさ
+	D3DXVECTOR3 m_rot;	// 角度
 	D3DXCOLOR m_col;	// 色
-	D3DXVECTOR3 m_rot;
-	D3DXMATRIX m_mtxWorld;					// マトリックス
+	D3DXMATRIX m_mtxWorld;	// マトリックス
+
 private:
 	LPDIRECT3DVERTEXBUFFER9	m_pVtxBuff = NULL;
 	CTexture::TEXTURE m_texture;	// テクスチャの列挙型
 
+	/* アニメーション系統 */
+	// 現在のアニメーション状況
 	int m_CounterAnim;
 	int m_PatternAnimX;
 	int m_PatternAnimY;
 
+	// 分割数
 	int m_DivisionX;
 	int m_DivisionY;
 	int m_DivisionMAX;
 
+	// アニメーション速度
 	int m_AnimationSpeed;
 	int m_AnimationSpeedCount;
-
+	
+	// アニメーション時間
 	int m_Timar;
 	int m_TimaCount;
 
-	bool m_OnAnimation;
-	bool m_Loop;
-
+	bool m_OnAnimation;	// アニメーション使用の有無
+	bool m_Loop;		// ループアニメーションか否か
 };
-
 #endif

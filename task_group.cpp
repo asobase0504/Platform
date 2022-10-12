@@ -93,10 +93,10 @@ void CTaskGroup::SetPushCurrent(CTask * inTask)
 	}
 	else
 	{
-		CTask* current = m_current;	// 前回の末尾
-		m_current = inTask;	// 新しい末尾
-		m_current->SetPrev(current);	// 新しい末尾の前を前回の末尾を設定
-		current->SetNext(m_current);	// 前回の末尾の後ろに新しい末尾を設定
+		CTask* current = m_current;		// 前回末尾
+		m_current = inTask;				// 新規末尾
+		m_current->SetPrev(current);	// 新規末尾の前に前回末尾を設定
+		current->SetNext(m_current);	// 前回末尾の後に新規末尾を設定
 	}
 }
 
@@ -105,6 +105,18 @@ void CTaskGroup::SetPushCurrent(CTask * inTask)
 //=============================================================================
 void CTaskGroup::SetPushTop(CTask * inTask)
 {
+	if (m_current == nullptr && m_top == nullptr)
+	{
+		m_top = inTask;
+		m_current = inTask;
+	}
+	else
+	{
+		CTask* top = m_top;		// 前回先頭
+		m_top = inTask;			// 新規先頭
+		m_top->SetNext(top);	// 新規先頭の次に前回先頭を設定
+		top->SetPrev(m_top);	// 新規先頭の後に新規先頭を設定
+	}
 }
 
 //=============================================================================
@@ -112,6 +124,12 @@ void CTaskGroup::SetPushTop(CTask * inTask)
 //=============================================================================
 void CTaskGroup::SetNextTask(CTask * inReference, CTask * inTask)
 {
+	if (inReference == nullptr)
+	{
+		SetPushCurrent(inTask);
+		return;
+	}
+
 }
 
 //=============================================================================
@@ -119,6 +137,11 @@ void CTaskGroup::SetNextTask(CTask * inReference, CTask * inTask)
 //=============================================================================
 void CTaskGroup::SetPrevTask(CTask * inReference, CTask * inTask)
 {
+	if (inReference == nullptr)
+	{
+		SetPushCurrent(inTask);
+		return;
+	}
 }
 
 //=============================================================================

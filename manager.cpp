@@ -212,9 +212,7 @@ void CManager::SetMode(MODE mode)
 	m_mode = mode;
 	if (m_pGame != nullptr)
 	{
-		m_pGame->Uninit();
-		delete m_pGame;
-		m_pGame = nullptr;
+		m_pGame->Release();
 	}
 
 	// ƒ|ƒŠƒSƒ“‚ÌI—¹ˆ—

@@ -68,11 +68,9 @@ public:
 protected:
 	float m_scale;
 	D3DXVECTOR3 m_rot;
-	D3DXVECTOR3 m_pos;		// polygonの位置
 	D3DXVECTOR3 m_size;
 	D3DXMATRIX m_mtxWorld;	// ワールドマトリックス
 	int  m_time;
-	D3DXVECTOR3  m_move;
 private:
 	static int m_maxPolygon;
 	LPDIRECT3DVERTEXBUFFER9	m_pVtxBuff;

@@ -59,7 +59,6 @@ CGame::~CGame()
 HRESULT CGame::Init(void)
 {
 	m_gameCount = 0;
-	m_speedUp = 300;
 
 	srand((unsigned int)time(NULL)); // 現在時刻の情報で初期化
 
@@ -73,7 +72,6 @@ HRESULT CGame::Init(void)
 	m_pPlayer = CPlayer::Create();
 	m_pPlayer->SetUp(CObject::PLAYER);
 
-	CObject::SetBossPop(false);
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
 
 	m_pPause = new CPause;
@@ -97,7 +95,6 @@ void CGame::Uninit(void)
 		m_pPaticleManager->Uninit();
 		delete m_pPaticleManager;
 		m_pPaticleManager = nullptr;
-
 	}
 
 	if (m_pPause != nullptr)
@@ -105,6 +102,7 @@ void CGame::Uninit(void)
 		m_pPause->Uninit();
 		m_pPause = nullptr;
 	}
+	Release();
 }
 
 //=============================================================================
@@ -112,17 +110,8 @@ void CGame::Uninit(void)
 //=============================================================================
 void CGame::Update(void)
 {
-	m_gameCount++;
-	// 更新処理
-	if ((m_gameCount == m_speedUp) && !CObject::GetMaxBoss())
-	{
-		m_gameCount = 0;
-		m_speedUp += 250;
-	}
-
 	CInput *CInputpInput = CInput::GetKey();
 
-	
 	if (CInputpInput->Trigger(CInput::KEY_DEBUG))
 	{
 		//モードの設定
@@ -131,20 +120,8 @@ void CGame::Update(void)
 	}
 	if (CInputpInput->Trigger(CInput::KEY_F2))
 	{
-	
-		//CText::Create(CText::GON,120, 10, "モンハンたのしい...");
 		CManager::GetInstance()->GetFade()->NextMode(CManager::MODE_NAMESET);
 		return;
-	}
-	if (CObject::GetMaxEnemy() <= 0)
-	{
-		if (CObject::GetMaxBoss())
-		{
-		}
-		else
-		{
-			
-		}
 	}
 	m_pPaticleManager->Update();
 }

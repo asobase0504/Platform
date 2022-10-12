@@ -126,10 +126,9 @@ void CObject2d::Uninit()
 //=============================================================================
 void CObject2d::Update()
 {
-	
 	VERTEX_2D *pVtx; //頂点へのポインタ
 
-	 //頂点バッファをロックし頂点情報へのポインタを取得
+	// 頂点バッファをロックし頂点情報へのポインタを取得
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	D3DXVECTOR3 addPos[4];
@@ -138,62 +137,21 @@ void CObject2d::Update()
 	//マトリックス作成
 	D3DXMatrixIdentity(&mtx);
 	D3DXMatrixRotationYawPitchRoll(&mtx, 0.0f, 0.0f, m_rot.z);
+
 	//頂点座標
 	for (int i = 0; i < 4; ++i)
 	{
 		D3DXVec3TransformCoord(&addPos[i], &m_Vtx[i], &mtx);
 
-		pVtx[i].pos.x = m_pos.x + (addPos[i].x * m_Size.x);//<-サイズ変更
-		pVtx[i].pos.y = m_pos.y + (addPos[i].y * m_Size.y);//<-サイズ変更
+		pVtx[i].pos.x = m_pos.x + (addPos[i].x * m_size.x);	// サイズ変更
+		pVtx[i].pos.y = m_pos.y + (addPos[i].y * m_size.y);	// サイズ変更
 		pVtx[i].pos.z = 0.0f;
 	}
 
 	//頂点バッファをアンロック
 	m_pVtxBuff->Unlock();
 
-	if (m_OnAnimation)
-	{
-		m_TimaCount++;
-
-		if (m_TimaCount >= m_Timar)
-		{
-			m_AnimationSpeedCount++;
-			if (m_AnimationSpeedCount >= m_AnimationSpeed)
-			{
-				m_AnimationSpeedCount = 0;
-				m_PatternAnimX++;
-
-				if (m_PatternAnimX > m_DivisionX)
-				{//アニメーション
-					m_PatternAnimX = 0;
-					m_PatternAnimY++;
-					if (m_PatternAnimY >= m_DivisionY)
-					{
-						m_PatternAnimY = 0;
-						if (!m_Loop)
-						{
-							Uninit();
-						}
-						return;
-					}
-				}
-
-				float U = 1.0f / (m_DivisionX);
-				float V = 1.0f / (m_DivisionY);
-
-				SetTex(PositionVec4(
-					U * (m_PatternAnimX)
-					, U *(m_PatternAnimX)+U
-					, V * (m_PatternAnimY)
-					, V * (m_PatternAnimY)+V));
-				SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-			}
-		}
-		else
-		{
-			SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-		}
-	}
+	Animation();	// アニメーションの更新
 }
 
 //=============================================================================
@@ -206,23 +164,21 @@ void CObject2d::Draw()
 	 //デバイスの取得
 	pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
 
-
 	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_2D));
 
 	//頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
+	// テクスチャの取得
 	CTexture* pTexture = CManager::GetInstance()->GetTexture();
 
 	// テクスチャの設定
 	pDevice->SetTexture(0, pTexture->GetTexture(m_texture));
 	
 	//ポリゴンの描画
+	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 
-	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,		//プリミティブの種類
-		0,
-		2);
 	//プリミティブ(ポリゴン)数
 	pDevice->SetTexture(0, NULL);
 }
@@ -244,22 +200,15 @@ CObject2d *CObject2d::Create(int list)
 }
 
 //=============================================================================
-// GetPos関数
-//=============================================================================
-const D3DXVECTOR3 * CObject2d::GetPos() const
-{
-	return &m_pos;
-}
-
-//=============================================================================
 // SetPos関数
 //=============================================================================
 void CObject2d::SetPos(const D3DXVECTOR3 &pos)
 {
 	m_pos = pos;
 }
+
 //=============================================================================
-// SetPos関数
+// 移動関数
 //=============================================================================
 void CObject2d::SetMove(const D3DXVECTOR3 &move)
 {
@@ -282,6 +231,50 @@ CTexture::TEXTURE CObject2d::GetTexture()
 	return m_texture;
 }
 
+//--------------------------------------------------
+// アニメーションの動き
+//--------------------------------------------------
+void CObject2d::Animation()
+{
+	if (!m_OnAnimation)
+	{
+		return;
+	}
+
+	m_TimaCount++;
+
+	if (m_TimaCount >= m_Timar)
+	{
+		m_AnimationSpeedCount++;
+		if (m_AnimationSpeedCount >= m_AnimationSpeed)
+		{
+			m_AnimationSpeedCount = 0;
+			m_PatternAnimX++;
+
+			if (m_PatternAnimX > m_DivisionX)
+			{//アニメーション
+				m_PatternAnimX = 0;
+				m_PatternAnimY++;
+				if (m_PatternAnimY >= m_DivisionY)
+				{
+					m_PatternAnimY = 0;
+					if (!m_Loop)
+					{
+						Uninit();
+					}
+					return;
+				}
+			}
+
+			float U = 1.0f / (m_DivisionX);
+			float V = 1.0f / (m_DivisionY);
+			float AnimU = U * (m_PatternAnimX);
+			float AnimV = V * (m_PatternAnimY);
+			SetTex(PositionVec4(AnimU, AnimU + U, AnimV, AnimV + V));
+		}
+	}
+}
+
 //---------------------------------------
 //セットテクスチャ(2d)
 //---------------------------------------
@@ -302,24 +295,26 @@ void CObject2d::SetTex(PositionVec4 Tex)
 	m_pVtxBuff->Unlock();
 }
 
-void CObject2d::SetColar(D3DXCOLOR Colar)
+//---------------------------------------
+// 色の設定
+//---------------------------------------
+void CObject2d::SetColar(const D3DXCOLOR& inColar)
 {
-	VERTEX_2D *pVtx; //頂点へのポインタ
+	m_col = inColar;	// 色の代入
 
-					 //頂点バッファをロックし頂点情報へのポインタを取得
+	VERTEX_2D *pVtx;	// 頂点へのポインタ
+
+	// 頂点バッファをロックし頂点情報へのポインタを取得
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	//テクスチャの座標設定
-	//頂点カラーの設定
-	pVtx[0].col = D3DXCOLOR(Colar.r, Colar.g, Colar.b, Colar.a);
-	pVtx[1].col = D3DXCOLOR(Colar.r, Colar.g, Colar.b, Colar.a);
-	pVtx[2].col = D3DXCOLOR(Colar.r, Colar.g, Colar.b, Colar.a);
-	pVtx[3].col = D3DXCOLOR(Colar.r, Colar.g, Colar.b, Colar.a);
+	// 頂点カラーの設定
+	pVtx[0].col = m_col;
+	pVtx[1].col = m_col;
+	pVtx[2].col = m_col;
+	pVtx[3].col = m_col;
 
-	m_col = Colar;
-	//頂点バッファをアンロック
+	// 頂点バッファをアンロック
 	m_pVtxBuff->Unlock();
-
 }
 
 //=============================================================================

@@ -54,8 +54,6 @@ public:
 	void Draw() override;
 
 	virtual void SetPos(const D3DXVECTOR3 &pos) ;
-	virtual void SetMove(const D3DXVECTOR3 &move);
-	virtual const D3DXVECTOR3 *GetPos() const ;
 
 	void Set(const D3DXVECTOR3 &pos, const D3DXVECTOR3 &rot, char *filename);
 
@@ -66,7 +64,6 @@ public:
 	int GetLife() { return m_Life; };
 	const D3DXVECTOR3 *GetRot() const;
 
-
 	void HitLife(int Damage);
 	DAMEGE& GetDamegeData();
 
@@ -74,12 +71,10 @@ public:
 	const D3DXVECTOR3 *GetSize() const;
 
 protected:
-	D3DXVECTOR3		m_move;						// ムーブ
-	D3DXVECTOR3		m_pos;
-	D3DXVECTOR3		m_rot;						// 回転	
+	D3DXVECTOR3		m_rot;						// 回転
 	D3DXVECTOR3		m_rotMove;					// 回転ムーブ
-	ANIME			m_motionType;					// モーションタイプ(現在)
-	ANIME			m_motionTypeOld;				// モーションタイプ(過去)
+	ANIME			m_motionType;				// モーションタイプ(現在)
+	ANIME			m_motionTypeOld;			// モーションタイプ(過去)
 	DAMEGE			m_Damegeis;
 private:
 	D3DXVECTOR3 m_nScale;
@@ -98,9 +93,9 @@ private:
 	D3DXVECTOR3		m_modelMax;					// サイズ最大
 	D3DXMATRIX		m_mtxWorld;					// マトリックス//ポリゴンの位置や回転行列すべてをつめてるナニカ
 
-	int				m_nMaxModelType;				// モデルのタイプ数
-	int				m_nMaxModelParts;				// 扱うモデルパーツ数
-	int				m_nMaxMotion;					// モーション数
+	int				m_nMaxModelType;			// モデルのタイプ数
+	int				m_nMaxModelParts;			// 扱うモデルパーツ数
+	int				m_nMaxMotion;				// モーション数
 
 	int				m_type;						// タイプ
 	int				m_shadow;					// 影番号
@@ -120,7 +115,7 @@ private:
 	int				m_nMotion;					// モーション番号
 	int				m_Life;
 
-	int             m_Invincible;
+	int				m_Invincible;
 
 		
 };

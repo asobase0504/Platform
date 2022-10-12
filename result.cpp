@@ -90,7 +90,7 @@ void CResult::Uninit(void)
 void CResult::Update(void)
 {
 	D3DXVECTOR3 DataPos = *m_pObject2d[0]->GetPos();
-	D3DXVECTOR3 DataMove = m_pObject2d[0]->GetMove();
+	D3DXVECTOR3 DataMove = *m_pObject2d[0]->GetMove();
 	D3DXVECTOR3 DataSize = m_pObject2d[0]->GetSize();
 
 	if (DataPos.x < 0.0f + DataSize.x)

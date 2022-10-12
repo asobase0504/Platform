@@ -23,4 +23,5 @@ CTask::~CTask()
 
 void CTask::Uninit()
 {
+	m_isDeleted = true;
 }

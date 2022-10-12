@@ -30,9 +30,7 @@ int CObject3d::m_drop = 0;
 // コンストラクタ
 //------------------------------------
 CObject3d::CObject3d() :
-	m_pos(D3DXVECTOR3(0.0f, 0.0f, 0.0f)),
 	m_posOld(D3DXVECTOR3(0.0f, 0.0f, 0.0f)),
-	m_move(D3DXVECTOR3(0.0f, 0.0f, 0.0f)),
 	m_rot(D3DXVECTOR3(0.0f, 0.0f, 0.0f)),
 	m_rotMove(D3DXVECTOR3(0.0f, 0.0f, 0.0f)),
 	m_modelMin(D3DXVECTOR3(0.0f, 0.0f, 0.0f)),
@@ -173,15 +171,14 @@ void CObject3d::Draw(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
 	D3DXMATRIX mtxScale, mtxTrans, mtxRot;	// 計算用マトリックス
 	D3DMATERIAL9 marDef;
-	D3DXVECTOR3 scale(1.8f, 1.8f, 1.8f);
 
 	// ワールドマトリックスの初期化
 	// 行列初期化関数(第1引数の行列を単位行列に初期化)
 	D3DXMatrixIdentity(&m_mtxWorld);
 
+	// 大きさの反映
 	// 行列拡縮関数
 	D3DXMatrixScaling(&mtxScale, m_nScale.x, m_nScale.y, m_nScale.z);
-
 	// 行列掛け算関数(第2引数×第3引数第を１引数に格納)
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxScale);
 
@@ -197,22 +194,18 @@ void CObject3d::Draw(void)
 	// 行列掛け算関数(第2引数×第3引数第を１引数に格納)
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
 
-	if (m_pos.x <= SCREEN_WIDTH)
-	{
-		// テクスチャの設定
-		pDevice->SetTexture(0, NULL);
+	// テクスチャの設定
+	pDevice->SetTexture(0, NULL);
 
-		if (m_pMotion)
-		{
-			// パーツの描画設定
-			m_pMotion->SetParts(m_mtxWorld, m_ModelCollar);
-		}
+	if (m_pMotion)
+	{
+		// パーツの描画設定
+		m_pMotion->SetParts(m_mtxWorld, m_ModelCollar);
 	}
 
 	// 行列掛け算関数(第2引数×第3引数第を１引数に格納)
 	pDevice->SetMaterial(&marDef);
 }
-
 
 //------------------------------------
 // POSだけセット
@@ -223,21 +216,12 @@ void CObject3d::SetPos(const D3DXVECTOR3 &pos)
 }
 
 //------------------------------------
-// SetMove関数
-//------------------------------------
-void CObject3d::SetMove(const D3DXVECTOR3 &move)
-{
-	m_move = move;
-}
-
-//------------------------------------
 // 設定
 //------------------------------------
 void CObject3d::Set(const D3DXVECTOR3 &pos, const D3DXVECTOR3 &rot,  char * pFileName)
 {
 	// 情報の初期化
 	m_pos = pos;											// 位置の初期化
-	m_posOld = m_pos;										// 過去位置の初期化
 	m_posOld = m_pos;										// 過去位置の初期化
 	m_rot = rot;											// 向きの初期化
 	m_modelMin = D3DXVECTOR3(100.0f, 100.0f, 100.0f);		// 頂点座標の最小値
@@ -253,14 +237,6 @@ void CObject3d::Set(const D3DXVECTOR3 &pos, const D3DXVECTOR3 &rot,  char * pFil
 	m_pMotion = new CMotion(pFileName);
 	m_pMotion->Init();
 	assert(m_pMotion != nullptr);
-}
-
-//------------------------------------
-// GetPos
-//------------------------------------
-const D3DXVECTOR3 * CObject3d::GetPos() const
-{
-	return &m_pos;
 }
 
 //------------------------------------
