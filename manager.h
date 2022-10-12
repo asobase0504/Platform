@@ -2,6 +2,7 @@
 //
 // マネジャー
 // Author : 浜田琉雅
+// AUthor : Yuda Kaito
 //
 //=============================================================================
 #ifndef _MANEAGER_H_			// このマクロ定義がされてなかったら
@@ -19,10 +20,9 @@ class CRenderer;
 class CInput;
 class CTexture;
 class CMode;
-class CResult;
-class CTitle;
 class CFade;
 class CSound;
+class CTaskGroup;
 
 //=============================================================================
 // マネジャークラス
@@ -59,13 +59,14 @@ private: // シングルトン
 public:	// メンバー関数
 	~CManager();
 
-	HRESULT Init(HWND hWnd, bool bWindow, HINSTANCE hInstance);
+	HRESULT Init(HWND hWnd, HINSTANCE hInstance);
 	void Uninit();
 	void Update();
 	void Draw();
 
 	CRenderer* GetRenderer();
 	CTexture* GetTexture();
+	CTaskGroup* GetTaskGroup() { return m_pTaskGroup; }
 	CFade* GetFade();
 	MODE* GetMode();
 	void SetMode(CManager::MODE inMode);
@@ -74,6 +75,7 @@ public:	// メンバー関数
 private:
 	CTexture* m_pTexture;
 	CRenderer* m_pRenderer;
+	CTaskGroup* m_pTaskGroup;
 	CFade* m_pFade;
 	CMode* m_pGame;
 	CSound* m_pSound;

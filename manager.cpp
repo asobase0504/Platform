@@ -21,6 +21,7 @@
 #include "ranking.h"
 #include "tutorial.h"
 #include "multiply.h"
+#include "task_group.h"
 
 //-----------------------------------------------------------------------------
 // 静的メンバー変数の初期化
@@ -46,6 +47,7 @@ CManager * CManager::GetInstance()
 CManager::CManager() :
 	m_pTexture(nullptr),
 	m_pRenderer(nullptr),
+	m_pTaskGroup(nullptr),
 	m_pFade(nullptr),
 	m_pGame(nullptr),
 	m_pSound(nullptr)
@@ -63,27 +65,31 @@ CManager::~CManager()
 //=============================================================================
 // 初期化
 //=============================================================================
-HRESULT CManager::Init(HWND hWnd, bool bWindow, HINSTANCE hInstance)
+HRESULT CManager::Init(HWND hWnd, HINSTANCE hInstance)
 {
-	m_pRenderer = new CRenderer;
-
-	m_pInput = CInput::Create();
-
-	// 初期化処理
-	if (FAILED(m_pRenderer->Init(hWnd, TRUE)))	//画面サイズ
-	{//初期化処理が失敗した場合
-		return -1;
+	// 根幹グループの初期化処理
+	m_pTaskGroup = new CTaskGroup;
+	if (FAILED(m_pTaskGroup->Init()))
+	{
+		return E_FAIL;
 	}
-	//入力処理の初期化処理
+
+	// レンダラーの初期化処理
+	m_pRenderer = new CRenderer;
+	if (FAILED(m_pRenderer->Init(hWnd, true)))
+	{
+		return E_FAIL;
+	}
+
+	// 入力処理の初期化処理
+	m_pInput = CInput::Create();
 	if (FAILED(m_pInput->Init(hInstance, hWnd)))
 	{
 		return E_FAIL;
 	}
 
-	m_pSound = nullptr;
+	// 音楽処理の初期化処理
 	m_pSound = new CSound;
-
-	//入力処理の初期化処理
 	if (FAILED(m_pSound->Init(hWnd)))
 	{
 		return E_FAIL;
@@ -107,14 +113,13 @@ HRESULT CManager::Init(HWND hWnd, bool bWindow, HINSTANCE hInstance)
 //=============================================================================
 void CManager::Uninit()
 {
-	CObject::AllUninit();
-
 	if (m_pTexture != nullptr)
 	{// 終了処理
 		m_pTexture->ReleaseAll();
 		delete m_pTexture;
 		m_pTexture = nullptr;
 	}
+
 	if (m_pRenderer != nullptr)
 	{// 終了処理
 
@@ -122,6 +127,7 @@ void CManager::Uninit()
 		delete m_pRenderer;
 		m_pRenderer = nullptr;
 	}
+
 	if (m_pSound != nullptr)
 	{// 終了処理
 
@@ -151,8 +157,7 @@ void CManager::Update()
 //=============================================================================
 void CManager::Draw()
 {
-	// 描画処理	
-	m_pRenderer->Draw();
+	m_pRenderer->Draw();	// 描画処理
 }
 
 
@@ -199,9 +204,9 @@ CSound * CManager::GetSound()
 }
 
 
-//========================
+//=============================================================================
 // モードの設定
-//========================
+//=============================================================================
 void CManager::SetMode(MODE mode)
 {
 	m_mode = mode;
@@ -213,7 +218,7 @@ void CManager::SetMode(MODE mode)
 	}
 
 	// ポリゴンの終了処理
-	CObject::ModeNotUninit();
+	//CObject::ModeNotUninit();
 	
 	switch (mode)
 	{

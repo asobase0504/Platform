@@ -49,13 +49,6 @@ public:
 	virtual void Update() override = 0;
 	virtual void Draw() override = 0;
 
-	static void AllUpdate();
-	static void TypeUpdate(const EType inType);
-	static void AllDraw();
-	static void AllUninit();
-	static void ModeNotUninit();
-	static void TypeDraw(const EType inType);
-
 	// Setter
 	static void SetBossPop(bool inBoss) { m_notBoss = inBoss; };
 	void SetUp(const EType inType);
@@ -66,8 +59,6 @@ public:
 	int* GetId();
 	CObject** GetObjectData(int inCount);
 	EType GetType();
-
-	void Release();
 
 protected:
 	static CObject *m_pObject[MAX_LIST][MAX_OBJECT];

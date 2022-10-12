@@ -52,124 +52,124 @@ CObject::~CObject()
 {
 }
 
-//=============================================================================
-// 全ての更新
-//=============================================================================
-void CObject::AllUpdate()
-{
-	for (int i= 0; i < MAX_LIST; i++)
-	{
-		for (int j = 0; j < MAX_OBJECT; j++)
-		{
+////=============================================================================
+//// 全ての更新
+////=============================================================================
+//void CObject::AllUpdate()
+//{
+//	for (int i= 0; i < MAX_LIST; i++)
+//	{
+//		for (int j = 0; j < MAX_OBJECT; j++)
+//		{
+//
+//			if (m_pObject[i][j] != nullptr)
+//			{
+//				m_pObject[i][j]->Update();
+//			}
+//		}
+//	}
+//}
+//
+////=============================================================================
+//// 種類の更新
+////=============================================================================
+//void CObject::TypeUpdate(EType Type)
+//{
+//	for (int i= 0; i < MAX_LIST; i++)
+//	{
+//		for (int j = 0; j < MAX_OBJECT; j++)
+//		{
+//			if (m_pObject[i][j] != nullptr)
+//			{
+//				if (m_pObject[i][j]->m_type == Type)
+//				{
+//					m_pObject[i][j]->Update();
+//				}
+//			}
+//		}
+//	}
+//}
+//
+////=============================================================================
+//// 全ての描画
+////=============================================================================
+//void CObject::AllDraw()
+//{
+//	for (int i = 0; i < MAX_LIST; i++)
+//	{
+//		for (int j = 0; j < MAX_OBJECT; j++)
+//		{
+//			if (m_pObject[i][j] != nullptr)
+//			{
+//				m_pObject[i][j]->Draw();
+//			}
+//		}
+//	}
+//}
+//
+////=============================================================================
+//// 種類の描画
+////=============================================================================
+//void CObject::TypeDraw(EType Type)
+//{
+//	for (int i = 0; i < MAX_LIST; i++)
+//	{
+//		for (int j = 0; j < MAX_OBJECT; j++)
+//		{
+//			if (m_pObject[i][j] != nullptr)
+//			{
+//				if (m_pObject[i][j]->m_type == Type)
+//				{
+//					m_pObject[i][j]->Draw();
+//				}
+//			}
+//		}
+//	}
+//}
 
-			if (m_pObject[i][j] != nullptr)
-			{
-				m_pObject[i][j]->Update();
-			}
-		}
-	}
-}
-
-//=============================================================================
-// 種類の更新
-//=============================================================================
-void CObject::TypeUpdate(EType Type)
-{
-	for (int i= 0; i < MAX_LIST; i++)
-	{
-		for (int j = 0; j < MAX_OBJECT; j++)
-		{
-			if (m_pObject[i][j] != nullptr)
-			{
-				if (m_pObject[i][j]->m_type == Type)
-				{
-					m_pObject[i][j]->Update();
-				}
-			}
-		}
-	}
-}
-
-//=============================================================================
-// 全ての描画
-//=============================================================================
-void CObject::AllDraw()
-{
-	for (int i = 0; i < MAX_LIST; i++)
-	{
-		for (int j = 0; j < MAX_OBJECT; j++)
-		{
-			if (m_pObject[i][j] != nullptr)
-			{
-				m_pObject[i][j]->Draw();
-			}
-		}
-	}
-}
-
-//=============================================================================
-// 種類の描画
-//=============================================================================
-void CObject::TypeDraw(EType Type)
-{
-	for (int i = 0; i < MAX_LIST; i++)
-	{
-		for (int j = 0; j < MAX_OBJECT; j++)
-		{
-			if (m_pObject[i][j] != nullptr)
-			{
-				if (m_pObject[i][j]->m_type == Type)
-				{
-					m_pObject[i][j]->Draw();
-				}
-			}
-		}
-	}
-}
-
-//=============================================================================
-// 全ての終了
-//=============================================================================
-void CObject::AllUninit()
-{
-	for (int i = 0; i < MAX_LIST; i++)
-	{
-		for (int j = 0; j < MAX_OBJECT; j++)
-		{
-			if (m_pObject[i][j] != nullptr)
-			{
-				m_pObject[i][j]->Uninit();
-				delete m_pObject[i][j];
-				m_pObject[i][j] = nullptr;
-			}
-
-		}
-	}
-	m_allMember = 0;
-}
-
-//=============================================================================
-// モード以外の終了
-//=============================================================================
-void CObject::ModeNotUninit()
-{
-	for (int i = 0; i < MAX_LIST; i++)
-	{
-		for (int j = 0; j < MAX_OBJECT; j++)
-		{
-			if (m_pObject[i][i] != nullptr)
-			{
-				if (m_pObject[i][j]->m_type != MODE)
-				{
-					m_pObject[i][j]->Uninit();
-					delete m_pObject[i][j];
-					m_pObject[i][j] = nullptr;
-				}
-			}
-		}
-	}
-	m_allMember = 1;
-}
+////=============================================================================
+//// 全ての終了
+////=============================================================================
+//void CObject::AllUninit()
+//{
+//	for (int i = 0; i < MAX_LIST; i++)
+//	{
+//		for (int j = 0; j < MAX_OBJECT; j++)
+//		{
+//			if (m_pObject[i][j] != nullptr)
+//			{
+//				m_pObject[i][j]->Uninit();
+//				delete m_pObject[i][j];
+//				m_pObject[i][j] = nullptr;
+//			}
+//
+//		}
+//	}
+//	m_allMember = 0;
+//}
+//
+////=============================================================================
+//// モード以外の終了
+////=============================================================================
+//void CObject::ModeNotUninit()
+//{
+//	for (int i = 0; i < MAX_LIST; i++)
+//	{
+//		for (int j = 0; j < MAX_OBJECT; j++)
+//		{
+//			if (m_pObject[i][i] != nullptr)
+//			{
+//				if (m_pObject[i][j]->m_type != MODE)
+//				{
+//					m_pObject[i][j]->Uninit();
+//					delete m_pObject[i][j];
+//					m_pObject[i][j] = nullptr;
+//				}
+//			}
+//		}
+//	}
+//	m_allMember = 1;
+//}
 
 //=============================================================================
 // タイプの設定
@@ -209,21 +209,6 @@ void CObject::SetUp(EType inType)
 	default:
 		assert(false);
 		break;
-	}
-}
-
-//=============================================================================
-// 解放
-//=============================================================================
-void CObject::Release()
-{
-	if (m_pObject[m_list][m_id] != nullptr)
-	{
-		const int nID = m_id;
-		const int nlist = m_list;
-		delete m_pObject[nlist][nID];
-		m_pObject[nlist][nID] = nullptr;
-		m_allMember--;
 	}
 }
 

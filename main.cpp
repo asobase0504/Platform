@@ -9,8 +9,6 @@
 //-----------------------------------------------------------------------------
 #include "renderer.h"
 #include "main.h"
-#include "object.h"
-#include "object2d.h"
 #include "resource1.h"
 #include "input.h"
 #include "manager.h"
@@ -74,7 +72,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
 
 	pManeager = CManager::GetInstance();
 
-	if (FAILED(pManeager->Init(hWnd, TRUE, hInstance)))	//画面サイズ
+	if (FAILED(pManeager->Init(hWnd, hInstance)))	//画面サイズ
 	{//初期化処理が失敗した場合
 		return -1;
 	}
