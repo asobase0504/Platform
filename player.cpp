@@ -76,7 +76,7 @@ void CPlayer::Uninit()
 //------------------------------------
 // 更新
 //------------------------------------
-void CPlayer::Update()
+void CPlayer::NormalUpdate()
 {
 
 	switch (*CManager::GetInstance()->GetMode())
@@ -100,7 +100,7 @@ void CPlayer::Update()
 	}
 
 	// 現在のモーション番号の保管
-	CObject3d::Update();
+	CObject3d::NormalUpdate();
 }
 
 //------------------------------------

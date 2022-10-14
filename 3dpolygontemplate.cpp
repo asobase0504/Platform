@@ -4,11 +4,9 @@
 // Author:hamada ryuuga
 //
 //============================
-
 #include "3dpolygontemplate.h"
 #include "utility.h"
 #include "manager.h"
-
 
 //------------------------------------
 // コンストラクタ
@@ -45,16 +43,12 @@ void CTest3d::Uninit()
 //------------------------------------
 // 更新
 //------------------------------------
-void CTest3d::Update()
+void CTest3d::NormalUpdate()
 {
-	
 	//動き
 	CTest3d::move();
-	
-	C3dpolygon::Update();
-	
 
-
+	C3dpolygon::NormalUpdate();
 }
 
 //------------------------------------

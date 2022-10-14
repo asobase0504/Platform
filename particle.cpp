@@ -49,9 +49,9 @@ void CParticle::Uninit()
 //--------------------------------------------------
 // 更新
 //--------------------------------------------------
-void CParticle::Update()
+void CParticle::NormalUpdate()
 {
-	CObject2d::Update();
+	CObject2d::NormalUpdate();
 
 
 	/* ↓使用しているなら↓ */

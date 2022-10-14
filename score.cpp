@@ -53,7 +53,7 @@ void  CScore::Uninit(void)
 //===================
 //XVˆ—
 //===================
-void  CScore::Update(void)
+void  CScore::NormalUpdate(void)
 {
 }
 

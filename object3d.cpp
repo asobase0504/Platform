@@ -104,7 +104,7 @@ void CObject3d::Uninit(void)
 //------------------------------------
 // 更新
 //------------------------------------
-void CObject3d::Update(void)
+void CObject3d::NormalUpdate(void)
 {
 	// 現在のモーション番号の保管
 	m_motionTypeOld = m_motionType;

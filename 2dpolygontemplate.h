@@ -29,7 +29,7 @@ public:
 	~CTest() override;
 	HRESULT Init() override;
 	void Uninit() override;
-	void Update() override;
+	void NormalUpdate() override;
 	void Draw() override;
 	static CTest* Create(D3DXVECTOR3 pos, bool b3D);
 private:

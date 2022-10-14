@@ -46,13 +46,13 @@ void CBg::Uninit()
 //------------------------------------
 // çXêV
 //------------------------------------
-void CBg::Update()
+void CBg::NormalUpdate()
 {
 	//â¡éZÇÃílÇä÷êîâª
 		m_Speed += (m_MoveSpeed);
 	
 	C3dpolygon::SetTex(PositionVec4(0.0f+ m_Speed.x, 1.0f+ m_Speed.x,0.0f + m_Speed.y,1.0f + m_Speed.y));
-	C3dpolygon::Update();
+	C3dpolygon::NormalUpdate();
 	SetPos(D3DXVECTOR3(0.0f, 0.0f, 1000.0f));
 }
 

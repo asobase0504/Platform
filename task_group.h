@@ -11,6 +11,7 @@
 // include
 //-----------------------------------------------------------------------------
 #include <Windows.h>
+#include <unordered_map>
 
 //-----------------------------------------------------------------------------
 // 前方宣言
@@ -23,6 +24,15 @@ class CTask;
 class CTaskGroup
 {
 public:
+
+	// リスト構造体
+	struct SList
+	{
+		CTask* top;
+		CTask* current;
+	};
+
+public:
 	CTaskGroup();
 	~CTaskGroup();
 
@@ -31,22 +41,24 @@ public:
 	void Update();
 	void Draw();
 
+	void Release();
+
 	// Setter
-	void SetPushCurrent(CTask* inTask);
-	void SetPushTop(CTask* inTask);
+	void SetPushCurrent(CTask* inTask, int inPriority = 0);
+	void SetPushTop(CTask* inTask, int inPriority = 0);
 	void SetNextTask(CTask* inReference, CTask* inTask);
 	void SetPrevTask(CTask* inReference, CTask* inTask);
 
 	// Getter
-	CTask* GetTop() { return m_top; }
-	CTask* GetCurrent() { return m_current; }
+	CTask* GetTop(int priority = 0) { return m_list.at(priority).top; }
+	CTask* GetCurrent(int priority = 0) { return m_list.at(priority).current; }
 
 private:
 	void DeleteTask();
 
 private:
-	CTask* m_top;
-	CTask* m_current;
+	std::unordered_map<int,SList> m_list;	// リスト一覧
+	int m_priorityNumber;	// レイヤー数
 };
 
 #endif

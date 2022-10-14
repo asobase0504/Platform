@@ -14,9 +14,9 @@
 // コンストラクタ
 //=============================================================================
 CTaskGroup::CTaskGroup() :
-	m_top(nullptr),
-	m_current(nullptr)
+	m_priorityNumber(0)
 {
+	m_list.clear();
 }
 
 //=============================================================================
@@ -39,13 +39,21 @@ HRESULT CTaskGroup::Init()
 //=============================================================================
 void CTaskGroup::Uninit()
 {
-	CTask* current = m_top;
-
-	while (current != nullptr)
+	for (int i = 0; i < m_priorityNumber; i++)
 	{
-		CTask* next = current->GetNext();
-		current->Uninit();
-		current = next;
+		if (m_list.count(i) == 0)
+		{
+			continue;
+		}
+
+		CTask* current = m_list.at(i).top;
+
+		while (current != nullptr)
+		{
+			CTask* next = current->GetNext();
+			current->Uninit();
+			current = next;
+		}
 	}
 }
 
@@ -54,16 +62,24 @@ void CTaskGroup::Uninit()
 //=============================================================================
 void CTaskGroup::Update()
 {
-	CTask* now = m_top;
-
-	while (now != nullptr)
+	for (int i = 0; i < m_priorityNumber; i++)
 	{
-		CTask* next = now->GetNext();
-		now->Update();
-		now = next;
+		if (m_list.count(i) == 0)
+		{
+			continue;
+		}
+
+		CTask* now = m_list.at(i).top;
+
+		while (now != nullptr)
+		{
+			CTask* next = now->GetNext();
+			now->Update();
+			now = next;
+		}
+
+		DeleteTask();	// タスクリストの削除
 	}
-	
-	DeleteTask();	// タスクリストの削除
 }
 
 //=============================================================================
@@ -71,51 +87,101 @@ void CTaskGroup::Update()
 //=============================================================================
 void CTaskGroup::Draw()
 {
-	CTask* now = m_top;
-
-	while (now != nullptr)
+	for (int i = 0; i < m_priorityNumber; i++)
 	{
-		CTask* next = now->GetNext();
-		now->Draw();
-		now = next;
+		if (m_list.count(i) == 0)
+		{
+			continue;
+		}
+
+		CTask* now = m_list.at(i).top;
+
+		while (now != nullptr)
+		{
+			CTask* next = now->GetNext();
+			now->Draw();
+			now = next;
+		}
 	}
+}
+
+//=============================================================================
+// 所持しているタスクの破棄
+//=============================================================================
+void CTaskGroup::Release()
+{
+	for (int i = 0; i < m_priorityNumber; i++)
+	{
+		if (m_list.count(i) == 0)
+		{
+			continue;
+		}
+
+		CTask* now = m_list.at(i).top;
+
+		while (now != nullptr)
+		{
+			now->Release();
+			now = now->GetNext();
+		}
+	}
+
+	// 死亡予定のタスクの破棄
+	DeleteTask();
 }
 
 //=============================================================================
 // リストの最後にタスクを入れる
 //=============================================================================
-void CTaskGroup::SetPushCurrent(CTask * inTask)
+void CTaskGroup::SetPushCurrent(CTask * inTask, int inPriority)
 {
-	if (m_current == nullptr && m_top == nullptr)
+	if (m_list.count(inPriority) == 0)
 	{
-		m_top = inTask;
-		m_current = inTask;
+		SList inList;
+		inList.top = nullptr;
+		inList.current = nullptr;
+		m_list.insert(std::make_pair(inPriority, inList));
+		m_priorityNumber++;
+	}
+
+	SList* list = &m_list.at(inPriority);
+
+	if (list->current == nullptr && list->top == nullptr)
+	{
+		list->top = inTask;
+		list->current = inTask;
 	}
 	else
 	{
-		CTask* current = m_current;		// 前回末尾
-		m_current = inTask;				// 新規末尾
-		m_current->SetPrev(current);	// 新規末尾の前に前回末尾を設定
-		current->SetNext(m_current);	// 前回末尾の後に新規末尾を設定
+		CTask* current = list->current;		// 前回末尾
+		list->current = inTask;				// 新規末尾
+		list->current->SetPrev(current);	// 新規末尾の前に前回末尾を設定
+		current->SetNext(list->current);	// 前回末尾の後に新規末尾を設定
 	}
 }
 
 //=============================================================================
 // リストの最初にタスクを入れる
 //=============================================================================
-void CTaskGroup::SetPushTop(CTask * inTask)
+void CTaskGroup::SetPushTop(CTask * inTask, int inPriority)
 {
-	if (m_current == nullptr && m_top == nullptr)
+	if (m_list.count(inPriority) == 0)
 	{
-		m_top = inTask;
-		m_current = inTask;
+		SList inList;
+		m_list.insert(std::make_pair(inPriority, inList));
+	}
+
+	if (m_list.at(inPriority).current == nullptr && m_list.at(inPriority).top == nullptr)
+	{
+		m_list.at(inPriority).top = inTask;
+		m_list.at(inPriority).current = inTask;
 	}
 	else
 	{
-		CTask* top = m_top;		// 前回先頭
-		m_top = inTask;			// 新規先頭
-		m_top->SetNext(top);	// 新規先頭の次に前回先頭を設定
-		top->SetPrev(m_top);	// 新規先頭の後に新規先頭を設定
+		CTask* top = m_list.at(inPriority).top;		// 前回先頭
+		m_list.at(inPriority).top = inTask;			// 新規先頭
+		m_list.at(inPriority).top->SetNext(top);	// 新規先頭の次に前回先頭を設定
+		top->SetPrev(m_list.at(inPriority).top);	// 新規先頭の後に新規先頭を設定
 	}
 }
 
@@ -126,10 +192,9 @@ void CTaskGroup::SetNextTask(CTask * inReference, CTask * inTask)
 {
 	if (inReference == nullptr)
 	{
-		SetPushCurrent(inTask);
+		SetPushCurrent(inTask, 0);
 		return;
 	}
-
 }
 
 //=============================================================================
@@ -149,41 +214,54 @@ void CTaskGroup::SetPrevTask(CTask * inReference, CTask * inTask)
 //=============================================================================
 void CTaskGroup::DeleteTask()
 {
-	CTask* now = m_top;
-
-	while (now != nullptr)
+	for (int i = 0; i < m_priorityNumber; i++)
 	{
-		// 次のタスクを保存
-		CTask* next = now->GetNext();
-		CTask* prev = now->GetPrev();
-
-		if (!now->IsDeleted())
+		if (m_list.count(i) == 0)
 		{
-			now = next;	// 次のタスクに移る
 			continue;
 		}
 
-		// 前後の状態を取得
-		bool isNextNullptr = (next == nullptr);
-		bool isPrevNullptr = (prev == nullptr);
+		CTask* now = m_list.at(i).top;
 
-		if (!isNextNullptr && !isPrevNullptr)
+		while (now != nullptr)
 		{
-			next->SetPrev(prev);
-			prev->SetNext(next);
-		}
-		else if (!isNextNullptr && isPrevNullptr)
-		{
-			m_top = prev;
-			prev->SetNext(next);
-		}
-		else if (isNextNullptr && !isPrevNullptr)
-		{
-			m_current = next;
-			next->SetPrev(prev);
-		}
+			// 次のタスクを保存
+			CTask* next = now->GetNext();
+			CTask* prev = now->GetPrev();
 
-		delete now;	// 削除
-		now = next;	// 次のタスクに移る
+			if (!now->IsDeleted())
+			{
+				now = next;	// 次のタスクに移る
+				continue;
+			}
+
+			// 前後の状態を取得
+			bool isNextNullptr = (next == nullptr);
+			bool isPrevNullptr = (prev == nullptr);
+
+			if (!isNextNullptr && !isPrevNullptr)
+			{
+				next->SetPrev(prev);
+				prev->SetNext(next);
+			}
+			else if (!isNextNullptr && isPrevNullptr)
+			{
+				m_list.at(i).current = next;
+				next->SetPrev(nullptr);
+			}
+			else if (isNextNullptr && !isPrevNullptr)
+			{
+				m_list.at(i).top = prev;
+				prev->SetNext(nullptr);
+			}
+			else
+			{
+				m_list.at(i).current = nullptr;
+				m_list.at(i).top = nullptr;
+			}
+
+			delete now;	// 削除
+			now = next;	// 次のタスクに移る
+		}
 	}
 }

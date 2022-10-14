@@ -43,9 +43,9 @@ void CTest::Uninit()
 //------------------------------------
 // XV
 //------------------------------------
-void CTest::Update()
+void CTest::NormalUpdate()
 {
-	CObject2d::Update();
+	CObject2d::NormalUpdate();
 	//“®‚«
 	CTest::move();
 }

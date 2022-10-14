@@ -122,7 +122,7 @@ public:
 
 	HRESULT Init() override;
 	void Uninit() override;
-	void Update() override;
+	void NormalUpdate() override;
 	void Draw() override;
 
 	static CParticle* Create(const Info& inParticle, const D3DXVECTOR3& inPos);

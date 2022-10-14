@@ -160,7 +160,6 @@ void CManager::Draw()
 	m_pRenderer->Draw();	// •`‰æˆ—
 }
 
-
 //=============================================================================
 // GetRenderer
 //=============================================================================
@@ -210,10 +209,7 @@ CSound * CManager::GetSound()
 void CManager::SetMode(MODE mode)
 {
 	m_mode = mode;
-	if (m_pGame != nullptr)
-	{
-		m_pGame->Release();
-	}
+	m_pTaskGroup->Release();
 
 	// ƒ|ƒŠƒSƒ“‚ÌI—¹ˆ—
 	//CObject::ModeNotUninit();

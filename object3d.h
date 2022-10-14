@@ -50,7 +50,7 @@ public:
 	~CObject3d() override;
 	HRESULT Init() override;
 	void Uninit() override;
-	void Update() override;
+	void NormalUpdate() override;
 	void Draw() override;
 
 	virtual void SetPos(const D3DXVECTOR3 &pos) ;

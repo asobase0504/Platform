@@ -34,7 +34,7 @@ public:
 	~CObject2d() override;
 	HRESULT Init() override;
 	void Uninit() override;
-	void Update() override;
+	void NormalUpdate() override;
 	void Draw() override;
 
 	// Setter

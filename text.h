@@ -25,7 +25,7 @@ public:
 	~CText();
 	HRESULT Init() override;
 	void Uninit() override;
-	void Update() override;
+	void NormalUpdate() override;
 	void Draw() override;
 	static CText* Create(Type talkType, int DeleteTime, int SpeedText, const char * Text);
 
