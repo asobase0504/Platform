@@ -75,7 +75,7 @@ HRESULT CManager::Init(HWND hWnd, HINSTANCE hInstance)
 	}
 
 	// ƒŒƒ“ƒ_ƒ‰[‚Ì‰Šú‰»ˆ—
-	m_pRenderer = new CRenderer;
+	m_pRenderer = CRenderer::GetInstance();
 	if (FAILED(m_pRenderer->Init(hWnd, true)))
 	{
 		return E_FAIL;
@@ -167,7 +167,6 @@ CRenderer *CManager::GetRenderer()
 {
 	return m_pRenderer;
 }
-
 
 //=============================================================================
 // GetTexture

@@ -7,10 +7,16 @@
 #ifndef _OBJECT2D_H_			// このマクロ定義がされてなかったら
 #define _OBJECT2D_H_			// 二重インクルード防止のマクロ定義
 
+//-----------------------------------------------------------------------------
+// include
+//-----------------------------------------------------------------------------
 #include "renderer.h"
 #include "object.h"
 #include "texture.h"
 
+//=============================================================================
+// 構造体
+//=============================================================================
 struct PositionVec4
 {
 	float     P0, P1, P2, P3;
@@ -18,11 +24,23 @@ struct PositionVec4
 	constexpr PositionVec4(float _P0, float _P1, float _P2, float _P3) : P0(_P0), P1(_P1), P2(_P2), P3(_P3) { }
 };
 
+//=============================================================================
+// 2Dオブジェクトクラス
+//=============================================================================
 class CObject2d : public CObject
 {
 public:
 	// 頂点フォーマット
 	const DWORD FVF_VERTEX_2D = (D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1);
+
+	// 頂点データ
+	struct VERTEX_2D
+	{
+		D3DXVECTOR3 pos;
+		float rhw;
+		D3DCOLOR col;
+		D3DXVECTOR2 tex;	// テクスチャ座標(レベル1)
+	};
 private:
 	//polygonの拡大サイズ
 	static const D3DXVECTOR3 m_Vtx[4];

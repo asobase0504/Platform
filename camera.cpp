@@ -15,7 +15,8 @@
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CCamera::CCamera()
+CCamera::CCamera() :
+	CTask(CTaskGroup::EPushMethod::PUSH_TOP)
 {
 }
 
@@ -43,6 +44,7 @@ HRESULT CCamera::Init(void)
 	m_rotSpeed = 0.05f;
 	m_rotSpeed2 = D3DX_PI / 2;
 
+	D3DXVECTOR3 distPos = m_posR - m_posV;
 	m_fDistance = sqrtf((m_posR.x - m_posV.x) *
 		(m_posR.x - m_posV.x) +
 		(m_posR.z - m_posV.z) *
@@ -78,26 +80,31 @@ void CCamera::Update(void)
 }
 
 //=============================================================================
+// 更新
+//=============================================================================
+void CCamera::Draw()
+{
+	Set(0);
+}
+
+//=============================================================================
 // 描画
 //=============================================================================
 void CCamera::Set(int Type)
 {
 	m_Type = Type;
-	LPDIRECT3DDEVICE9  pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();//デバイスのポインタ
+	LPDIRECT3DDEVICE9  pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();	// デバイスのポインタ
 
-	//ビューマトリックスを初期化
+	// ビューマトリックスを初期化
 	D3DXMatrixIdentity(&m_MtxView);
 
-	//ビューマトリックスの作成
-	D3DXMatrixLookAtLH(&m_MtxView,
-		&m_posV,
-		&m_posR,
-		&m_vecU);
+	// ビューマトリックスの作成
+	D3DXMatrixLookAtLH(&m_MtxView, &m_posV, &m_posR, &m_vecU);
 
-	//適用
+	// 適用
 	pDevice->SetTransform(D3DTS_VIEW, &m_MtxView);
 
-	//プロジェクションマトリックスを初期化
+	// プロジェクションマトリックスを初期化
 	D3DXMatrixIdentity(&m_MtxProject);
 
 	//if (Type == 0)
@@ -113,12 +120,13 @@ void CCamera::Set(int Type)
 	{
 		// プロジェクションマトリックスの作成(平行投影)
 		D3DXMatrixOrthoLH(&m_MtxProject,					// プロジェクションマトリックス
-			(float)SCREEN_WIDTH,								// 幅
-			(float)SCREEN_HEIGHT,								// 高さ
-			-100.0f,											// ニア
-			2000.0f);											// ファー
+			(float)SCREEN_WIDTH,							// 幅
+			(float)SCREEN_HEIGHT,							// 高さ
+			-100.0f,										// ニア
+			2000.0f);										// ファー
 	}
-	//適用
+
+	// 適用
 	pDevice->SetTransform(D3DTS_PROJECTION, &m_MtxProject);
 }
 

@@ -7,23 +7,24 @@
 #ifndef _RENDERER_H_			// このマクロ定義がされてなかったら
 #define _RENDERER_H_			// 二重インクルード防止のマクロ定義
 
-//*****************************************************************************
+//-----------------------------------------------------------------------------
 // ライブラリーリンク
-//*****************************************************************************
+//-----------------------------------------------------------------------------
 #pragma comment(lib,"d3d9.lib")
 #pragma comment(lib,"d3dx9.lib")
 #pragma comment(lib,"winmm.lib")
 
-//*****************************************************************************
-// インクルード
-//*****************************************************************************
+//-----------------------------------------------------------------------------
+// include
+//-----------------------------------------------------------------------------
 #include <Windows.h>
 #include <tchar.h> // _T
+#include <string>
+
 #pragma push_macro("new")
 #undef new
 #include <d3dx9.h>
 #pragma pop_macro("new")
-#include <string>
 
 //*****************************************************************************
 // 定数定義
@@ -47,60 +48,44 @@ class CCamera;
 class CLight;
 class CParticle;
 
-
-//*****************************************************************************
-// 構造体定義
-//*****************************************************************************
-// 頂点データ
-struct VERTEX_2D
-{
-	D3DXVECTOR3 pos;
-	float rhw;
-	D3DCOLOR col;
-	D3DXVECTOR2 tex;	// テクスチャ座標(レベル1)
-};
-
+//=============================================================================
+// 描画の設定
+//=============================================================================
 class CRenderer
 {
 public:
+	static CRenderer* GetInstance();
+	static CRenderer* m_renderer;
+private:
 	CRenderer();
+public:
 	~CRenderer();
 	HRESULT Init(HWND hWnd, bool bWindow);
 	void Uninit();
 	void Update();
 	void Draw();
-	LPDIRECT3DDEVICE9	GetDevice(void)
-	{
-		return m_pD3DDevice;
-	};
 
-	static CCamera *GetCamera();
+	// Setter
+	CCamera* SetCamera(CCamera* inCamera);
 
-private:
+	// Getter
+	LPDIRECT3DDEVICE9 GetDevice() { return m_pD3DDevice; }
+	CCamera* GetCamera() { return m_camera; }
 
+private:	// プライベート関数
 #ifdef _DEBUG
 	void DrawFPS();
 #endif // _DEBUG
 
+private:	// メンバー変数
+	LPDIRECT3D9 m_pD3D;				// Direct3Dオブジェクト
+	LPDIRECT3DDEVICE9 m_pD3DDevice;	// Deviceオブジェクト
 
-	// Direct3Dオブジェクト
-	LPDIRECT3D9 m_pD3D = nullptr;
-	// Deviceオブジェクト
-	LPDIRECT3DDEVICE9 m_pD3DDevice = nullptr;
+	CCamera* m_camera;	// カメラ
 
-	
 #ifdef _DEBUG
 	// フォント
 	LPD3DXFONT m_pFont = nullptr;
 #endif // _DEBUG
-
-	
-	static CCamera* pCamera[2];
-	static CLight* pLight;
-	static CParticle* particle;
-
-
 };
-
-
 #endif

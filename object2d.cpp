@@ -66,7 +66,6 @@ HRESULT CObject2d::Init()
 	pVtx[2].pos = D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f);
 	pVtx[3].pos = D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f);
 
-
 	//rhwの設定
 	pVtx[0].rhw = 1.0f;
 	pVtx[1].rhw = 1.0f;
@@ -88,7 +87,6 @@ HRESULT CObject2d::Init()
 
 	//頂点バッファをアンロックする
 	m_pVtxBuff->Unlock();
-
 
 	 m_CounterAnim = 0;
 	 m_PatternAnimX = 1;

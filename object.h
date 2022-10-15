@@ -60,8 +60,13 @@ public:
 
 	/* ˆÚ“®Œn */
 	virtual void SetMove(const D3DXVECTOR3 &inMove) { m_move = inMove; }
-	void SumMove(const D3DXVECTOR3 &inMove) { SumMove(m_move += inMove); }
-	void MulMove(const float &inRatio) { SumMove(m_move * inRatio); }
+	void SumMove(const D3DXVECTOR3 &inMove) { SetMove(m_move += inMove); }
+	void MulMove(const float &inRatio) { SetMove(m_move * inRatio); }
+
+	/* ˆÚ“®Œn */
+	virtual void SetRot(const D3DXVECTOR3 &inRot) { m_rot = inRot; }
+	void SumRot(const D3DXVECTOR3 &inRot) { SetRot(m_rot += inRot); }
+	void MulRot(const float &inRatio) { SetRot(m_rot * inRatio); }
 
 	void SetUp(const EType inType);
 	void SetUpdateStatus(const EUpdateStatus inStatus) { m_updateStatus = inStatus; }
@@ -69,6 +74,7 @@ public:
 	// Getter
 	const D3DXVECTOR3 *GetPos() const { return &m_pos; }
 	const D3DXVECTOR3 *GetMove() const { return &m_move; }
+	const D3DXVECTOR3 *GetRot() const { return &m_rot; }
 
 	EType GetType();
 
@@ -80,6 +86,7 @@ private:
 protected:
 	D3DXVECTOR3 m_pos;	// ˆÊ’u
 	D3DXVECTOR3 m_move;	// ˆÚ“®—Ê
+	D3DXVECTOR3 m_rot;	// ‰ñ“]—Ê
 private:
 	EType m_type;	// Ží•Ê
 	

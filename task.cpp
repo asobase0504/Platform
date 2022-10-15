@@ -9,12 +9,23 @@
 #include "manager.h"
 #include "task_group.h"
 
-CTask::CTask() :
+CTask::CTask(CTaskGroup::EPushMethod inMethod,int inPriority) :
 	m_prev(nullptr),
 	m_next(nullptr),
 	m_isDeleted(false)
 {
-	CManager::GetInstance()->GetTaskGroup()->SetPushCurrent(this);
+	switch (inMethod)
+	{
+	case CTaskGroup::PUSH_CURRENT:
+		CManager::GetInstance()->GetTaskGroup()->SetPushCurrent(this, inPriority);
+		break;
+	case CTaskGroup::PUSH_TOP:
+		CManager::GetInstance()->GetTaskGroup()->SetPushTop(this, inPriority);
+		break;
+	default:
+		assert(false);
+		break;
+	}
 }
 
 CTask::~CTask()

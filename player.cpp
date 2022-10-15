@@ -136,7 +136,7 @@ void CPlayer::Move()	//動きセット
 
 
 	CInput *CInputpInput = CInput::GetKey();
-	D3DXVECTOR3 *Camerarot = CRenderer::GetCamera()->GetRot();
+	D3DXVECTOR3 *Camerarot = CRenderer::GetInstance()->GetCamera()->GetRot();
 	float consumption = 0.0f;
 
 	if (CInputpInput->Press(CInput::KEY_RIGHT))
@@ -199,7 +199,7 @@ void CPlayer::Move()	//動きセット
 		{
 			
 			D3DXVECTOR3 Pos = ScreenCastWorld(
-				&m_pos,			// スクリーン座標
+				m_pos,			// スクリーン座標
 				D3DXVECTOR3((float)SCREEN_WIDTH, (float)SCREEN_HEIGHT, 0.0f));
 			
 			//CastMagicの中につかった情報を入れる
@@ -298,7 +298,7 @@ CPlayer::NOWMAGIC * CPlayer::GetCastMagic()
 void CPlayer::TitleMove()
 {
 
-	D3DXVECTOR3 *Camerarot = CRenderer::GetCamera()->GetRot();
+	D3DXVECTOR3 *Camerarot = CRenderer::GetInstance()->GetCamera()->GetRot();
 	float consumption = 0.0f;
 	
 	m_move.x += sinf(-D3DX_PI *0.5f + Camerarot->y) * SPEED * m_MoveSpeed;
@@ -352,7 +352,7 @@ void CPlayer::TitleMove()
 void CPlayer::ResetMove()
 {
 
-	D3DXVECTOR3 *Camerarot = CRenderer::GetCamera()->GetRot();
+	D3DXVECTOR3 *Camerarot = CRenderer::GetInstance()->GetCamera()->GetRot();
 	float consumption = 0.0f;
 
 
@@ -408,7 +408,7 @@ void CPlayer::ResetMove()
 void CPlayer::TutorialMove()	//動きセット
 {
 	CInput *CInputpInput = CInput::GetKey();
-	D3DXVECTOR3 *Camerarot = CRenderer::GetCamera()->GetRot();
+	D3DXVECTOR3 *Camerarot = CRenderer::GetInstance()->GetCamera()->GetRot();
 	float consumption = 0.0f;
 
 	if (CInputpInput->Press(CInput::KEY_RIGHT))
@@ -469,10 +469,8 @@ void CPlayer::TutorialMove()	//動きセット
 
 		if (particleManager->GetEmitter().size() == 0)
 		{
-
-			D3DXVECTOR3 Pos = ScreenCastWorld(
-				&m_pos,			// スクリーン座標
-				D3DXVECTOR3((float)SCREEN_WIDTH, (float)SCREEN_HEIGHT, 0.0f));
+			// スクリーン座標からワールド座標に変換
+			D3DXVECTOR3 Pos = ScreenCastWorld(m_pos, D3DXVECTOR3((float)SCREEN_WIDTH, (float)SCREEN_HEIGHT, 0.0f));
 
 			//CastMagicの中につかった情報を入れる
 			m_CastMagic = m_NowMagic;

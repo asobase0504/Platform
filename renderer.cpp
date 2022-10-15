@@ -17,14 +17,28 @@
 #include "manager.h"
 #include "task_group.h"
 
- CCamera* CRenderer::pCamera[2];
- CLight*  CRenderer::pLight;
- CParticle*  CRenderer::particle;
+//=============================================================================
+// 静的メンバー変数の宣言
+//=============================================================================
+CRenderer* CRenderer::m_renderer = nullptr;
+
+//=============================================================================
+// シングルトンでのインスタンスの取得
+//=============================================================================
+CRenderer * CRenderer::GetInstance()
+{
+	if (m_renderer == nullptr)
+	{
+		m_renderer = new CRenderer;
+	}
+	return m_renderer;
+}
 
 //=============================================================================
 // コンストラクト関数
 //=============================================================================
-CRenderer::CRenderer()
+CRenderer::CRenderer() :
+	m_camera(nullptr)
 {
 
 }
@@ -106,15 +120,6 @@ HRESULT CRenderer::Init(HWND hWnd, bool bWindow)
 	D3DXCreateFont(m_pD3DDevice, 18, 0, 0, 0, FALSE, SHIFTJIS_CHARSET,
 		OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, _T("Terminal"), &m_pFont);
 #endif
-	pCamera[0] = new CCamera;
-	pCamera[0]->Init();
-	
-	pCamera[1] = new CCamera;
-	pCamera[1]->Init();
-
-	pLight = new CLight;
-	pLight->Init();
-
 	return S_OK;
 }
 
@@ -124,36 +129,6 @@ HRESULT CRenderer::Init(HWND hWnd, bool bWindow)
 void CRenderer::Uninit()
 {
 	CManager::GetInstance()->GetTaskGroup()->Uninit();
-
-	// ライト終了処理
-	if (pLight != nullptr)
-	{
-		pLight->Uninit();
-		delete pLight;
-		pLight = nullptr;
-	}
-
-	// カメラ終了処理
-	if (pCamera[0] != nullptr)
-	{
-		pCamera[0]->Uninit();
-		delete pCamera[0];
-		pCamera[0] = nullptr;
-	}
-	// カメラ終了処理
-	if (pCamera[1] != nullptr)
-	{
-		pCamera[1]->Uninit();
-		delete pCamera[1];
-		pCamera[1] = nullptr;
-	}
-
-	if (particle != nullptr)
-	{
-		particle->Uninit();
-		delete particle;
-		particle = nullptr;
-	}
 
 #ifdef _DEBUG
 	// デバッグ情報表示用フォントの破棄
@@ -188,25 +163,7 @@ void CRenderer::Update()
 
 	C3dpolygon::PolygonReset();
 
-	// ライトの更新
-	pLight->Update();
-
 	CManager::GetInstance()->GetTaskGroup()->Update();
-
-	//if (pPause == nullptr)
-	//{
-	//}
-	//else
-	//{
-	//	if (pPause->Get())
-	//	{
-	//		CObject::TypeUpdate(CObject::PAUSE);
-	//	}
-	//	else
-	//	{
-	//		CObject::AllUpdate();
-	//	}
-	//}
 }
 
 //=============================================================================
@@ -220,7 +177,6 @@ void CRenderer::Draw()
 	// Direct3Dによる描画の開始
 	if (SUCCEEDED(m_pD3DDevice->BeginScene()))
 	{
-		pCamera[0]->Set(0);
 		CManager::GetInstance()->GetTaskGroup()->Draw();
 
 #ifdef _DEBUG
@@ -234,6 +190,17 @@ void CRenderer::Draw()
 
 	// バックバッファとフロントバッファの入れ替え
 	m_pD3DDevice->Present(NULL, NULL, NULL, NULL);
+}
+
+//=============================================================================
+// カメラの設定
+//=============================================================================
+CCamera * CRenderer::SetCamera(CCamera * inCamera)
+{
+	m_camera = inCamera;
+	m_camera->Init();
+
+	return m_camera;
 }
 
 #ifdef _DEBUG
@@ -252,11 +219,3 @@ void  CRenderer::DrawFPS()
 	m_pFont->DrawText(NULL, str, -1, &rect, DT_LEFT, D3DCOLOR_ARGB(0xff, 0xff, 0xff, 0xff));
 }
 #endif // _DEBUG
-
-//=============================================================================
-// GetCamera関数
-//=============================================================================
-CCamera *CRenderer::GetCamera()
-{
-	return pCamera[0];
-}

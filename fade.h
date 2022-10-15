@@ -45,13 +45,13 @@ public:
 
 	static CFade* Create();
 	void CFade::NextMode(CManager::MODE nextMode);
-	FADE* GetFade() { return& fade; }
+	FADE* GetFade() { return& m_fade; }
 
 private:
 	float m_fadeSp;
 	float m_fadeSet;
 	bool m_bake;
 	CManager::MODE m_nextMode;
-	FADE fade;
+	FADE m_fade;
 };
 #endif

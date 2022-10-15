@@ -70,7 +70,7 @@ CTest *CTest::Create(D3DXVECTOR3 pos, bool b3D)
 		D3DXVECTOR3 Poppos = pos;
 		if (b3D)
 		{
-			Poppos = ScreenCastWorld(&Poppos,			// スクリーン座標
+			Poppos = ScreenCastWorld(Poppos,			// スクリーン座標
 				D3DXVECTOR3((float)SCREEN_WIDTH, (float)SCREEN_HEIGHT, 0.0f));								// スクリーンサイズ
 		}
 		pObject->Init();

@@ -24,12 +24,18 @@ class CTask;
 class CTaskGroup
 {
 public:
-
 	// リスト構造体
 	struct SList
 	{
 		CTask* top;
 		CTask* current;
+	};
+
+	// 追加方法
+	enum EPushMethod
+	{
+		PUSH_CURRENT = 0,
+		PUSH_TOP
 	};
 
 public:

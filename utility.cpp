@@ -2,6 +2,8 @@
 // 
 // Hackathon ( utility.cpp )
 // Author  : katsuki mizuki
+// Author  : Hamada Ryuuga
+// Author  : Yuda Kaito
 // 
 //**************************************************
 
@@ -107,8 +109,8 @@ D3DXVECTOR3 WorldCastScreen(D3DXVECTOR3 *screenPos,			// スクリーン座標
 	D3DXMatrixInverse(&InvView, NULL, mtxView);
 	D3DXMatrixInverse(&InvPrj, NULL, mtxProjection);
 	D3DXMatrixIdentity(&VP);
-	VP._11 = screenSize.x / 2.0f; VP._22 = -screenSize.y / 2.0f;
-	VP._41 = screenSize.x / 2.0f; VP._42 = screenSize.y / 2.0f;
+	VP._11 = screenSize.x * 0.5f; VP._22 = -screenSize.y * 0.5f;
+	VP._41 = screenSize.x * 0.5f; VP._42 = screenSize.y * 0.5f;
 	D3DXMatrixInverse(&InvViewport, NULL, &VP);
 
 	// ワールド座標へのキャスト
@@ -121,19 +123,15 @@ D3DXVECTOR3 WorldCastScreen(D3DXVECTOR3 *screenPos,			// スクリーン座標
 //---------------------------------------------------------------------------
 // スクリーン座標をワールド座標へのキャスト
 //---------------------------------------------------------------------------
-D3DXVECTOR3 ScreenCastWorld(D3DXVECTOR3 *screenPos,			// スクリーン座標
-	D3DXVECTOR3 screenSize									// スクリーンサイズ
-)															// プロジェクションマトリックス
+D3DXVECTOR3 ScreenCastWorld(const D3DXVECTOR3 &screenPos, D3DXVECTOR3 screenSize)
 {
-	// 変数宣言
+	D3DXVECTOR3 pos = screenPos;
 
-	D3DXVECTOR3 pos = *screenPos;
-
-	D3DXVECTOR3 Camerapos = *(CRenderer::GetCamera()->GetPos());
+	D3DXVECTOR3 Camerapos = *(CRenderer::GetInstance()->GetCamera()->GetPos());
 
 	pos.y *= -1;
 
-	pos -= (Camerapos - D3DXVECTOR3(screenSize.x / 2, screenSize.y / 2, 0.0f));
+	pos -= (Camerapos - D3DXVECTOR3(screenSize.x * 0.5f, screenSize.y * 0.5f, 0.0f));
 
 	return pos;
 }
@@ -207,4 +205,3 @@ float easeInQuad(float X)
 {
 	return X * X;
 }
-

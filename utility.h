@@ -102,7 +102,7 @@ D3DXVECTOR3 WorldCastScreen(D3DXVECTOR3 *screenPos,			// スクリーン座標
 // 引数2  : D3DXVECTOR3 screenSize
 // 返値  : D3DXVECTOR3 / 3Dを2D
 //--------------------------------------------------
-D3DXVECTOR3 ScreenCastWorld(D3DXVECTOR3 *screenPos,			// スクリーン座標
+D3DXVECTOR3 ScreenCastWorld(const D3DXVECTOR3 &screenPos,			// スクリーン座標
 	D3DXVECTOR3 screenSize);
 
 bool CollisionCircle(D3DXVECTOR3 Pos1,

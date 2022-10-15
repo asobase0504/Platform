@@ -75,7 +75,5 @@ private:
 	static int m_maxPolygon;
 	LPDIRECT3DVERTEXBUFFER9	m_pVtxBuff;
 	CTexture::TEXTURE m_texture;	// テクスチャの列挙型
-
 };
-
 #endif

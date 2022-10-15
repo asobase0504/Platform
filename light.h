@@ -28,7 +28,4 @@ public:
 private:
 	 D3DLIGHT9 m_light[LIGTH_MAX];	//ƒ‰ƒCƒgî•ñ
 };
-
-
-
 #endif // !_LIGHT_H_

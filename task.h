@@ -12,6 +12,7 @@
 //-----------------------------------------------------------------------------
 #include <Windows.h>
 #include <list>
+#include "task_group.h"
 
 //=============================================================================
 // タスククラス
@@ -19,7 +20,7 @@
 class CTask
 {
 public:
-	CTask();
+	CTask(CTaskGroup::EPushMethod inMethod = CTaskGroup::EPushMethod::PUSH_CURRENT, int inPriority = 0);
 	virtual ~CTask();
 
 	virtual HRESULT Init() = 0;

@@ -73,7 +73,7 @@ CObject3d::~CObject3d()
 //------------------------------------
 HRESULT CObject3d::Init(void)
 {
-	D3DXVECTOR3 *Camerarot = CRenderer::GetCamera()->GetRot();
+	D3DXVECTOR3 *Camerarot = CRenderer::GetInstance()->GetCamera()->GetRot();
 
 	m_ModelCollar = CMotion::NON;
 	m_damagecollar = 0;

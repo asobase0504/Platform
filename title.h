@@ -1,9 +1,9 @@
-//**************************************************
+//=============================================================================
 //
 // 制作 ( タイトル )
 // Author : hamada ryuuga
 //
-//**************************************************
+//=============================================================================
 #ifndef _TITLE_H_
 #define _TITLE_H_
 
@@ -21,6 +21,8 @@ class CBg;
 class CPlayer;
 class CEnemy;
 class C3dpolygon;
+class CCamera;
+class CLight;
 
 //=============================================================================
 // タイトルクラス
@@ -44,15 +46,17 @@ public:
 	void Uninit() override;
 	void Update() override;
 	void Draw() override;
-	
+
 private:
+	CCamera* m_pCamera[2];
+	CLight* m_pLight;
 	CPlayer* m_pPlayer;
 	CEnemy* m_pEnemy[10];
 	CBg* m_pBg[4];
 	C3dpolygon* m_p3dpolygon[4];
-	CObject2d* m_object2d[4];
+	CObject2d* m_text[4];
 	CObject2d* m_list[2];
-	CObject2d* fade;
+	CObject2d* m_fade;
 	int m_addX;
 	int m_addY;
 	MODE NextMode;
