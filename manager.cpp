@@ -113,6 +113,13 @@ HRESULT CManager::Init(HWND hWnd, HINSTANCE hInstance)
 //=============================================================================
 void CManager::Uninit()
 {
+	if (m_pTaskGroup != nullptr)
+	{// I—¹ˆ—
+		m_pTaskGroup->Release();
+		delete m_pTaskGroup;
+		m_pTaskGroup = nullptr;
+	}
+
 	if (m_pTexture != nullptr)
 	{// I—¹ˆ—
 		m_pTexture->ReleaseAll();
@@ -135,7 +142,7 @@ void CManager::Uninit()
 		delete m_pSound;
 		m_pSound = nullptr;
 	}
-	
+
 	//“ü—Íˆ—‚ÌI—¹ˆ—
 	m_pInput->Uninit();
 

@@ -128,8 +128,6 @@ HRESULT CRenderer::Init(HWND hWnd, bool bWindow)
 //=============================================================================
 void CRenderer::Uninit()
 {
-	CManager::GetInstance()->GetTaskGroup()->Uninit();
-
 #ifdef _DEBUG
 	// デバッグ情報表示用フォントの破棄
 	if (m_pFont != nullptr)

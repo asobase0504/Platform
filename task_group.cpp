@@ -214,7 +214,7 @@ void CTaskGroup::SetPrevTask(CTask * inReference, CTask * inTask)
 //=============================================================================
 void CTaskGroup::DeleteTask()
 {
-	for (int i = 0; i < m_priorityNumber; i++)
+	for (int i = 0; i <= m_priorityNumber; i++)
 	{
 		if (m_list.count(i) == 0)
 		{
@@ -260,6 +260,7 @@ void CTaskGroup::DeleteTask()
 				m_list.at(i).top = nullptr;
 			}
 
+			now->Uninit();
 			delete now;	// íœ
 			now = next;	// Ÿ‚Ìƒ^ƒXƒN‚ÉˆÚ‚é
 		}

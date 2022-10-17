@@ -78,7 +78,6 @@ void CPlayer::Uninit()
 //------------------------------------
 void CPlayer::NormalUpdate()
 {
-
 	switch (*CManager::GetInstance()->GetMode())
 	{
 	case CManager::MODE_TITLE:
@@ -128,27 +127,24 @@ CPlayer *CPlayer::Create()
 }
 
 //------------------------------------
-// Move
+// 動きセット
 //------------------------------------
-void CPlayer::Move()	//動きセット
+void CPlayer::Move()
 {
-
-
-
 	CInput *CInputpInput = CInput::GetKey();
 	D3DXVECTOR3 *Camerarot = CRenderer::GetInstance()->GetCamera()->GetRot();
 	float consumption = 0.0f;
 
 	if (CInputpInput->Press(CInput::KEY_RIGHT))
 	{
-		m_move.x += sinf(D3DX_PI *0.5f + Camerarot->y) * SPEED * m_MoveSpeed;
-		m_move.z += cosf(D3DX_PI *0.5f + Camerarot->y) * SPEED * m_MoveSpeed;
-		consumption = m_rotMove.x + (D3DX_PI*0.5f) - m_rot.y + Camerarot->y;
+		m_move.x += sinf(D3DX_PI * 0.5f + Camerarot->y) * SPEED * m_MoveSpeed;
+		m_move.z += cosf(D3DX_PI * 0.5f + Camerarot->y) * SPEED * m_MoveSpeed;
+		//consumption = m_rotMove.x + (D3DX_PI*0.5f) - m_rot.y + Camerarot->y;
 	}
 	if (CInputpInput->Press(CInput::KEY_LEFT))
 	{
-		m_move.x += sinf(-D3DX_PI *0.5f + Camerarot->y) * SPEED * m_MoveSpeed;
-		m_move.z += cosf(-D3DX_PI *0.5f + Camerarot->y) * SPEED * m_MoveSpeed;
+		m_move.x += sinf(-D3DX_PI * 0.5f + Camerarot->y) * SPEED * m_MoveSpeed;
+		m_move.z += cosf(-D3DX_PI * 0.5f + Camerarot->y) * SPEED * m_MoveSpeed;
 	}
 	if (CInputpInput->Press(CInput::KEY_DOWN))
 	{	
