@@ -21,7 +21,7 @@
 //=============================================================================
 // コンストラクト関数
 //=============================================================================
-CObject2d::CObject2d(int list):CObject(list)
+CObject2d::CObject2d(int list):CObject(CTaskGroup::EPushMethod::PUSH_CURRENT,list)
 {
 }
 

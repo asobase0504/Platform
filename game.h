@@ -19,6 +19,7 @@ class CMagicBox;
 class CParticleManager;
 class CPlayer;
 class CPause; 
+class CCamera;
 
 //=============================================================================
 // ゲームクラス
@@ -45,6 +46,7 @@ private:
 	static CPlayer* m_pPlayer;
 	static CParticleManager* m_pPaticleManager;	// パーティクルマネジャー
 	static CPause *m_pPause;
+	CCamera* m_pCamera[2];
 
 	int m_gameCount;
 	int m_speedUp;

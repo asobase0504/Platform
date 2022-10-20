@@ -15,8 +15,8 @@
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CCamera::CCamera() :
-	CTask(CTaskGroup::EPushMethod::PUSH_TOP)
+CCamera::CCamera(int inPriority) :
+	CTask(CTaskGroup::EPushMethod::PUSH_TOP, inPriority)
 {
 }
 

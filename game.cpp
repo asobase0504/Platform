@@ -27,6 +27,7 @@
 #include "bg.h"
 
 #include "pause.h"
+#include "camera.h"
 
 #include "text.h"
 
@@ -58,6 +59,8 @@ CGame::~CGame()
 //=============================================================================
 HRESULT CGame::Init(void)
 {
+	m_pCamera[0] = CRenderer::GetInstance()->SetCamera(new CCamera(2));
+	m_pCamera[1] = CRenderer::GetInstance()->SetCamera(new CCamera(1));
 	m_gameCount = 0;
 
 	srand((unsigned int)time(NULL)); // Œ»İ‚Ìî•ñ‚Å‰Šú‰»

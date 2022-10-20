@@ -47,7 +47,7 @@ public:
 	};
 
 public:
-	CObject(int inList = 0);
+	CObject(CTaskGroup::EPushMethod inMethod = CTaskGroup::EPushMethod::PUSH_CURRENT, int inPriority = 0);
 	virtual ~CObject() override;
 
 	void Update() override;

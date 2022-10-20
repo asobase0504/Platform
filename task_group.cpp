@@ -39,7 +39,7 @@ HRESULT CTaskGroup::Init()
 //=============================================================================
 void CTaskGroup::Uninit()
 {
-	for (int i = 0; i < m_priorityNumber; i++)
+	for (int i = 0; i <= m_priorityNumber; i++)
 	{
 		if (m_list.count(i) == 0)
 		{
@@ -62,7 +62,7 @@ void CTaskGroup::Uninit()
 //=============================================================================
 void CTaskGroup::Update()
 {
-	for (int i = 0; i < m_priorityNumber; i++)
+	for (int i = 0; i <= m_priorityNumber; i++)
 	{
 		if (m_list.count(i) == 0)
 		{
@@ -87,7 +87,7 @@ void CTaskGroup::Update()
 //=============================================================================
 void CTaskGroup::Draw()
 {
-	for (int i = 0; i < m_priorityNumber; i++)
+	for (int i = 0; i <= m_priorityNumber; i++)
 	{
 		if (m_list.count(i) == 0)
 		{
@@ -108,9 +108,9 @@ void CTaskGroup::Draw()
 //=============================================================================
 // ŠŽ‚µ‚Ä‚¢‚éƒ^ƒXƒN‚Ì”jŠü
 //=============================================================================
-void CTaskGroup::Release()
+void CTaskGroup::AllRelease()
 {
-	for (int i = 0; i < m_priorityNumber; i++)
+	for (int i = 0; i <= m_priorityNumber; i++)
 	{
 		if (m_list.count(i) == 0)
 		{
@@ -121,13 +121,38 @@ void CTaskGroup::Release()
 
 		while (now != nullptr)
 		{
-			now->Release();
+			if (!now->IsProtect())
+			{
+				now->Release();
+			}
 			now = now->GetNext();
 		}
 	}
 
 	// Ž€–S—\’è‚Ìƒ^ƒXƒN‚Ì”jŠü
 	DeleteTask();
+}
+
+//=============================================================================
+// Žw’è‚µ‚½priority‚Ìƒ^ƒXƒN‚ð”jŠü
+//=============================================================================
+void CTaskGroup::PriorityRelease(const int inPriotity)
+{
+	if (m_list.count(inPriotity) == 0)
+	{
+		return;
+	}
+
+	CTask* now = m_list.at(inPriotity).top;
+
+	while (now != nullptr)
+	{
+		if (!now->IsProtect())
+		{
+			now->Release();
+		}
+		now = now->GetNext();
+	}
 }
 
 //=============================================================================
@@ -141,7 +166,7 @@ void CTaskGroup::SetPushCurrent(CTask * inTask, int inPriority)
 		inList.top = nullptr;
 		inList.current = nullptr;
 		m_list.insert(std::make_pair(inPriority, inList));
-		m_priorityNumber++;
+		m_priorityNumber = inPriority;
 	}
 
 	SList* list = &m_list.at(inPriority);
@@ -169,6 +194,8 @@ void CTaskGroup::SetPushTop(CTask * inTask, int inPriority)
 	{
 		SList inList;
 		m_list.insert(std::make_pair(inPriority, inList));
+		m_list.at(inPriority).top = nullptr;
+		m_list.at(inPriority).current = nullptr;
 	}
 
 	if (m_list.at(inPriority).current == nullptr && m_list.at(inPriority).top == nullptr)
@@ -246,12 +273,12 @@ void CTaskGroup::DeleteTask()
 			}
 			else if (!isNextNullptr && isPrevNullptr)
 			{
-				m_list.at(i).current = next;
+				m_list.at(i).top = next;
 				next->SetPrev(nullptr);
 			}
 			else if (isNextNullptr && !isPrevNullptr)
 			{
-				m_list.at(i).top = prev;
+				m_list.at(i).current = prev;
 				prev->SetNext(nullptr);
 			}
 			else

@@ -81,9 +81,6 @@
     <ClCompile Include="letter.cpp">
       <Filter>01_System</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>00_Main</Filter>
-    </ClCompile>
     <ClCompile Include="3dpolygon.cpp">
       <Filter>02_Object</Filter>
     </ClCompile>
@@ -164,6 +161,9 @@
     </ClCompile>
     <ClCompile Include="task.cpp">
       <Filter>00_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>00_Main\画面遷移</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

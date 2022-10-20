@@ -18,7 +18,7 @@
 class CMode : public CTask
 {
 public:
-	CMode() {}
+	CMode() : CTask(CTaskGroup::EPushMethod::PUSH_CURRENT, 0) {}
 	~CMode() override {}
 
 	virtual HRESULT Init() override = 0;

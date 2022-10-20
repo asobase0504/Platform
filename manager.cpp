@@ -115,7 +115,7 @@ void CManager::Uninit()
 {
 	if (m_pTaskGroup != nullptr)
 	{// I—¹ˆ—
-		m_pTaskGroup->Release();
+		m_pTaskGroup->AllRelease();
 		delete m_pTaskGroup;
 		m_pTaskGroup = nullptr;
 	}
@@ -215,7 +215,7 @@ CSound * CManager::GetSound()
 void CManager::SetMode(MODE mode)
 {
 	m_mode = mode;
-	m_pTaskGroup->Release();
+	m_pTaskGroup->AllRelease();
 
 	// ƒ|ƒŠƒSƒ“‚ÌI—¹ˆ—
 	//CObject::ModeNotUninit();

@@ -14,7 +14,8 @@
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CObject::CObject(int inList) :
+CObject::CObject(CTaskGroup::EPushMethod inMethod, int inPriority) :
+	CTask(inMethod, inPriority),
 	m_updateStatus(POP)
 {
 }

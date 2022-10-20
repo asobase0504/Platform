@@ -30,7 +30,7 @@ const D3DXVECTOR3 C3dpolygon::m_Vtx[4] =
 // コンストラクタ
 //=============================================================================
 C3dpolygon::C3dpolygon(int list) :
-	CObject(list),
+	CObject(CTaskGroup::EPushMethod::PUSH_CURRENT,list),
 	m_pVtxBuff(nullptr)
 {
 	

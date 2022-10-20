@@ -20,7 +20,7 @@ class CCamera : public CTask
 {
 
 public:
-	CCamera();
+	CCamera(int inPriority = 2);
 	~CCamera() override;
 
 	HRESULT Init() override;

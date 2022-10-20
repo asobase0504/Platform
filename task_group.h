@@ -47,7 +47,10 @@ public:
 	void Update();
 	void Draw();
 
-	void Release();
+	// Release
+	void SecureRelease();
+	void AllRelease();
+	void PriorityRelease(const int inPriotity);
 
 	// Setter
 	void SetPushCurrent(CTask* inTask, int inPriority = 0);

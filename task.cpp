@@ -12,7 +12,8 @@
 CTask::CTask(CTaskGroup::EPushMethod inMethod,int inPriority) :
 	m_prev(nullptr),
 	m_next(nullptr),
-	m_isDeleted(false)
+	m_isDeleted(false),
+	m_isProtect(false)
 {
 	switch (inMethod)
 	{
