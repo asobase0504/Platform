@@ -55,6 +55,8 @@ void CTaskGroup::Uninit()
 			current = next;
 		}
 	}
+
+	DeleteTask();	// タスクリストの削除
 }
 
 //=============================================================================
@@ -125,6 +127,31 @@ void CTaskGroup::AllRelease()
 			{
 				now->Release();
 			}
+			now = now->GetNext();
+		}
+	}
+
+	// 死亡予定のタスクの破棄
+	DeleteTask();
+}
+
+//=============================================================================
+// 絶対にタスクを破棄
+//=============================================================================
+void CTaskGroup::AbsolutelyRelease()
+{
+	for (int i = 0; i <= m_priorityNumber; i++)
+	{
+		if (m_list.count(i) == 0)
+		{
+			continue;
+		}
+
+		CTask* now = m_list.at(i).top;
+
+		while (now != nullptr)
+		{
+			now->Release();
 			now = now->GetNext();
 		}
 	}

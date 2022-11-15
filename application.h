@@ -27,7 +27,7 @@ class CTaskGroup;
 //=============================================================================
 // マネジャークラス
 //=============================================================================
-class CManager
+class CApplication
 {
 public:
 
@@ -48,16 +48,16 @@ public:
 	};
 
 private: // 静的メンバー変数
-	static CManager* m_pManager;
+	static CApplication* m_pManager;
 
 public: // 静的関数
-	static CManager* GetInstance();
+	static CApplication* GetInstance();
 
 private: // シングルトン
-	CManager();
+	CApplication();
 
 public:	// メンバー関数
-	~CManager();
+	~CApplication();
 
 	HRESULT Init(HWND hWnd, HINSTANCE hInstance);
 	void Uninit();
@@ -69,7 +69,7 @@ public:	// メンバー関数
 	CTaskGroup* GetTaskGroup() { return m_pTaskGroup; }
 	CFade* GetFade();
 	MODE* GetMode();
-	void SetMode(CManager::MODE inMode);
+	void SetMode(CApplication::MODE inMode);
 	CSound* GetSound();
 
 private:

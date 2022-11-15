@@ -9,7 +9,7 @@
 //-----------------------------------------------------------------------------
 #include "object.h"
 #include "3dpolygon.h"
-#include "manager.h"
+#include "application.h"
 #include "input.h"
 #include "utility.h"
 #include "camera.h"
@@ -30,7 +30,7 @@ const D3DXVECTOR3 C3dpolygon::m_Vtx[4] =
 // コンストラクタ
 //=============================================================================
 C3dpolygon::C3dpolygon(int list) :
-	CObject(CTaskGroup::EPushMethod::PUSH_CURRENT,list),
+	CObject(list,CTaskGroup::EPushMethod::PUSH_CURRENT),
 	m_pVtxBuff(nullptr)
 {
 	
@@ -53,9 +53,9 @@ HRESULT C3dpolygon::Init()
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_time = 0;
 	
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();	//デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();	//デバイスの取得
 
-	m_texture = CTexture::TEXTURE_NONE;
+	m_texture = CTexture::GetInstance()->SetTexture("NONE");
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * 4,	//確保するバッファのサイズ
@@ -110,6 +110,7 @@ void C3dpolygon::NormalUpdate()
 	m_rot.z = -D3DXToRadian(TIMER);
 
 	m_maxPolygon++;
+
 	m_pos.z = -0.01f*m_maxPolygon;
 }
 
@@ -120,7 +121,7 @@ void C3dpolygon::Draw()
 {
 	// デバイスへのポインタ
 	// デバイスの取得
- 	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
+ 	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 
@@ -134,7 +135,7 @@ void C3dpolygon::Draw()
 	pDevice->SetFVF(FVF_VERTEX_3D);
 
 	// テクスチャの設定
-	pDevice->SetTexture(0, CManager::GetInstance()->GetTexture()->GetTexture(m_texture));
+	pDevice->SetTexture(0, CApplication::GetInstance()->GetTexture()->GetTexture(m_texture));
 
 	// ポリゴンの描画
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);	// プリミティブ(ポリゴン)数
@@ -164,14 +165,6 @@ C3dpolygon *C3dpolygon::Create(int list)
 }
 
 //=============================================================================
-// GetPos関数
-//=============================================================================
-const D3DXVECTOR3 *C3dpolygon::GetPos() const
-{
-	return &m_pos;
-}
-
-//=============================================================================
 // SetPos関数
 //=============================================================================
 void C3dpolygon::SetPos(const D3DXVECTOR3 &pos)
@@ -183,7 +176,7 @@ void C3dpolygon::SetPos(const D3DXVECTOR3 &pos)
 //--------------------------------------------------
 // テクスチャの設定
 //--------------------------------------------------
-void C3dpolygon::SetTexture(CTexture::TEXTURE texture)
+void C3dpolygon::SetTexture(int texture)
 {
 	m_texture = texture;
 }

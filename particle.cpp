@@ -6,7 +6,7 @@
 
 #include "utility.h"
 #include "renderer.h"
-#include "manager.h"
+#include "application.h"
 #include <assert.h>
 
 //==================================================
@@ -94,7 +94,7 @@ void CParticle::NormalUpdate()
 //--------------------------------------------------
 void CParticle::Draw()
 {
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();	// デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();	// デバイスの取得
 
 	switch (m_data.alphaBlend)
 	{
@@ -150,7 +150,7 @@ CParticle* CParticle::Create(const Info& inParticle, const D3DXVECTOR3& inPos)
 		//particle->SetTexture(particle->m_data.nIdxTex);
 		particle->SetColar(D3DXCOLOR(particle->m_data.color.colBigin.r, particle->m_data.color.colBigin.g, particle->m_data.color.colBigin.b, particle->m_data.color.colBigin.a));
 		
-		particle->CObject2d::SetTexture(CTexture::TEXTURE_SMOKE);
+		particle->CObject2d::SetTexture(CTexture::GetInstance()->SetTexture("SMOKE"));
 
 		return particle;
 	}

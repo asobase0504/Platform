@@ -8,14 +8,14 @@
 // include
 //-----------------------------------------------------------------------------
 #include "object.h"
-#include "manager.h"
+#include "application.h"
 #include <assert.h>
 
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CObject::CObject(CTaskGroup::EPushMethod inMethod, int inPriority) :
-	CTask(inMethod, inPriority),
+CObject::CObject(int inPriority, CTaskGroup::EPushMethod inMethod) :
+	CTask(inPriority, inMethod),
 	m_updateStatus(POP)
 {
 }
@@ -70,52 +70,4 @@ void CObject::NormalUpdate()
 void CObject::EndUpdate()
 {
 	Release();
-}
-
-//=============================================================================
-// タイプの設定
-//=============================================================================
-void CObject::SetUp(EType inType)
-{
-	switch (inType)
-	{
-	case EType::ENEMY:
-		m_type = ENEMY;
-		break;
-	case EType::PLAYER:
-		m_type = PLAYER;
-		break;
-	case EType::BULLET:
-		m_type = BULLET;
-		break;
-	case EType::GON:
-		m_type = GON;
-		break;
-	case EType::MAGIC:
-		m_type = MAGIC;
-		break;
-	case EType::CRYSTAL:
-		m_type = CRYSTAL;
-		break;
-	case EType::BG:
-		m_type = BG;
-		break;
-	case EType::MODE:
-		m_type = MODE;
-		break;
-	case EType::PAUSE:
-		m_type = PAUSE;
-		break;
-	default:
-		assert(false);
-		break;
-	}
-}
-
-//=============================================================================
-// タイプの取得
-//=============================================================================
-CObject::EType CObject::GetType()
-{
-	return m_type;
 }

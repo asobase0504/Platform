@@ -70,7 +70,7 @@ void CFade::Update(void)
 		{
 			m_fade = FADEOUT;
 			m_fadeSet = 1.0f;
-			CManager::GetInstance()->SetMode(m_nextMode);
+			CApplication::GetInstance()->SetMode(m_nextMode);
 
 		}
 		if (m_fadeSet <= 0.0f)
@@ -103,10 +103,10 @@ CFade* CFade::Create()
 	if (pObject != nullptr)
 	{
 		pObject->Init();
-		pObject->m_nextMode = CManager::MODE_TITLE;
+		pObject->m_nextMode = CApplication::MODE_TITLE;
 		pObject->SetSize(D3DXVECTOR3(1280.0f, 720.0f, 0.0f));
 		pObject->SetColar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
-		pObject->SetUp(CObject::MODE);
+		pObject->SetType(CObject::MODE);
 		pObject->m_fade = FADENON;
 	}
 	return pObject;
@@ -116,7 +116,7 @@ CFade* CFade::Create()
 //=============================================================================
 // éüÇÃÉÇÅ[ÉhÇ…à⁄çs
 //=============================================================================
-void CFade::NextMode(CManager::MODE nextMode)
+void CFade::NextMode(CApplication::MODE nextMode)
 {
 	if (m_fade != FADENON)
 	{

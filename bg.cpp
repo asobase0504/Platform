@@ -7,7 +7,7 @@
 
 #include "bg.h"
 #include "utility.h"
-#include "manager.h"
+#include "application.h"
 
 
 //------------------------------------
@@ -61,7 +61,7 @@ void CBg::NormalUpdate()
 //------------------------------------
 void CBg::Draw()
 {
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();
 	//アルファブレンディングを加算合成に設定
 	//pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
 	//pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
@@ -95,19 +95,6 @@ CBg *CBg::Create()
 	}
 
 	return pObject;
-}
-
-//------------------------------------
-// Get＆Set 
-//------------------------------------
-const D3DXVECTOR3 * CBg::GetPos() const
-{
-	return &m_pos;
-}
-
-void CBg::SetPos(const D3DXVECTOR3 & pos)
-{
-	m_pos = pos;
 }
 
 

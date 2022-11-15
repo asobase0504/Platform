@@ -7,7 +7,7 @@
 
 #include "object.h"
 #include "object2d.h"
-#include "manager.h"
+#include "application.h"
 #include "input.h"
 
 
@@ -21,7 +21,7 @@
 //=============================================================================
 // コンストラクト関数
 //=============================================================================
-CObject2d::CObject2d(int list):CObject(CTaskGroup::EPushMethod::PUSH_CURRENT,list)
+CObject2d::CObject2d(int list):CObject(list,CTaskGroup::EPushMethod::PUSH_CURRENT)
 {
 }
 
@@ -40,9 +40,9 @@ HRESULT CObject2d::Init()
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_nScale = 10.0f;
 
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();	//デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();	//デバイスの取得
 
-	m_texture = CTexture::TEXTURE_NONE;
+	m_texture = -1;
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,	//確保するバッファのサイズ
@@ -160,7 +160,7 @@ void CObject2d::Draw()
 	LPDIRECT3DDEVICE9 pDevice;		//デバイスへのポインタ
 
 	 //デバイスの取得
-	pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
+	pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();
 
 	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_2D));
@@ -169,7 +169,7 @@ void CObject2d::Draw()
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
 	// テクスチャの取得
-	CTexture* pTexture = CManager::GetInstance()->GetTexture();
+	CTexture* pTexture = CApplication::GetInstance()->GetTexture();
 
 	// テクスチャの設定
 	pDevice->SetTexture(0, pTexture->GetTexture(m_texture));
@@ -216,7 +216,7 @@ void CObject2d::SetMove(const D3DXVECTOR3 &move)
 //--------------------------------------------------
 // テクスチャの設定
 //--------------------------------------------------
-void CObject2d::SetTexture(CTexture::TEXTURE texture)
+void CObject2d::SetTexture(int texture)
 {
 	m_texture = texture;
 } 
@@ -224,7 +224,7 @@ void CObject2d::SetTexture(CTexture::TEXTURE texture)
 //--------------------------------------------------
 // テクスチャの設定
 //--------------------------------------------------
-CTexture::TEXTURE CObject2d::GetTexture()
+int CObject2d::GetTexture()
 {
 	return m_texture;
 }

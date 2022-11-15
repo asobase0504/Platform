@@ -14,7 +14,7 @@
 #include "3dpolygon.h"
 #include "pause.h"
 #include "game.h"
-#include "manager.h"
+#include "application.h"
 #include "task_group.h"
 
 //=============================================================================
@@ -157,11 +157,8 @@ void CRenderer::Uninit()
 //=============================================================================
 void CRenderer::Update()
 {
-	CPause * pPause = CGame::GetPause();
-
 	C3dpolygon::PolygonReset();
-
-	CManager::GetInstance()->GetTaskGroup()->Update();
+	CApplication::GetInstance()->GetTaskGroup()->Update();
 }
 
 //=============================================================================
@@ -175,7 +172,7 @@ void CRenderer::Draw()
 	// Direct3D‚É‚æ‚é•`‰æ‚ÌŠJŽn
 	if (SUCCEEDED(m_pD3DDevice->BeginScene()))
 	{
-		CManager::GetInstance()->GetTaskGroup()->Draw();
+		CApplication::GetInstance()->GetTaskGroup()->Draw();
 
 #ifdef _DEBUG
 		// FPS•\Ž¦

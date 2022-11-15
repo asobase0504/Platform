@@ -9,7 +9,7 @@
 //-----------------------------------------------------------------------------
 #include "tutorial.h"
 #include "input.h"
-#include "manager.h"
+#include "application.h"
 #include "fade.h"
 #include "sound.h"
 
@@ -62,14 +62,14 @@ HRESULT CTutorial::Init(void)
 	m_magic = 2;
 
 	m_pBg[0] = CBg::Create();
-	m_pBg[0]->SetTexture(CTexture::TEXTURE_TUTORIAL);
-	m_pBg[0]->SetSize(CManager::CENTER_POS);
+	m_pBg[0]->SetTexture(CTexture::GetInstance()->SetTexture("TUTORIAL"));
+	m_pBg[0]->SetSize(CApplication::CENTER_POS);
 
 	m_pBg[0]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 	m_pPlayer = nullptr;
 	m_pPlayer = CPlayer::Create();
-	m_pPlayer->SetUp(CObject::PLAYER);
+	m_pPlayer->SetType(CObject::PLAYER);
 
 
 	m_pPaticleManager = new CParticleManager;
@@ -93,7 +93,7 @@ HRESULT CTutorial::Init(void)
 //=============================================================================
 void CTutorial::Uninit(void)
 {
-	CManager::GetInstance()->GetSound()->Stop();
+	CApplication::GetInstance()->GetSound()->Stop();
 	
 	if (m_pBg[0] != nullptr)
 	{
@@ -111,8 +111,8 @@ void CTutorial::Uninit(void)
 
 	}
 
-	CManager::GetInstance()->GetSound()->Stop();
-	CModelManager::ReleaseAll();
+	CApplication::GetInstance()->GetSound()->Stop();
+	CApplication::GetInstance()->GetTaskGroup()->AllRelease();
 }
 
 //=============================================================================
@@ -127,7 +127,7 @@ void CTutorial::Update(void)
 	if (CInputpInput->Trigger(CInput::KEY_DELETE))
 	{
 		//ƒ‚[ƒh‚ÌÝ’è
-		CManager::GetInstance()->GetFade()->NextMode(CManager::MODE_TITLE);
+		CApplication::GetInstance()->GetFade()->NextMode(CApplication::MODE_TITLE);
 	}
 
 	if (CInputpInput->Trigger(CInput::KEY_RELOAD))

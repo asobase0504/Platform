@@ -48,8 +48,8 @@ public:
 	void Draw();
 
 	// Release
-	void SecureRelease();
 	void AllRelease();
+	void AbsolutelyRelease();
 	void PriorityRelease(const int inPriotity);
 
 	// Setter
@@ -67,7 +67,7 @@ private:
 
 private:
 	std::unordered_map<int,SList> m_list;	// リスト一覧
-	int m_priorityNumber;	// レイヤー数
+	int m_priorityNumber;	// 描画順数
 };
 
 #endif

@@ -10,7 +10,7 @@
 //-----------------------------------------------------------------------------
 // include
 //-----------------------------------------------------------------------------
-#include "manager.h"
+#include "application.h"
 #include "renderer.h"
 #include "object2d.h"
 
@@ -44,14 +44,14 @@ public:
 	void Draw() override;
 
 	static CFade* Create();
-	void CFade::NextMode(CManager::MODE nextMode);
+	void CFade::NextMode(CApplication::MODE nextMode);
 	FADE* GetFade() { return& m_fade; }
 
 private:
 	float m_fadeSp;
 	float m_fadeSet;
 	bool m_bake;
-	CManager::MODE m_nextMode;
+	CApplication::MODE m_nextMode;
 	FADE m_fade;
 };
 #endif

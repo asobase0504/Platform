@@ -6,7 +6,7 @@
 //============================
 
 #include "name.h"
-#include "manager.h"
+#include "application.h"
 #include "input.h"
 
 
@@ -30,7 +30,7 @@ CName::~CName()
 HRESULT CName::Init()
 {
 	CObject2d::Init();
-	CObject2d::SetTexture(CTexture::TEXTURE_ALPHABET);
+	CObject2d::SetTexture(CTexture::GetInstance()->SetTexture("ALPHABET"));
 	color = PositionVec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	m_divisionX = 7;
@@ -160,7 +160,7 @@ void CName::Update()
 //=============================================================================
 void CName::Draw()
 {
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();
 
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
@@ -188,7 +188,7 @@ CName *CName::Create()
 	{
 		pObject->Init();
 
-		pObject->SetTexture(CTexture::TEXTURE_ALPHABET);
+		pObject->SetTexture(CTexture::GetInstance()->SetTexture("ALPHABET"));
 	}
 
 	return pObject;

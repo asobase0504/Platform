@@ -6,10 +6,10 @@
 //=============================================================================
 #include "task.h"
 #include <assert.h>
-#include "manager.h"
+#include "application.h"
 #include "task_group.h"
 
-CTask::CTask(CTaskGroup::EPushMethod inMethod,int inPriority) :
+CTask::CTask(unsigned int inPriority, CTaskGroup::EPushMethod inMethod) :
 	m_prev(nullptr),
 	m_next(nullptr),
 	m_isDeleted(false),
@@ -18,10 +18,10 @@ CTask::CTask(CTaskGroup::EPushMethod inMethod,int inPriority) :
 	switch (inMethod)
 	{
 	case CTaskGroup::PUSH_CURRENT:
-		CManager::GetInstance()->GetTaskGroup()->SetPushCurrent(this, inPriority);
+		CApplication::GetInstance()->GetTaskGroup()->SetPushCurrent(this, inPriority);
 		break;
 	case CTaskGroup::PUSH_TOP:
-		CManager::GetInstance()->GetTaskGroup()->SetPushTop(this, inPriority);
+		CApplication::GetInstance()->GetTaskGroup()->SetPushTop(this, inPriority);
 		break;
 	default:
 		assert(false);
@@ -35,5 +35,5 @@ CTask::~CTask()
 
 void CTask::Uninit()
 {
-	m_isDeleted = true;
+	Release();
 }

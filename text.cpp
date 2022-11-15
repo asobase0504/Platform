@@ -6,7 +6,7 @@
 //============================
 
 #include "text.h"
-#include "manager.h"
+#include "application.h"
 #include "renderer.h"
 #include <Shlwapi.h>
 //=============================================================================
@@ -47,7 +47,7 @@ HRESULT CText::Init()
 	);
 
 	// デバッグ情報表示用フォントの生成
-	D3DXCreateFont(CManager::GetInstance()->GetRenderer()->GetDevice(), 38, 0, 0, 0, FALSE, SHIFTJIS_CHARSET,
+	D3DXCreateFont(CApplication::GetInstance()->GetRenderer()->GetDevice(), 38, 0, 0, 0, FALSE, SHIFTJIS_CHARSET,
 		OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, _T("FZゴンタかな"), &m_pFont);
 
 	m_isRelease = false;
@@ -119,7 +119,7 @@ void CText::NormalUpdate()
 //=============================================================================
 void CText::Draw()
 {
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();
 
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
@@ -159,10 +159,10 @@ CText *CText::Create(Type talkType,int DeleteTime, int SpeedText,const char * Te
 		switch (talkType)
 		{
 		case CText::GON:
-			pObject->SetTexture(CTexture::TEXTURE_GONBOX);
+			pObject->SetTexture(CTexture::GetInstance()->SetTexture("GONBOX"));
 			break;
 		case CText::MASUO:
-			pObject->SetTexture(CTexture::TEXTURE_MASUOBOX);
+			pObject->SetTexture(CTexture::GetInstance()->SetTexture("MASUOBOX"));
 			break;
 		case CText::MAX:
 			break;

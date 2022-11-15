@@ -9,7 +9,7 @@
 //-----------------------------------------------------------------------------
 #include "nameset.h"
 #include "input.h"
-#include "manager.h"
+#include "application.h"
 #include "object2d.h"
 #include "ranking.h"
 #include "fade.h"
@@ -60,30 +60,30 @@ HRESULT CNameSet::Init(void)
 {
 	m_PlayName = "";
 	m_NowPlay = 0;
-	m_NemePos = D3DXVECTOR3(CManager::CENTER_POS.x-300.0f, 100.0f, 0.0f);
+	m_NemePos = D3DXVECTOR3(CApplication::CENTER_POS.x-300.0f, 100.0f, 0.0f);
 
 	m_object2d[0] = CObject2d::Create();
-	m_object2d[0]->SetTexture(CTexture::TEXTURE_TITLEBG);
-	m_object2d[0]->SetSize(CManager::CENTER_POS);
-	m_object2d[0]->SetPos(CManager::CENTER_POS);
+	m_object2d[0]->SetTexture(CTexture::GetInstance()->SetTexture("TITLEBG"));
+	m_object2d[0]->SetSize(CApplication::CENTER_POS);
+	m_object2d[0]->SetPos(CApplication::CENTER_POS);
 
 	m_object2d[1] = CObject2d::Create();
-	m_object2d[1]->SetTexture(CTexture::TEXTURE_NAMETITLE);
+	m_object2d[1]->SetTexture(CTexture::GetInstance()->SetTexture("NAMETITLE"));
 	m_object2d[1]->SetSize(D3DXVECTOR3(500.0f, 175.0f, 0.0f));
-	m_object2d[1]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x, 575.0f, 0.0f));
+	m_object2d[1]->SetPos(D3DXVECTOR3(CApplication::CENTER_POS.x, 575.0f, 0.0f));
 
 	m_ListName[0] = CName::Create();
 	m_ListName[0]->SetSize(D3DXVECTOR3(50.0f, 50.0f, 0.0f));
-	m_ListName[0]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x -125.0f, 375.0f, 0.0f));
+	m_ListName[0]->SetPos(D3DXVECTOR3(CApplication::CENTER_POS.x -125.0f, 375.0f, 0.0f));
 	m_ListName[0]->SetAlphabet(CName::MAX);
 
 	m_ListName[1] = CName::Create();
 	m_ListName[1]->SetSize(D3DXVECTOR3(75.0f, 75.0f, 0.0f));
-	m_ListName[1]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x, 350.0f, 0.0f));
+	m_ListName[1]->SetPos(D3DXVECTOR3(CApplication::CENTER_POS.x, 350.0f, 0.0f));
 
 	m_ListName[2] = CName::Create();
 	m_ListName[2]->SetSize(D3DXVECTOR3(50.0f, 50.0f, 0.0f));
-	m_ListName[2]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x + 125.0f, 375.0f, 0.0f));
+	m_ListName[2]->SetPos(D3DXVECTOR3(CApplication::CENTER_POS.x + 125.0f, 375.0f, 0.0f));
 	m_ListName[2]->SetAlphabet(CName::B);
 
 	return S_OK;
@@ -123,7 +123,7 @@ void CNameSet::Update(void)
 			//ƒ‚[ƒh‚ÌÝ’è
 			CRanking::SetPlayNeme(m_PlayName);
 
-			CManager::GetInstance()->GetFade()->NextMode(CManager::MODE_RANKING);
+			CApplication::GetInstance()->GetFade()->NextMode(CApplication::MODE_RANKING);
 			return;
 		}
 
@@ -155,7 +155,7 @@ void CNameSet::RankingNeme()
 		{
 			CRanking::SetPlayNeme(m_PlayName);
 
-			CManager::GetInstance()->SetMode(CManager::MODE_RANKING);
+			CApplication::GetInstance()->SetMode(CApplication::MODE_RANKING);
 			return;
 		}
 		else

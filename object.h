@@ -23,6 +23,7 @@ public:
 	{
 		ENEMY = 0,
 		PLAYER,
+		MODEL,
 		BULLET,
 		GON,
 		MAGIC,
@@ -47,38 +48,48 @@ public:
 	};
 
 public:
-	CObject(CTaskGroup::EPushMethod inMethod = CTaskGroup::EPushMethod::PUSH_CURRENT, int inPriority = 0);
+	CObject(int inPriority = 0,CTaskGroup::EPushMethod inMethod = CTaskGroup::EPushMethod::PUSH_CURRENT);
 	virtual ~CObject() override;
 
 	void Update() override;
 
-	// Setter
 	/* à íuån */
 	virtual void SetPos(const D3DXVECTOR3 &inPos) { m_pos = inPos; }
-	void SumPos(const D3DXVECTOR3 &inPos) { SetPos(m_pos + inPos); }
+	void AddPos(const D3DXVECTOR3 &inPos) { SetPos(m_pos + inPos); }
 	void MulPos(const float inRatio) { SetPos(m_pos * inRatio); }
+	const D3DXVECTOR3 &GetPos() const { return m_pos; }
 
 	/* à⁄ìÆån */
 	virtual void SetMove(const D3DXVECTOR3 &inMove) { m_move = inMove; }
-	void SumMove(const D3DXVECTOR3 &inMove) { SetMove(m_move += inMove); }
+	void AddMove(const D3DXVECTOR3 &inMove) { SetMove(m_move += inMove); }
 	void MulMove(const float &inRatio) { SetMove(m_move * inRatio); }
+	const D3DXVECTOR3 &GetMove() const { return m_move; }
 
-	/* à⁄ìÆån */
+	/* âÒì]ån */
 	virtual void SetRot(const D3DXVECTOR3 &inRot) { m_rot = inRot; }
-	void SumRot(const D3DXVECTOR3 &inRot) { SetRot(m_rot += inRot); }
+	void AddRot(const D3DXVECTOR3 &inRot) { SetRot(m_rot += inRot); }
 	void MulRot(const float &inRatio) { SetRot(m_rot * inRatio); }
+	const D3DXVECTOR3 &GetRot() const { return m_rot; }
 
-	void SetUp(const EType inType);
+	/* âÒì]ån */
+	virtual void SetSize(const D3DXVECTOR3 &inSize) { m_size = inSize; }
+	void AddSize(const D3DXVECTOR3 &inSize) { SetSize(m_size += inSize); }
+	void MulSize(const float &inRatio) { SetSize(m_size * inRatio); }
+	const D3DXVECTOR3 &GetSize() const { return m_size; }
+
+	/* êFån */
+	virtual void SetColor(const D3DXCOLOR &inColor) { m_color = inColor; }
+	void AddColor(const D3DXCOLOR &inColor) { SetColor(m_color += inColor); }
+	void MulColor(const float &inRatio) { SetColor(m_color * inRatio); }
+	const D3DXCOLOR &GetColor() const { return m_color; }
+
+	void SetType(const EType inType) { m_type = inType; }
+	EType GetType() { return m_type; }
+
 	void SetUpdateStatus(const EUpdateStatus inStatus) { m_updateStatus = inStatus; }
 
-	// Getter
-	const D3DXVECTOR3 *GetPos() const { return &m_pos; }
-	const D3DXVECTOR3 *GetMove() const { return &m_move; }
-	const D3DXVECTOR3 *GetRot() const { return &m_rot; }
 
-	EType GetType();
-
-private:
+protected:
 	virtual void PopUpdate();
 	virtual void NormalUpdate();
 	virtual void EndUpdate();
@@ -87,7 +98,9 @@ protected:
 	D3DXVECTOR3 m_pos;	// à íu
 	D3DXVECTOR3 m_move;	// à⁄ìÆó 
 	D3DXVECTOR3 m_rot;	// âÒì]ó 
-private:
+	D3DXVECTOR3 m_size;	// ëÂÇ´Ç≥
+	D3DXCOLOR m_color;	// êF
+
 	EType m_type;	// éÌï 
 	
 	EUpdateStatus m_updateStatus;	// çXêVèÛë‘

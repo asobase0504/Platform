@@ -38,11 +38,7 @@ public:
 	void Draw() override;
 
 	// Setter
-	void SetPos(const D3DXVECTOR3 &pos) override;
 	void SetBgType(const BgType &Type) { BgType = Type; };
-
-	// Getter
-	const D3DXVECTOR3 *GetPos() const override;
 
 private:
 	D3DXVECTOR3 m_Speed;

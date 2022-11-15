@@ -7,7 +7,7 @@
 //-----------------------------------------------------------------------------
 // include
 //-----------------------------------------------------------------------------
-#include "manager.h"
+#include "application.h"
 #include "main.h"
 #include "renderer.h"
 #include "input.h"
@@ -26,17 +26,17 @@
 //-----------------------------------------------------------------------------
 // 静的メンバー変数の初期化
 //-----------------------------------------------------------------------------
-CManager * CManager::m_pManager = nullptr;
-const D3DXVECTOR3 CManager::CENTER_POS = D3DXVECTOR3(1280.0f * 0.5f, 720.0f * 0.5f, 0.0f);
+CApplication * CApplication::m_pManager = nullptr;
+const D3DXVECTOR3 CApplication::CENTER_POS = D3DXVECTOR3(1280.0f * 0.5f, 720.0f * 0.5f, 0.0f);
 
 //=============================================================================
 // シングルトンでのインスタンスの取得
 //=============================================================================
-CManager * CManager::GetInstance()
+CApplication * CApplication::GetInstance()
 {
 	if (m_pManager == nullptr)
 	{
-		m_pManager = new CManager;
+		m_pManager = new CApplication;
 	}
 	return m_pManager;
 }
@@ -44,7 +44,7 @@ CManager * CManager::GetInstance()
 //=============================================================================
 // コンストラクト関数
 //=============================================================================
-CManager::CManager() :
+CApplication::CApplication() :
 	m_pTexture(nullptr),
 	m_pRenderer(nullptr),
 	m_pTaskGroup(nullptr),
@@ -57,7 +57,7 @@ CManager::CManager() :
 //=============================================================================
 // デストラクト関数
 //=============================================================================
-CManager::~CManager()
+CApplication::~CApplication()
 {
 
 }
@@ -65,7 +65,7 @@ CManager::~CManager()
 //=============================================================================
 // 初期化
 //=============================================================================
-HRESULT CManager::Init(HWND hWnd, HINSTANCE hInstance)
+HRESULT CApplication::Init(HWND hWnd, HINSTANCE hInstance)
 {
 	// 根幹グループの初期化処理
 	m_pTaskGroup = new CTaskGroup;
@@ -96,9 +96,9 @@ HRESULT CManager::Init(HWND hWnd, HINSTANCE hInstance)
 	}
 
 	m_pTexture = nullptr;
-	m_pTexture = new CTexture;
+	m_pTexture = CTexture::GetInstance();
 	
-	m_mode = CManager::MODE_TITLE;	//現在のモード
+	m_mode = CApplication::MODE_TITLE;	//現在のモード
 
 	//モードの設定
 	SetMode(m_mode);
@@ -111,18 +111,18 @@ HRESULT CManager::Init(HWND hWnd, HINSTANCE hInstance)
 //=============================================================================
 // 終了
 //=============================================================================
-void CManager::Uninit()
+void CApplication::Uninit()
 {
 	if (m_pTaskGroup != nullptr)
 	{// 終了処理
-		m_pTaskGroup->AllRelease();
+		m_pTaskGroup->Uninit();
 		delete m_pTaskGroup;
 		m_pTaskGroup = nullptr;
 	}
 
 	if (m_pTexture != nullptr)
 	{// 終了処理
-		m_pTexture->ReleaseAll();
+		m_pTexture->UnloadAll();
 		delete m_pTexture;
 		m_pTexture = nullptr;
 	}
@@ -151,7 +151,7 @@ void CManager::Uninit()
 //=============================================================================
 // 更新
 //=============================================================================
-void CManager::Update()
+void CApplication::Update()
 {
 	//入力処理の更新処理
 	m_pInput->Update();
@@ -162,7 +162,7 @@ void CManager::Update()
 //=============================================================================
 // 描画
 //=============================================================================
-void CManager::Draw()
+void CApplication::Draw()
 {
 	m_pRenderer->Draw();	// 描画処理
 }
@@ -170,7 +170,7 @@ void CManager::Draw()
 //=============================================================================
 // GetRenderer
 //=============================================================================
-CRenderer *CManager::GetRenderer()
+CRenderer *CApplication::GetRenderer()
 {
 	return m_pRenderer;
 }
@@ -178,7 +178,7 @@ CRenderer *CManager::GetRenderer()
 //=============================================================================
 // GetTexture
 //=============================================================================
-CTexture *CManager::GetTexture()
+CTexture *CApplication::GetTexture()
 {
 	return m_pTexture;
 }
@@ -186,7 +186,7 @@ CTexture *CManager::GetTexture()
 //=============================================================================
 // GetFade
 //=============================================================================
-CFade * CManager::GetFade()
+CFade * CApplication::GetFade()
 {
 	return m_pFade;
 }
@@ -195,7 +195,7 @@ CFade * CManager::GetFade()
 //=============================================================================
 // GetMode
 //=============================================================================
-CManager::MODE * CManager::GetMode()
+CApplication::MODE * CApplication::GetMode()
 {
 	return &m_mode;
 }
@@ -203,7 +203,7 @@ CManager::MODE * CManager::GetMode()
 //=============================================================================
 // GetSound
 //=============================================================================
-CSound * CManager::GetSound()
+CSound * CApplication::GetSound()
 {
 	return m_pSound;
 }
@@ -212,7 +212,7 @@ CSound * CManager::GetSound()
 //=============================================================================
 // モードの設定
 //=============================================================================
-void CManager::SetMode(MODE mode)
+void CApplication::SetMode(MODE mode)
 {
 	m_mode = mode;
 	m_pTaskGroup->AllRelease();
@@ -222,22 +222,22 @@ void CManager::SetMode(MODE mode)
 	
 	switch (mode)
 	{
-	case CManager::MODE_TITLE:
+	case CApplication::MODE_TITLE:
 		m_pGame = new CTitle;
 		break;
-	case CManager::MODE_GAME:
+	case CApplication::MODE_GAME:
 		m_pGame = new CGame;
 		break;
-	case CManager::MODE_RESULT:
+	case CApplication::MODE_RESULT:
 		m_pGame = new CResult;
 		break;
-	case CManager::MODE_RANKING:
+	case CApplication::MODE_RANKING:
 		m_pGame = new CRanking;
 		break;
-	case CManager::MODE_NAMESET:
+	case CApplication::MODE_NAMESET:
 		m_pGame = new CNameSet;
 		break;
-	case CManager::MODE_TUTORIAL:
+	case CApplication::MODE_TUTORIAL:
 		m_pGame = new CTutorial;
 		break;
 	default:

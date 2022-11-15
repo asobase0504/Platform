@@ -1,42 +1,51 @@
-//=============================================================================
+//**************************************************************************************************
 //
 // モーション処理(motion.cpp)
 // Auther：唐﨑結斗
 //
-//=============================================================================
+//**************************************************************************************************
 
-//-----------------------------------------------------------------------------
-// include
-//-----------------------------------------------------------------------------
+//***************************************************************************
+// インクルード
+//***************************************************************************
 #include <stdio.h>
 #include <assert.h>
-#include "manager.h"
-#include "motion.h"
-#include "utility.h"	
-
-CModelManager * CModelManager::ms_ModelManager;
+#include "application.h"
+#include "motion.h"	
+#include "objectX.h"
+#include "parts.h"
+#include "texture.h"
 
 //=============================================================================
 // コンストラクタ
 // Author : 唐﨑結斗
 // 概要 : インスタンス生成時に行う処理
 //=============================================================================
-CMotion::CMotion(char * pFileName)
+CMotion::CMotion(const char * pFileName)
 {
 	// パーツ名の初期化
 	memset(&m_partsFile, 0, sizeof(m_partsFile));
 
 	// モーションの初期化
-	memset(&m_motion, 0, sizeof(m_motion));
+	m_motion = nullptr;
 
 	// パーツの初期化
-	memset(&m_parts, 0, sizeof(m_parts));
+	m_pParts = nullptr;
 
 	// パーツ数の初期化
 	m_nMaxParts = 0;
-	m_nType = 0;
+
 	// モーションの読み込み
 	LoodSetMotion(pFileName);
+
+	// 扱うモーション
+	m_nNumMotion = 0;
+
+	// モーションを行うか
+	m_bMotion = false;
+
+	// モーションブレンド
+	m_bMotionBlend = false;
 }
 
 //=============================================================================
@@ -46,7 +55,7 @@ CMotion::CMotion(char * pFileName)
 //=============================================================================
 CMotion::~CMotion()
 {
-
+	assert(m_pParent == nullptr);
 }
 
 //=============================================================================
@@ -60,24 +69,105 @@ void CMotion::Init(void)
 	{// カウントのリセット
 		CntReset(nCntMotion);
 	}
+}
+
+//=============================================================================
+// 終了
+// Author : 唐﨑結斗
+// 概要 : メモリの解放
+//=============================================================================
+void CMotion::Uninit(void)
+{
+	for (int i = 0; i < MAX_MOTION; i++)
+	{
+		if (&m_motion[i] != nullptr)
+		{// メモリの解放
+			if (m_motion[i].pKeySet != nullptr)
+			{
+				for (int j = 0; j < m_motion[i].nNumKey; j++)
+				{
+					if (m_motion[i].pKeySet[j].pKey != nullptr)
+					{
+						delete[] m_motion[i].pKeySet[j].pKey;
+						m_motion[i].pKeySet[j].pKey = nullptr;
+					}
+				}
+				delete[] m_motion[i].pKeySet;
+				m_motion[i].pKeySet = nullptr;
+			}
+		}
+	}
+	if (m_motion != nullptr)
+	{// メモリの解放
+		delete[] m_motion;
+		m_motion = nullptr;
+	}
 
 	for (int i = 0; i < m_nMaxParts; i++)
 	{
-		// 位置と向きの初期値を保存
-		(m_parts + i)->posOrigin = (m_parts + i)->pos;
-		(m_parts + i)->rotOrigin = (m_parts + i)->rot;
+		if (m_pParts[i] != NULL)
+		{
+			m_pParts[i]->Uninit();
+			m_pParts[i] = nullptr;
+		}
+	}
 
-		// パーツ情報の初期化
-		(m_parts + i)->mtxWorld = {};		// ワールドマトリックス
-		
-		CModelManager *Manager = CModelManager::GetManager();
+	if (m_pParts != nullptr)
+	{
+		delete[] m_pParts;
+		m_pParts = nullptr;
+	}
+}
 
-		CModel*Data = Manager->Load(m_partsFile[(m_parts + i)->nType].aName);
+//=============================================================================
+// 更新
+// Author : 唐﨑結斗
+// 概要 : モーションの更新
+//=============================================================================
+void CMotion::Update()
+{
+	if (m_bMotionBlend)
+	{
+		MotionBlend();
+	}
+	else if (m_bMotion
+		&& !m_bMotionBlend)
+	{
+		PlayMotion();
+	}
+}
 
-		//ここにコピーしてるからよくない読み込んでからDataをそのまま使え浜田琉雅
-		(m_parts + i)->pBuffer = Data->pBuffer;
-		(m_parts + i)->nNumMat = Data->nNumMat;
-		(m_parts + i)->pMesh = Data->pMesh;
+//=============================================================================
+// モーションの設定
+// Author : 唐﨑結斗
+// 概要 : モーションの初期位置に設定
+//=============================================================================
+void CMotion::SetMotion(const int nCntMotionSet)
+{
+	CMotion::MyMotion *motion = (m_motion + nCntMotionSet);
+
+	for (int nCntParts = 0; nCntParts < m_nMaxParts; nCntParts++)
+	{
+		// 変数宣言
+		D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);					// 位置
+		D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);					// 向き
+		D3DXVECTOR3 posOrigin = m_pParts[nCntParts]->GetPosOrigin();		// 元の位置
+		D3DXVECTOR3 rotOrigin = m_pParts[nCntParts]->GetRotOrigin();		// 元の向き
+
+		// 位置の設定
+		pos = (posOrigin + motion->pKeySet[motion->nCntKeySet].pKey[nCntParts].pos);
+
+		//	向きの設定
+		rot = (rotOrigin + motion->pKeySet[motion->nCntKeySet].pKey[nCntParts].rot);
+
+		// 角度の正規化
+		rot.x = RotNormalization(rot.x);
+		rot.y = RotNormalization(rot.y);
+		rot.z = RotNormalization(rot.z);
+
+		// 情報の更新
+		m_pParts[nCntParts]->SetPos(pos);
+		m_pParts[nCntParts]->SetRot(rot);
 	}
 }
 
@@ -86,101 +176,21 @@ void CMotion::Init(void)
 // Author : 唐﨑結斗
 // 概要 : 行列を利用して、パーツの親子関係と描画設定を行う
 //=============================================================================
-void CMotion::SetParts(D3DXMATRIX mtxWorld, CMotion::MODELCOLLAR Type)
+void CMotion::SetParts(D3DXMATRIX mtxWorld)
 {
-
-		D3DXMATRIX mtxRot;
-		D3DXMATRIX mtxTrans;
-		D3DMATERIAL9 matDef;
-		D3DXMATERIAL *pMat;
 	// デバイスの取得
-	LPDIRECT3DDEVICE9	pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();
 
-	for (int i = 0; i < m_nMaxParts; i++)
-	{// ワールドマトリックスの初期化
-
-		CMotion::Parts* parts = m_parts + i;
-
-		D3DXMatrixIdentity(&parts->mtxWorld);	// 行列初期化関数
-
-		// 向きの反映
-		D3DXMatrixRotationYawPitchRoll(&mtxRot, parts->rot.y, parts->rot.x, parts->rot.z);	// 行列回転関数
-		D3DXMatrixMultiply(&parts->mtxWorld, &parts->mtxWorld, &mtxRot);					// 行列掛け算関数 
-
-		// 位置を反映
-		D3DXMatrixTranslation(&mtxTrans, parts->pos.x, parts->pos.y, parts->pos.z);			// 行列移動関数
-		D3DXMatrixMultiply(&parts->mtxWorld, &parts->mtxWorld, &mtxTrans);					// 行列掛け算関数
-
-		// 親パーツのワールドマトリックスを保持
-		D3DXMATRIX mtxParent;
-
-		if (parts->nIdxModelParent == -1)
-		{// 親モデルのインデックス数が-1の時
-		 // 新規深度値とZバッファの深度値が同じ値ならテスト成功にする
-		 //pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
-			mtxParent = mtxWorld;
+	for (int nCntParts = 0; nCntParts < m_nMaxParts; nCntParts++)
+	{// モデルの描画
+		if (m_pParts[nCntParts]->GetParent() != nullptr)
+		{
+			m_pParts[nCntParts]->Draw();
 		}
 		else
-		{// 新規深度値とZバッファの深度値が同じ値ならテスト成功にする
-			//pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_GREATEREQUAL);
-			mtxParent = (m_parts + parts->nIdxModelParent)->mtxWorld;
-		}
-
-		// 自分の親マトリックスとの掛け算
-		D3DXMatrixMultiply(&parts->mtxWorld, &parts->mtxWorld, &mtxParent);
-
-		//// サイズの反映
-		//D3DXMatrixScaling()
-
-		// ワールドマトリックスの設定
-		pDevice->SetTransform(D3DTS_WORLD, &parts->mtxWorld);
-
-		// 現在のマテリアルを保持
-		pDevice->GetMaterial(&matDef);
-
-		// マテリアルデータへのポインタを取得
-		pMat = (D3DXMATERIAL*)parts->pBuffer->GetBufferPointer();
-
-		DWORD ambient;
-		pDevice->GetRenderState(D3DRS_AMBIENT, &ambient);
-
-		switch (Type)
 		{
-		case CMotion::LET:
-			pDevice->SetRenderState(D3DRS_AMBIENT, 0xffff0000);//あか
-			break;
-		case CMotion::BLUE:
-			pDevice->SetRenderState(D3DRS_AMBIENT, 0xff6666ff); // ほんのり青
-			break;
-		case CMotion::YELLOW:
-			pDevice->SetRenderState(D3DRS_AMBIENT, 0x00ffff00); // ほんのり黄色
-			break;
-		case CMotion::GREEN:
-			pDevice->SetRenderState(D3DRS_AMBIENT, 0x0000ff00); // ほんのり緑
-			break;
-		case CMotion::NON:
-			break;
-		case CMotion::MAX:
-			break;
-		default:
-			break;
+			m_pParts[nCntParts]->Draw(mtxWorld);
 		}
-		//
-
-		for (int nCntMat = 0; nCntMat < (int)parts->nNumMat; nCntMat++)
-		{
-			pMat[nCntMat].MatD3D.Ambient = pMat[nCntMat].MatD3D.Diffuse;
-			// マテリアルの設定
-			pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
-
-			// プレイヤーパーツの描画
-			(m_parts + i)->pMesh->DrawSubset(nCntMat);
-		}
-
-		pDevice->SetRenderState(D3DRS_AMBIENT, ambient);
-
-		// 保していたマテリアルを戻す
-		pDevice->SetMaterial(&matDef);
 	}
 
 	// 新規深度値とZバッファの深度値が同じ値ならテスト成功にする
@@ -192,123 +202,153 @@ void CMotion::SetParts(D3DXMATRIX mtxWorld, CMotion::MODELCOLLAR Type)
 // Author : 唐﨑結斗
 // 概要 : 目的の位置まで特定のフレーム数で到着する処理をパーツごとに行う
 //=============================================================================
-bool CMotion::PlayMotion(const int nCntMotionSet)
+void CMotion::PlayMotion()
 {
-	// 変数宣言
-	bool bMotion = true;
+	CMotion::MyMotion *motion = (m_motion + m_nNumMotion);
 
 	for (int nCntParts = 0; nCntParts < m_nMaxParts; nCntParts++)
 	{
-		if (m_motion[nCntMotionSet].nCntFrame == 0)
+		// 変数宣言
+		D3DXVECTOR3 pos = m_pParts[nCntParts]->GetPos();			// 位置
+		D3DXVECTOR3 rot = m_pParts[nCntParts]->GetRot();			// 向き
+		D3DXVECTOR3 posDest = m_pParts[nCntParts]->GetPosDest();	// 目的の位置
+		D3DXVECTOR3 rotDest = m_pParts[nCntParts]->GetRotDest();	// 目的の向き
+
+		if (motion->nCntFrame == 0)
 		{// フレームカウントが0の時
+			// 変数宣言
+			D3DXVECTOR3 posOrigin = m_pParts[nCntParts]->GetPosOrigin();		// 元の位置
+			D3DXVECTOR3 rotOrigin = m_pParts[nCntParts]->GetRotOrigin();		// 元の向き
+
 			// 目的の位置と向きの算出
-			(m_parts + nCntParts)->posDest = ((m_parts + nCntParts)->posOrigin + m_motion[nCntMotionSet].keySet[m_motion[nCntMotionSet].nCntKeySet].key[nCntParts].pos) - (m_parts + nCntParts)->pos;
-			(m_parts + nCntParts)->rotDest = ((m_parts + nCntParts)->rotOrigin + m_motion[nCntMotionSet].keySet[m_motion[nCntMotionSet].nCntKeySet].key[nCntParts].rot) - (m_parts + nCntParts)->rot;
+			posDest = (posOrigin + motion->pKeySet[motion->nCntKeySet].pKey[nCntParts].pos) - pos;
+			rotDest = (rotOrigin + motion->pKeySet[motion->nCntKeySet].pKey[nCntParts].rot) - rot;
 
 			// 角度の正規化
-			NormalizeAngle(&(m_parts + nCntParts)->rotDest.x);
-			NormalizeAngle(&(m_parts + nCntParts)->rotDest.y);
-			NormalizeAngle(&(m_parts + nCntParts)->rotDest.z);
+			rotDest.x = RotNormalization(rotDest.x);
+			rotDest.y = RotNormalization(rotDest.y);
+			rotDest.z = RotNormalization(rotDest.z);
+
+			// 情報の更新
+			m_pParts[nCntParts]->SetPosDest(posDest);
+			m_pParts[nCntParts]->SetRotDest(rotDest);
 		}
 
 		// 変数宣言
-		D3DXVECTOR3 addPos = D3DXVECTOR3((m_parts + nCntParts)->posDest / (float)(m_motion[nCntMotionSet].keySet[m_motion[nCntMotionSet].nCntKeySet].nFrame));
-		D3DXVECTOR3 addRot = D3DXVECTOR3((m_parts + nCntParts)->rotDest / (float)(m_motion[nCntMotionSet].keySet[m_motion[nCntMotionSet].nCntKeySet].nFrame));
+		D3DXVECTOR3 addPos = D3DXVECTOR3(posDest / (float)(motion->pKeySet[motion->nCntKeySet].nFrame));
+		D3DXVECTOR3 addRot = D3DXVECTOR3(rotDest / (float)(motion->pKeySet[motion->nCntKeySet].nFrame));
 
 		// 位置の加算
-		(m_parts + nCntParts)->pos += addPos;
+		pos += addPos;
 
 		//	向きの加算
-		(m_parts + nCntParts)->rot += addRot;
+		rot += addRot;
 
 		// 角度の正規化
-		NormalizeAngle(&(m_parts + nCntParts)->rotDest.x);
-		NormalizeAngle(&(m_parts + nCntParts)->rotDest.y);
-		NormalizeAngle(&(m_parts + nCntParts)->rotDest.z);
+		rot.x = RotNormalization(rot.x);
+		rot.y = RotNormalization(rot.y);
+		rot.z = RotNormalization(rot.z);
+
+		// 情報の更新
+		m_pParts[nCntParts]->SetPos(pos);
+		m_pParts[nCntParts]->SetRot(rot);
 	}
 
 	// フレームカウントの加算
-	m_motion[nCntMotionSet].nCntFrame++;
+	motion->nCntFrame++;
 
-	if (m_motion[nCntMotionSet].nCntFrame >= m_motion[nCntMotionSet].keySet[m_motion[nCntMotionSet].nCntKeySet].nFrame)
+	if (motion->nCntFrame >= motion->pKeySet[motion->nCntKeySet].nFrame)
 	{// フレームカウントが指定のフレーム数を超えた場合
-		// フレーム数の初期化
-		m_motion[nCntMotionSet].nCntFrame = 0;
+	 // フレーム数の初期化
+		motion->nCntFrame = 0;
 
 		// 再生中のキー番号数の加算
-		m_motion[nCntMotionSet].nCntKeySet++;
+		motion->nCntKeySet++;
 
-		if (m_motion[nCntMotionSet].nCntKeySet >= m_motion[nCntMotionSet].nNumKey && m_motion[nCntMotionSet].bLoop)
+		if (motion->nCntKeySet >= motion->nNumKey && motion->bLoop)
 		{// 再生中のキー数カウントがキー数の最大値を超えたとき、そのモーションがループを使用している
 			// 再生中のキー数カウントを初期化
-			m_motion[nCntMotionSet].nCntKeySet = 0;
+			motion->nCntKeySet = 0;
 
 		}
-		else if (m_motion[nCntMotionSet].nCntKeySet >= m_motion[nCntMotionSet].nNumKey)
+		else if (motion->nCntKeySet >= motion->nNumKey)
 		{
-			m_motion[nCntMotionSet].nCntKeySet = 0;
-			bMotion = false;
+			motion->nCntKeySet = 0;
+			m_bMotion = false;
 		}
 	}
-
-	return bMotion;
 }
 
 //=============================================================================
 // モーションブレンド
 // Author : 唐﨑結斗
 // 概要 : モーションとモーションのつなぎ目を調整する
+// 返り値 : モーションブレンド使用の可否
 //=============================================================================
-bool CMotion::MotionBlend(const int nCntMotionSet)
+void CMotion::MotionBlend()
 {
-	// 変数宣言
-	bool bMotionBlend = true;
+	CMotion::MyMotion* motion = (m_motion + m_nNumMotion);
 
 	for (int nCntParts = 0; nCntParts < m_nMaxParts; nCntParts++)
 	{
-		if ((m_motion + nCntMotionSet)->nCntFrame == 0)
+		// 変数宣言
+		D3DXVECTOR3 pos = m_pParts[nCntParts]->GetPos();			// 位置
+		D3DXVECTOR3 rot = m_pParts[nCntParts]->GetRot();			// 向き
+		D3DXVECTOR3 posDest = m_pParts[nCntParts]->GetPosDest();	// 目的の位置
+		D3DXVECTOR3 rotDest = m_pParts[nCntParts]->GetRotDest();	// 目的の向き
+
+		if (motion->nCntFrame == 0)
 		{// フレームカウントが0の時
-		 // 目的の位置と向きの算出
-			(m_parts + nCntParts)->posDest = ((m_parts + nCntParts)->posOrigin + (m_motion + nCntMotionSet)->keySet[(m_motion + nCntMotionSet)->nCntKeySet].key[nCntParts].pos) - (m_parts + nCntParts)->pos;
-			(m_parts + nCntParts)->rotDest = ((m_parts + nCntParts)->rotOrigin + (m_motion + nCntMotionSet)->keySet[(m_motion + nCntMotionSet)->nCntKeySet].key[nCntParts].rot) - (m_parts + nCntParts)->rot;
+			// 変数宣言
+			D3DXVECTOR3 posOrigin = m_pParts[nCntParts]->GetPosOrigin();		// 元の位置
+			D3DXVECTOR3 rotOrigin = m_pParts[nCntParts]->GetRotOrigin();		// 元の向き
+
+			// 目的の位置と向きの算出
+			CMotion::MyKey myKey = motion->pKeySet[motion->nCntKeySet].pKey[nCntParts];
+			posDest = posOrigin + myKey.pos - pos;
+			rotDest = rotOrigin + myKey.rot - rot;
 
 			// 角度の正規化
-			NormalizeAngle(&(m_parts + nCntParts)->rotDest.x);
-			NormalizeAngle(&(m_parts + nCntParts)->rotDest.y);
-			NormalizeAngle(&(m_parts + nCntParts)->rotDest.z);
+			rotDest.x = RotNormalization(rotDest.x);
+			rotDest.y = RotNormalization(rotDest.y);
+			rotDest.z = RotNormalization(rotDest.z);
+
+			// 情報の更新
+			m_pParts[nCntParts]->SetPosDest(posDest);
+			m_pParts[nCntParts]->SetRotDest(rotDest);
 		}
 
 		// 変数宣言
-		D3DXVECTOR3 addPos = D3DXVECTOR3((m_parts + nCntParts)->posDest / (float)(MOTION_BLEND_FRAM));
-		D3DXVECTOR3 addRot = D3DXVECTOR3((m_parts + nCntParts)->rotDest / (float)(MOTION_BLEND_FRAM));
+		D3DXVECTOR3 addPos = D3DXVECTOR3(posDest / (float)(MOTION_BLEND_FRAM));
+		D3DXVECTOR3 addRot = D3DXVECTOR3(rotDest / (float)(MOTION_BLEND_FRAM));
 
 		// 位置の加算
-		(m_parts + nCntParts)->pos += addPos;
+		pos += addPos;
 
 		//	向きの加算
-		(m_parts + nCntParts)->rot += addRot;
+		rot += addRot;
 
 		// 角度の正規化
-		NormalizeAngle(&(m_parts + nCntParts)->rotDest.x);
-		NormalizeAngle(&(m_parts + nCntParts)->rotDest.y);
-		NormalizeAngle(&(m_parts + nCntParts)->rotDest.z);
+		rot.x = RotNormalization(rot.x);
+		rot.y = RotNormalization(rot.y);
+		rot.z = RotNormalization(rot.z);
+
+		// 情報の更新
+		m_pParts[nCntParts]->SetPos(pos);
+		m_pParts[nCntParts]->SetRot(rot);
 	}
 
 	// フレームカウントの加算
-	(m_motion + nCntMotionSet)->nCntFrame++;
+	motion->nCntFrame++;
 
-	if ((m_motion + nCntMotionSet)->nCntFrame >= MOTION_BLEND_FRAM)
+	if (motion->nCntFrame >= MOTION_BLEND_FRAM)
 	{// フレームカウントが指定のフレーム数を超えた場合
-		// フレーム数の初期化
-		(m_motion + nCntMotionSet)->nCntFrame = 0;
 
-		// 再生中のキー番号数の加算
-		(m_motion + nCntMotionSet)->nCntKeySet++;
+		motion->nCntFrame = 0;	// フレーム数の初期化
+		motion->nCntKeySet++;	// 再生中のキー番号数の加算
 
-		bMotionBlend = false;
+		m_bMotionBlend = false;
 	}
-
-	return bMotionBlend;
 }
 
 //=============================================================================
@@ -316,16 +356,16 @@ bool CMotion::MotionBlend(const int nCntMotionSet)
 // Author : 唐﨑結斗
 // 概要 : パーツとモーションの読み込み、初期化を呼び出す
 //=============================================================================
-void CMotion::LoodSetMotion(char * pFileName)
+void CMotion::LoodSetMotion(const char *pFileName)
 {
 	// 変数宣言
-	char aString[128] = {};			// 文字列比較用の変数
-	char g_aEqual[128] = {};		// ＝読み込み用変数
-	int	nCntKeySet = 0;				// KeySetカウント
-	int	nCntKey = 0;				// Keyカウント
-	int nCntFileName = 0;			// ファイル名
-	int nCntParts = 0;				// パーツ数のカウント
-	int nCntMotion = 0;				// モーション数のカウント
+	char aString[128] = {};		// 文字列比較用の変数
+	char g_aEqual[128] = {};	// ＝読み込み用変数
+	int	nCntKeySet = 0;			// KeySetカウント
+	int	nCntKey = 0;			// Keyカウント
+	int nCntFileName = 0;		// ファイル名
+	int nCntParts = 0;			// パーツ数のカウント
+	int nCntMotion = 0;			// モーション数のカウント
 
 	// ファイルポインタの宣言
 	FILE * pFile;
@@ -333,210 +373,253 @@ void CMotion::LoodSetMotion(char * pFileName)
 	//ファイルを開く
 	pFile = fopen(pFileName, "r");
 
-	if (pFile != NULL)
-	{//ファイルが開いた場合
-		fscanf(pFile, "%s", &aString);
-
-		while (strncmp(&aString[0], "SCRIPT", 6) != 0)
-		{// 文字列が一致した場合
-			aString[0] = {};
-			// 文字列の読み込み
-			fscanf(pFile, "%s", &aString[0]);
-		}
-		while (strncmp(&aString[0], "END_SCRIPT", 10) != 0)
-		{
-			fscanf(pFile, "%s", &aString[0]);
-
-			if (strncmp(&aString[0], "#", 1) == 0)
-			{// 一列読み込む
-				fgets(&aString[0], sizeof(aString), pFile);
-			}
-
-			if (strcmp(&aString[0], "MODEL_FILENAME") == 0)
-			{// ファイル名の読み込み
-				fscanf(pFile, "%s", &g_aEqual[0]);
-				fscanf(pFile, "%s", &m_partsFile[nCntFileName].aName[0]);
-
-				nCntFileName++;
-			}
-
-			if (strcmp(&aString[0], "CHARACTERSET") == 0)
-			{// キャラクターの読み込み
-				while (strcmp(&aString[0], "END_CHARACTERSET") != 0)
-				{
-					fscanf(pFile, "%s", &aString[0]);
-
-					if (strncmp(&aString[0], "#", 1) == 0)
-					{// 一列読み込む
-						fgets(&aString[0], sizeof(aString), pFile);
-					}
-
-					if (strcmp(&aString[0], "NUM_PARTS") == 0)
-					{// 読み込むパーツ数
-						fscanf(pFile, "%s", &g_aEqual[0]);
-						fscanf(pFile, "%d", &m_nMaxParts);
-
-						// メモリの解放
-						m_parts = new Parts[m_nMaxParts];
-						m_motion = new MyMotion[MAX_MOTION];
-						assert(m_parts != nullptr && m_motion != nullptr);
-					}
-
-					if (strcmp(&aString[0], "PARTSSET") == 0)
-					{// パーツの読み込み
-						while (strcmp(&aString[0], "END_PARTSSET") != 0)
-						{
-							fscanf(pFile, "%s", &aString[0]);
-
-							if (strncmp(&aString[0], "#", 1) == 0)
-							{// 一列読み込む
-								fgets(&aString[0], sizeof(aString), pFile);
-							}
-
-							if (strcmp(&aString[0], "INDEX") == 0)
-							{// タイプの読み込み
-								fscanf(pFile, "%s", &g_aEqual[0]);
-								fscanf(pFile, "%d", &m_parts[nCntParts].nType);
-							}
-							if (strcmp(&aString[0], "PARENT") == 0)
-							{// 親の読み込み
-								fscanf(pFile, "%s", &g_aEqual[0]);
-								fscanf(pFile, "%d", &m_parts[nCntParts].nIdxModelParent);
-							}
-							if (strcmp(&aString[0], "POS") == 0)
-							{// 位置の読み込み
-								fscanf(pFile, "%s", &g_aEqual[0]);
-								fscanf(pFile, "%f", &m_parts[nCntParts].pos.x);
-								fscanf(pFile, "%f", &m_parts[nCntParts].pos.y);
-								fscanf(pFile, "%f", &m_parts[nCntParts].pos.z);
-							}
-							if (strcmp(&aString[0], "ROT") == 0)
-							{// 向きの読み込み
-								fscanf(pFile, "%s", &g_aEqual[0]);
-								fscanf(pFile, "%f", &m_parts[nCntParts].rot.x);
-								fscanf(pFile, "%f", &m_parts[nCntParts].rot.y);
-								fscanf(pFile, "%f", &m_parts[nCntParts].rot.z);
-							}
-						}
-
-						// パーツカウントのインクリメント
-						nCntParts++;
-					}
-				}
-			}
-			if (strcmp(&aString[0], "MOTIONSET") == 0)
-			{// モーションの読み込み
-				while (strcmp(&aString[0], "END_MOTIONSET") != 0)
-				{
-					fscanf(pFile, "%s", &aString[0]);
-
-					if (strncmp(&aString[0], "#", 1) == 0)
-					{// 一列読み込む
-						fgets(&aString[0], sizeof(aString), pFile);
-					}
-
-					if (strcmp(&aString[0], "LOOP") == 0)
-					{// ループ有無の読み込み
-						fscanf(pFile, "%s", &g_aEqual[0]);
-						fscanf(pFile, "%d", (int*)(&m_motion[nCntMotion].bLoop));
-					}
-					if (strcmp(&aString[0], "NUM_KEY") == 0)
-					{// キー数の読み込み
-						fscanf(pFile, "%s", &g_aEqual[0]);
-						fscanf(pFile, "%d", &m_motion[nCntMotion].nNumKey);
-					}
-					if (strcmp(&aString[0], "KEYSET") == 0)
-					{// キーセットの読み込み
-						while (strcmp(&aString[0], "END_KEYSET") != 0)
-						{
-							fscanf(pFile, "%s", &aString[0]);
-
-							if (strncmp(&aString[0], "#", 1) == 0)
-							{// 一列読み込む
-								fgets(&aString[0], sizeof(aString), pFile);
-							}
-
-							if (strcmp(&aString[0], "FRAME") == 0)
-							{// フレーム数の読み込み
-								fscanf(pFile, "%s", &g_aEqual[0]);
-								fscanf(pFile, "%d", &m_motion[nCntMotion].keySet[nCntKeySet].nFrame);
-							}
-							if (strcmp(&aString[0], "KEY") == 0)
-							{// キーの読み込み
-								while (strcmp(&aString[0], "END_KEY") != 0)
-								{
-									fscanf(pFile, "%s", &aString[0]);
-
-									if (strncmp(&aString[0], "#", 1) == 0)
-									{// 一列読み込む
-										fgets(&aString[0], sizeof(aString), pFile);
-									}
-
-									if (strcmp(&aString[0], "POS") == 0)
-									{// 位置の読み込み
-										fscanf(pFile, "%s", &g_aEqual[0]);
-										fscanf(pFile, "%f", &m_motion[nCntMotion].keySet[nCntKeySet].key[nCntKey].pos.x);
-										fscanf(pFile, "%f", &m_motion[nCntMotion].keySet[nCntKeySet].key[nCntKey].pos.y);
-										fscanf(pFile, "%f", &m_motion[nCntMotion].keySet[nCntKeySet].key[nCntKey].pos.z);
-									}
-									if (strcmp(&aString[0], "ROT") == 0)
-									{// 向きの読み込み
-										fscanf(pFile, "%s", &g_aEqual[0]);
-										fscanf(pFile, "%f", &m_motion[nCntMotion].keySet[nCntKeySet].key[nCntKey].rot.x);
-										fscanf(pFile, "%f", &m_motion[nCntMotion].keySet[nCntKeySet].key[nCntKey].rot.y);
-										fscanf(pFile, "%f", &m_motion[nCntMotion].keySet[nCntKeySet].key[nCntKey].rot.z);
-									}
-								}
-
-								// キーカウントのインクリメント
-								nCntKey++;
-							}
-						}
-
-						// キーカウントの初期化
-						nCntKey = 0;
-
-						// キーセットカウントのインクリメント
-						nCntKeySet++;
-					}
-				}
-				// キーセットカウントの初期化
-				nCntKeySet = 0;
-
-				// パーツ情報のインクリメント
-				nCntMotion++;
-			}
-		}
-
-		//ファイルを閉じる
-		fclose(pFile);
-	}
-	else
-	{//ファイルが開けない場合
+	if (pFile == nullptr)
+	{
 		assert(false);
 	}
+
+	fscanf(pFile, "%s", &aString);
+
+	while (strncmp(&aString[0], "SCRIPT", 6) != 0)
+	{// 文字列が一致した場合
+		aString[0] = {};
+		// 文字列の読み込み
+		fscanf(pFile, "%s", &aString[0]);
+	}
+
+	while (strncmp(&aString[0], "END_SCRIPT", 10) != 0)
+	{
+		fscanf(pFile, "%s", &aString[0]);
+
+		if (strncmp(&aString[0], "#", 1) == 0)
+		{// 一列読み込む
+			fgets(&aString[0], sizeof(aString), pFile);
+		}
+
+		if (strcmp(&aString[0], "MODEL_FILENAME") == 0)
+		{// ファイル名の読み込み
+			fscanf(pFile, "%s", &g_aEqual[0]);
+			fscanf(pFile, "%s", &m_partsFile[nCntFileName][0]);
+
+			// マテリアル情報の取得
+			std::string nameTag = "MOTION";
+
+			nameTag += std::to_string(nCntFileName);
+
+			//CApplication::GetObjectXGroup()->Load(nameTag, m_partsFile[nCntFileName]);
+			nCntFileName++;
+		}
+
+		if (strcmp(&aString[0], "CHARACTERSET") == 0)
+		{// キャラクターの読み込み
+			while (strcmp(&aString[0], "END_CHARACTERSET") != 0)
+			{
+				fscanf(pFile, "%s", &aString[0]);
+
+				if (strncmp(&aString[0], "#", 1) == 0)
+				{// 一列読み込む
+					fgets(&aString[0], sizeof(aString), pFile);
+				}
+
+				if (strcmp(&aString[0], "NUM_PARTS") == 0)
+				{// 読み込むパーツ数
+					fscanf(pFile, "%s", &g_aEqual[0]);
+					fscanf(pFile, "%d", &m_nMaxParts);
+
+					// メモリの解放
+					m_pParts = new CParts*[m_nMaxParts];
+					m_motion = new MyMotion[MAX_MOTION];
+					for (int i = 0; i < MAX_MOTION; i++)
+					{
+						m_motion[i].pKeySet = nullptr;
+					}
+
+					assert(m_pParts != nullptr && m_motion != nullptr);
+
+					for (int i = 0; i < m_nMaxParts; i++)
+					{// パーツの生成
+						m_pParts[i] = CParts::Create();
+					}
+				}
+
+				if (strcmp(&aString[0], "PARTSSET") == 0)
+				{// パーツの読み込み
+					while (strcmp(&aString[0], "END_PARTSSET") != 0)
+					{
+						fscanf(pFile, "%s", &aString[0]);
+
+						if (strncmp(&aString[0], "#", 1) == 0)
+						{// 一列読み込む
+							fgets(&aString[0], sizeof(aString), pFile);
+						}
+
+						if (strcmp(&aString[0], "INDEX") == 0)
+						{// タイプの読み込み
+							int nType = -1;
+							fscanf(pFile, "%s", &g_aEqual[0]);
+							fscanf(pFile, "%d", &nType);
+
+							std::string nameTag = "MOTION";
+
+							nameTag += std::to_string(nType);
+
+							// ここで読込み
+							m_pParts[nCntParts]->LoadModel(nameTag.c_str());
+							m_pParts[nCntParts]->CalculationVtx();
+						}
+						if (strcmp(&aString[0], "PARENT") == 0)
+						{// 親の読み込み
+							int nIdxParent = -1;
+							fscanf(pFile, "%s", &g_aEqual[0]);
+							fscanf(pFile, "%d", &nIdxParent);
+
+							if (nIdxParent != -1)
+							{// 親のモデルの設定
+								m_pParts[nCntParts]->SetParent(m_pParts[nIdxParent]);
+							}
+						}
+						if (strcmp(&aString[0], "POS") == 0)
+						{// 位置の読み込み
+							D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+							fscanf(pFile, "%s", &g_aEqual[0]);
+							fscanf(pFile, "%f", &pos.x);
+							fscanf(pFile, "%f", &pos.y);
+							fscanf(pFile, "%f", &pos.z);
+							m_pParts[nCntParts]->SetPos(pos);
+							m_pParts[nCntParts]->SetPosOrigin(pos);
+						}
+						if (strcmp(&aString[0], "ROT") == 0)
+						{// 向きの読み込み
+							D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+							fscanf(pFile, "%s", &g_aEqual[0]);
+							fscanf(pFile, "%f", &rot.x);
+							fscanf(pFile, "%f", &rot.y);
+							fscanf(pFile, "%f", &rot.z);
+							m_pParts[nCntParts]->SetRot(rot);
+							m_pParts[nCntParts]->SetRotOrigin(rot);
+						}
+					}
+
+					// パーツカウントのインクリメント
+					nCntParts++;
+				}
+			}
+		}
+		if (strcmp(&aString[0], "MOTIONSET") == 0)
+		{// モーションの読み込み
+			while (strcmp(&aString[0], "END_MOTIONSET") != 0)
+			{
+				fscanf(pFile, "%s", &aString[0]);
+
+				if (strncmp(&aString[0], "#", 1) == 0)
+				{// 一列読み込む
+					fgets(&aString[0], sizeof(aString), pFile);
+				}
+
+				if (strcmp(&aString[0], "LOOP") == 0)
+				{// ループ有無の読み込み
+					fscanf(pFile, "%s", &g_aEqual[0]);
+					fscanf(pFile, "%d", (int*)(&m_motion[nCntMotion].bLoop));
+				}
+				if (strcmp(&aString[0], "NUM_KEY") == 0)
+				{// キー数の読み込み
+					fscanf(pFile, "%s", &g_aEqual[0]);
+					fscanf(pFile, "%d", &m_motion[nCntMotion].nNumKey);
+
+					// メモリの確保
+					m_motion[nCntMotion].pKeySet = new MyKeySet[m_motion[nCntMotion].nNumKey];
+					assert(m_motion[nCntMotion].pKeySet != nullptr);
+
+					for (int nCntNumKeySet = 0; nCntNumKeySet < m_motion[nCntMotion].nNumKey; nCntNumKeySet++)
+					{
+						m_motion[nCntMotion].pKeySet[nCntNumKeySet].pKey = new MyKey[m_nMaxParts];
+						assert(m_motion[nCntMotion].pKeySet[nCntNumKeySet].pKey != nullptr);
+					}
+				}
+				if (strcmp(&aString[0], "KEYSET") == 0)
+				{// キーセットの読み込み
+					while (strcmp(&aString[0], "END_KEYSET") != 0)
+					{
+						fscanf(pFile, "%s", &aString[0]);
+
+						if (strncmp(&aString[0], "#", 1) == 0)
+						{// 一列読み込む
+							fgets(&aString[0], sizeof(aString), pFile);
+						}
+
+						if (strcmp(&aString[0], "FRAME") == 0)
+						{// フレーム数の読み込み
+							fscanf(pFile, "%s", &g_aEqual[0]);
+							fscanf(pFile, "%d", &m_motion[nCntMotion].pKeySet[nCntKeySet].nFrame);
+						}
+						if (strcmp(&aString[0], "KEY") == 0)
+						{// キーの読み込み
+							while (strcmp(&aString[0], "END_KEY") != 0)
+							{
+								fscanf(pFile, "%s", &aString[0]);
+
+								if (strncmp(&aString[0], "#", 1) == 0)
+								{// 一列読み込む
+									fgets(&aString[0], sizeof(aString), pFile);
+								}
+
+								if (strcmp(&aString[0], "POS") == 0)
+								{// 位置の読み込み
+									fscanf(pFile, "%s", &g_aEqual[0]);
+									fscanf(pFile, "%f", &m_motion[nCntMotion].pKeySet[nCntKeySet].pKey[nCntKey].pos.x);
+									fscanf(pFile, "%f", &m_motion[nCntMotion].pKeySet[nCntKeySet].pKey[nCntKey].pos.y);
+									fscanf(pFile, "%f", &m_motion[nCntMotion].pKeySet[nCntKeySet].pKey[nCntKey].pos.z);
+								}
+								if (strcmp(&aString[0], "ROT") == 0)
+								{// 向きの読み込み
+									fscanf(pFile, "%s", &g_aEqual[0]);
+									fscanf(pFile, "%f", &m_motion[nCntMotion].pKeySet[nCntKeySet].pKey[nCntKey].rot.x);
+									fscanf(pFile, "%f", &m_motion[nCntMotion].pKeySet[nCntKeySet].pKey[nCntKey].rot.y);
+									fscanf(pFile, "%f", &m_motion[nCntMotion].pKeySet[nCntKeySet].pKey[nCntKey].rot.z);
+								}
+							}
+
+							// キーカウントのインクリメント
+							nCntKey++;
+						}
+					}
+
+					// キーカウントの初期化
+					nCntKey = 0;
+
+					// キーセットカウントのインクリメント
+					nCntKeySet++;
+				}
+			}
+			// キーセットカウントの初期化
+			nCntKeySet = 0;
+
+			// パーツ情報のインクリメント
+			nCntMotion++;
+		}
+	}
+
+	//ファイルを閉じる
+	fclose(pFile);
 
 	// 初期化
 	Init();
 }
 
 //=============================================================================
-// 終了
+// パーツの位置をもとの位置に戻す
 // Author : 唐﨑結斗
-// 概要 : メモリの解放
+// 概要 : パーツの位置をもとの位置に戻す
 //=============================================================================
-void CMotion::Uninit(void)
+void CMotion::SetPartsOrigin()
 {
-	if (m_parts != nullptr)
+	for (int nCntParts = 0; nCntParts < m_nMaxParts; nCntParts++)
 	{
-		delete m_parts;
-		m_parts = nullptr;
-	}
+		// 位置の設定
+		m_pParts[nCntParts]->SetPos(m_pParts[nCntParts]->GetPosOrigin());
 
-	if (m_motion != nullptr)
-	{
-		delete[] m_motion;
-		m_motion = nullptr;
+		//	向きの設定
+		m_pParts[nCntParts]->SetRot(m_pParts[nCntParts]->GetRotOrigin());
 	}
 }
 
@@ -552,178 +635,39 @@ void CMotion::CntReset(const int nNumMotionOld)
 }
 
 //=============================================================================
-// マネージャーのコンストラクタ
-// Author :浜田琉雅
-// 概要 : 数値の初期化
+// 回転の正規化
+// Author : 唐﨑結斗
+// 概要 : パスの
 //=============================================================================
-CModelManager::CModelManager()
+float CMotion::RotNormalization(float inRot)
 {
-	for (int i = 0; i < MODEL_MAX; i++)
+	// 角度の正規化(現在の角度)
+	if (inRot > D3DX_PI)
 	{
-		m_apModel[i] = nullptr;
+		inRot = inRot - D3DX_PI * 2;
 	}
+	else if (inRot < -D3DX_PI)
+	{
+		inRot = inRot + D3DX_PI * 2;
+	}
+
+	return inRot;
 }
 
 //=============================================================================
-//  マネージャーのデス
-// Author : 浜田琉雅
-// 概要 : 
+// モーション番号の設定
+// Author : 唐﨑結斗
+// 概要 : モーションの番号の設定
 //=============================================================================
-CModelManager::~CModelManager()
+void CMotion::SetNumMotion(const int nNumMotion)
 {
-	for (int i = 0; i < MODEL_MAX; i++)
-	{
-		assert(m_apModel[i] == nullptr);
-	}
-}
+	// モーションカウントのリセット
+	CntReset(m_nNumMotion);
 
-//=============================================================================
-// カウントのリセット
-// Author : 浜田琉雅
-// 概要 : カウントのリセット
-//=============================================================================
-CModelManager * CModelManager::GetManager()
-{
-	if (ms_ModelManager == nullptr)
-	{
-		ms_ModelManager = new CModelManager;
-	}
-	return ms_ModelManager;
-}
+	// モーション番号の設定
+	m_nNumMotion = nNumMotion;
 
-//=============================================================================
-// モデルのロード
-// Author : 浜田琉雅
-// 概要 : モデルのロード
-//=============================================================================
-CModel*  CModelManager::Load(const char *pXFileName)
-{
-	for (int i = 0; i < MODEL_MAX; i++)
-	{
-		if (m_apModel[i] == nullptr)
-		{
-			continue;
-		}
-
-		if (strcmp(m_apModel[i]->m_xFilename, &pXFileName[0]) == 0)
-		{
-			m_apModel[i]->nType = i;
-			return m_apModel[i];
-		}
-	}
-
-	for (int i = 0; i < MODEL_MAX; i++)
-	{
-		if (m_apModel[i] == nullptr)
-		{
-
-			m_apModel[i] = new CModel;
-			strcpy(m_apModel[i]->m_xFilename, &pXFileName[0]);
-
-			// Xファイルの読み込み
-			D3DXLoadMeshFromX(pXFileName,
-				D3DXMESH_SYSTEMMEM,
-				CManager::GetInstance()->GetRenderer()->GetDevice(),
-				NULL,
-				&m_apModel[i]->pBuffer,
-				NULL,
-				&m_apModel[i]->nNumMat,
-				&m_apModel[i]->pMesh);
-			m_apModel[i]->nType = i;
-			return m_apModel[i];
-		}
-	}
-
-	assert(false);
-	return nullptr;
-}
-
-//=============================================================================
-// Xfileのよみこみ
-// Author : 浜田琉雅
-// 概要 : Xfileのよみこみ
-//=============================================================================
-
-CModel * CModelManager::LoadXfile(const char * pXFileName)
-{
-	for (int i = 0; i < MODEL_MAX; i++)
-	{
-		if (m_apModel[i] == nullptr)
-		{
-			continue;
-		}
-
-		if (strcmp(m_apModel[i]->m_xFilename, &pXFileName[0]) == 0)
-		{
-			m_apModel[i]->nType = i;
-			return m_apModel[i];
-		}
-	}
-
-	for (int i = 0; i < MODEL_MAX; i++)
-	{
-		if (m_apModel[i] == nullptr)
-		{
-
-			m_apModel[i] = new CModel;
-			//strcpy(m_apModel[i]->m_xFilename, &pXFileName[0]);
-
-			// Xファイルの読み込み
-			D3DXLoadMeshFromX(pXFileName,
-				D3DXMESH_SYSTEMMEM,
-				CManager::GetInstance()->GetRenderer()->GetDevice(),
-				NULL,
-				&m_apModel[i]->pBuffer,
-				NULL,
-				&m_apModel[i]->nNumMat,
-				&m_apModel[i]->pMesh);
-			m_apModel[i]->nType = i;
-			return m_apModel[i];
-		}
-	}
-
-	assert(false);
-	return nullptr;
-}
-
-//=============================================================================
-//  モデルの破棄
-// Author : 浜田琉雅
-// 概要 : モデルの破棄
-//=============================================================================
-void CModelManager::ReleaseAll()
-{
-	CModelManager *Manager = CModelManager::GetManager();
-	if (Manager != nullptr)
-	{
-		for (int i = 0; i < MODEL_MAX; i++)
-		{
-			if (Manager->m_apModel[i] != nullptr)
-			{
-				Manager->m_apModel[i]->Uninit();
-				delete Manager->m_apModel[i];
-				Manager->m_apModel[i] = nullptr;
-			}
-		}
-		if (ms_ModelManager != nullptr)
-		{
-			delete ms_ModelManager;
-			ms_ModelManager = nullptr;
-		}
-	
-	}
-}
-
-//=============================================================================
-// モデルのコンストラクタ
-// Author : 浜田琉雅
-// 概要 : 数字の初期化
-//=============================================================================
-CModel::CModel():
-	nType(-1),
-	pMesh(nullptr),
-	pBuffer(nullptr),
-	nNumMat(0)
-{
-	m_xFilename[0] = '\0';
+	// モーションブレンドを行う
+	m_bMotionBlend = true;
+	m_bMotion = true;
 }

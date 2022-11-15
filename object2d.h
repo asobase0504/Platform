@@ -14,9 +14,7 @@
 #include "object.h"
 #include "texture.h"
 
-//=============================================================================
-// 構造体
-//=============================================================================
+// 4点の頂点
 struct PositionVec4
 {
 	float     P0, P1, P2, P3;
@@ -41,6 +39,7 @@ public:
 		D3DCOLOR col;
 		D3DXVECTOR2 tex;	// テクスチャ座標(レベル1)
 	};
+
 private:
 	//polygonの拡大サイズ
 	static const D3DXVECTOR3 m_Vtx[4];
@@ -60,12 +59,12 @@ public:
 	virtual void SetMove(const D3DXVECTOR3 &move) override;
 	void SetRot(D3DXVECTOR3 Rot) { m_rot = Rot; };
 	void SetSize(D3DXVECTOR3 Size) { m_size = Size; };
-	void SetTexture(CTexture::TEXTURE texture);
+	void SetTexture(int texture);
 	void SetTex(PositionVec4 Tex);
 	void SetColar(const D3DXCOLOR& inColar);
 	void SetAnimation(const int U, const int V, const int Speed, const int Drawtimer, const bool loop);
 
-	CTexture::TEXTURE GetTexture();
+	int GetTexture();
 	D3DXCOLOR GetCollar() { return m_col; }
 	D3DXVECTOR3 GetSize() { return m_size; }
 	LPDIRECT3DVERTEXBUFFER9 &GetVtx() { return m_pVtxBuff; }
@@ -83,7 +82,7 @@ protected:
 
 private:
 	LPDIRECT3DVERTEXBUFFER9	m_pVtxBuff = NULL;
-	CTexture::TEXTURE m_texture;	// テクスチャの列挙型
+	int m_texture;	// テクスチャの列挙型
 
 	/* アニメーション系統 */
 	// 現在のアニメーション状況

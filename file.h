@@ -30,5 +30,6 @@
 //-----------------------------------------------------------------------------
 void OutputStatus();
 void LoadJson(const char* cUrl);
+nlohmann::json LoadJsonStage(const wchar_t* cUrl);
 
 #endif		// _FILE_H_

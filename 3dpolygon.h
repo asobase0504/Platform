@@ -4,8 +4,8 @@
 // Author : 浜田琉雅
 //
 //=============================================================================
-#ifndef _3DPOLYGON_H_			// このマクロ定義がされてなかったら
-#define _3DPOLYGON_H_			// 二重インクルード防止のマクロ定義
+#ifndef _3DPOLYGON_H_	// このマクロ定義がされてなかったら
+#define _3DPOLYGON_H_	// 二重インクルード防止のマクロ定義
 
 //-----------------------------------------------------------------------------
 // include
@@ -51,16 +51,14 @@ public:
 	void Draw() override;
 
 	// Setter
-	virtual void SetPos(const D3DXVECTOR3& inPos);
-	virtual void SetMove(const D3DXVECTOR3& inMove) { m_move = inMove; };
-	void SetTexture(CTexture::TEXTURE inTexture);
+	virtual void SetPos(const D3DXVECTOR3& inPos) override;
+	void SetTexture(int inTexture);
 	void SetTex(PositionVec4 inTex);
 	void SetSize(const D3DXVECTOR3& inSize);
 	void SetCollar(D3DXCOLOR inCollar);
 	void SetRot(D3DXVECTOR3 inRot) { m_rot = inRot; }
 
 	// Getter
-	virtual const D3DXVECTOR3* GetPos() const;
 	LPDIRECT3DVERTEXBUFFER9 GetVtx();
 
 	static void PolygonReset() { m_maxPolygon = 0; }
@@ -74,6 +72,6 @@ protected:
 private:
 	static int m_maxPolygon;
 	LPDIRECT3DVERTEXBUFFER9	m_pVtxBuff;
-	CTexture::TEXTURE m_texture;	// テクスチャの列挙型
+	int m_texture;	// テクスチャの列挙型
 };
 #endif

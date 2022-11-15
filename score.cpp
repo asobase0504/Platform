@@ -5,11 +5,11 @@
 //
 //============================
 #include "score.h"
-#include "manager.h"
+#include "application.h"
 #include "number.h"
 
-
 int CScore::m_nScore;
+
 CScore::CScore()
 {
 }
@@ -96,8 +96,7 @@ void  CScore::Set(int nScore)
 			m_pNumber[nCntScore]->SetSpeed(0.0f);
 			m_pNumber[nCntScore]->SetNumber(0);
 		}
-		m_pNumber[nCntScore]->SetTex(PositionVec4(
-	 	0.1f*aPosTexU[nCntScore], 0.1f*aPosTexU[nCntScore] + 0.1f, 0.0f, 1.0f));
+		m_pNumber[nCntScore]->SetTex(PositionVec4(0.1f * aPosTexU[nCntScore], 0.1f * aPosTexU[nCntScore] + 0.1f, 0.0f, 1.0f));
 	}
 }
 
@@ -106,7 +105,7 @@ void  CScore::Set(int nScore)
 //===================
 void CScore::Add(int nValue)
 {//ƒXƒRƒA‚ÌÝ’è‚ÆPointItem‚Ì¶¬•Ý’è
-	if (*CManager::GetInstance()->GetMode() == CManager::MODE_GAME)
+	if (*CApplication::GetInstance()->GetMode() == CApplication::MODE_GAME)
 	{
 		m_nScore += nValue;
 		Set(m_nScore);

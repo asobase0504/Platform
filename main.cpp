@@ -11,7 +11,7 @@
 #include "main.h"
 #include "resource1.h"
 #include "input.h"
-#include "manager.h"
+#include "application.h"
 
 //-----------------------------------------------------------------------------
 // プロトタイプ宣言
@@ -26,7 +26,7 @@ int g_nCountFPS;
 //-----------------------------------------------------------------------------
 // 静的変数
 //-----------------------------------------------------------------------------
-static CManager* pManeager;
+static CApplication* pManeager;
 
 //=============================================================================
 // メイン関数
@@ -70,7 +70,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
 		hInstance,
 		NULL);
 
-	pManeager = CManager::GetInstance();
+	pManeager = CApplication::GetInstance();
 
 	if (FAILED(pManeager->Init(hWnd, hInstance)))	//画面サイズ
 	{//初期化処理が失敗した場合

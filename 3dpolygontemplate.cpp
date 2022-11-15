@@ -6,7 +6,7 @@
 //============================
 #include "3dpolygontemplate.h"
 #include "utility.h"
-#include "manager.h"
+#include "application.h"
 
 //------------------------------------
 // コンストラクタ
@@ -56,7 +56,7 @@ void CTest3d::NormalUpdate()
 //------------------------------------
 void CTest3d::Draw()
 {
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();
 	//アルファブレンディングを加算合成に設定
 	//pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
 	//pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
@@ -84,7 +84,7 @@ CTest3d *CTest3d::Create()
 	if (pObject != nullptr)
 	{
 		pObject->Init();
-		pObject->SetTexture(CTexture::TEXTURE_EXPLOSION);		// テクスチャ選択
+		pObject->SetTexture(CTexture::GetInstance()->SetTexture("EXPLOSION"));		// テクスチャ選択
 		pObject->SetSize(D3DXVECTOR3(640.0f, 360.0f, 0.0f));	// サイズ設定
 		pObject->SetPos(D3DXVECTOR3(0.0f, 0.0f, 10200.0f));		// 座標設定
 		pObject->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));	// 色設定
@@ -93,21 +93,6 @@ CTest3d *CTest3d::Create()
 
 	return pObject;
 }
-
-//------------------------------------
-// Get＆Set 
-//------------------------------------
-const D3DXVECTOR3 * CTest3d::GetPos() const
-{
-	return &m_pos;
-}
-
-void CTest3d::SetPos(const D3DXVECTOR3 & pos)
-{
-	m_pos = pos;
-}
-
-
 
 //------------------------------------
 // 動き系統

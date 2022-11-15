@@ -20,7 +20,6 @@
 class CBg;
 class CPlayer;
 class CEnemy;
-class C3dpolygon;
 class CCamera;
 class CLight;
 
@@ -50,10 +49,9 @@ public:
 private:
 	CCamera* m_pCamera[2];
 	CLight* m_pLight;
-	CPlayer* m_pPlayer;
-	CEnemy* m_pEnemy[10];
+	//CPlayer* m_pPlayer;
+	//CEnemy* m_pEnemy[10];
 	CBg* m_pBg[4];
-	C3dpolygon* m_p3dpolygon[4];
 	CObject2d* m_text[4];
 	CObject2d* m_list[2];
 	CObject2d* m_fade;

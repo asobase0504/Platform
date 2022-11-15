@@ -19,7 +19,7 @@
 class CTask
 {
 public:
-	CTask(CTaskGroup::EPushMethod inMethod = CTaskGroup::EPushMethod::PUSH_CURRENT, int inPriority = 2);
+	CTask(unsigned int inPriority = 2, CTaskGroup::EPushMethod inMethod = CTaskGroup::EPushMethod::PUSH_CURRENT);
 	virtual ~CTask();
 
 	virtual HRESULT Init() = 0;
@@ -29,15 +29,17 @@ public:
 
 	void Release() { m_isDeleted = true; }
 
-	// Setter
+	// ÉäÉXÉgç\ë¢
 	void SetPrev(CTask* inTask) { m_prev = inTask; }
-	void SetNext(CTask* inTask) { m_next = inTask; }
-	void AttachProtect() { m_isProtect = true; }
-
-	// Getter
 	CTask* GetPrev() { return m_prev; }
+	void SetNext(CTask* inTask) { m_next = inTask; }
 	CTask* GetNext() { return m_next; }
+
+	// îjä¸ó\íË
 	bool IsDeleted() { return m_isDeleted; }
+
+	// îjä¸Çï€åÏÇ∑ÇÈ
+	void AttachProtect() { m_isProtect = true; }
 	bool IsProtect() { return m_isProtect; }
 
 private:

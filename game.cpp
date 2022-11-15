@@ -10,7 +10,7 @@
 //-----------------------------------------------------------------------------
 #include "game.h"
 #include "input.h"
-#include "manager.h"
+#include "application.h"
 #include "object.h"
 #include "light.h"
 #include "player.h"
@@ -28,6 +28,8 @@
 
 #include "pause.h"
 #include "camera.h"
+
+#include "task_group.h"
 
 #include "text.h"
 
@@ -73,13 +75,13 @@ HRESULT CGame::Init(void)
 	}
 
 	m_pPlayer = CPlayer::Create();
-	m_pPlayer->SetUp(CObject::PLAYER);
+	m_pPlayer->SetType(CObject::PLAYER);
 
-	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
+	CApplication::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
 
 	m_pPause = new CPause;
 	m_pPause->Init();
-	m_pPause->SetUp(CObject::PAUSE);
+	m_pPause->SetType(CObject::PAUSE);
 
 	return S_OK;
 }
@@ -89,8 +91,8 @@ HRESULT CGame::Init(void)
 //=============================================================================
 void CGame::Uninit(void)
 {
-	CManager::GetInstance()->GetSound()->Stop();
-	CModelManager::ReleaseAll();
+	CApplication::GetInstance()->GetSound()->Stop();
+	CApplication::GetInstance()->GetTaskGroup()->AllRelease();
 	CRanking::SetScore(CScore::GetScore());
 
 	if (m_pPaticleManager != nullptr)
@@ -118,12 +120,12 @@ void CGame::Update(void)
 	if (CInputpInput->Trigger(CInput::KEY_DEBUG))
 	{
 		//ƒ‚[ƒh‚ÌÝ’è
-		CManager::GetInstance()->GetFade()->NextMode(CManager::MODE_RESULT);
+		CApplication::GetInstance()->GetFade()->NextMode(CApplication::MODE_RESULT);
 		return;
 	}
 	if (CInputpInput->Trigger(CInput::KEY_F2))
 	{
-		CManager::GetInstance()->GetFade()->NextMode(CManager::MODE_NAMESET);
+		CApplication::GetInstance()->GetFade()->NextMode(CApplication::MODE_NAMESET);
 		return;
 	}
 	m_pPaticleManager->Update();

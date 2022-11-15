@@ -7,7 +7,7 @@
 //-----------------------------------------------------------------------------
 // include
 //-----------------------------------------------------------------------------
-#include "manager.h"
+#include "application.h"
 #include "renderer.h"
 #include "light.h"
 
@@ -41,7 +41,7 @@ HRESULT CLight::Init(void)
 	Set(D3DLIGHT_DIRECTIONAL, color, D3DXVECTOR3(0.0f, -1.0f, 0.0f), 2);
 
 	// デバイスへのポインタの取得
-	CManager::GetInstance()->GetRenderer()->GetDevice()->SetRenderState(D3DRS_AMBIENT, color);
+	CApplication::GetInstance()->GetRenderer()->GetDevice()->SetRenderState(D3DRS_AMBIENT, color);
 
 	return S_OK;
 }
@@ -66,7 +66,7 @@ void CLight::Update(void)
 void CLight::Set(D3DLIGHTTYPE type,D3DXCOLOR col, D3DXVECTOR3 vec, int nNum)
 {
 	// デバイスへのポインタの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();
 
 	D3DXVECTOR3 vecDir;		// ライトの方向ベクトル
 
