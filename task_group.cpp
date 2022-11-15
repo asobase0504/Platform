@@ -294,29 +294,29 @@ void CTaskGroup::DeleteTask()
 			bool isPrevNullptr = (prev == nullptr);
 
 			if (!isNextNullptr && !isPrevNullptr)
-			{
+			{ // 前後にタスクが入っている場合
 				next->SetPrev(prev);
 				prev->SetNext(next);
 			}
 			else if (!isNextNullptr && isPrevNullptr)
-			{
+			{ // 後のみタスクが入っている場合
 				m_list.at(i).top = next;
 				next->SetPrev(nullptr);
 			}
 			else if (isNextNullptr && !isPrevNullptr)
-			{
+			{ // 前のみタスクが入っている場合
 				m_list.at(i).current = prev;
 				prev->SetNext(nullptr);
 			}
 			else
-			{
+			{ // 前後にタスクが入っていない場合
 				m_list.at(i).current = nullptr;
 				m_list.at(i).top = nullptr;
 			}
 
-			now->Uninit();
-			delete now;	// 削除
-			now = next;	// 次のタスクに移る
+			now->Uninit();	// 終了
+			delete now;		// 削除
+			now = next;		// 次のタスクに移る
 		}
 	}
 }

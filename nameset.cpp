@@ -109,7 +109,7 @@ void CNameSet::Update(void)
 			if (m_PlayNameSet[m_NowPlay - 1] != nullptr)
 			{
 				m_NowPlay--;
-				m_PlayNameSet[m_NowPlay]->Uninit();
+				m_PlayNameSet[m_NowPlay]->Release();
 				m_PlayName = m_PlayName.substr(0, m_PlayName.length() - 1);
 				m_NemePos.x -= 120.0f;
 			}

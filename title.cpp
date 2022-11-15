@@ -54,10 +54,6 @@ HRESULT CTitle::Init(void)
 	ModeSelect = false;
 	NextMode = MODE::MODE_GAME;
 
-	//m_pPlayer = nullptr;
-	//m_pPlayer = CPlayer::Create();
-	//m_pPlayer->SetType(CObject::PLAYER);
-
 	//¯‚Ì”wŒi
 	m_pBg[0] = CBg::Create();
 	m_pBg[0]->SetTexture(CTexture::GetInstance()->SetTexture("STARRY"));
@@ -73,14 +69,14 @@ HRESULT CTitle::Init(void)
 	m_pBg[1]->SetSize(CApplication::CENTER_POS*0.8f);
 	m_pBg[1]->SetPos(BGPos);
 	m_pBg[1]->SetBgType(CBg::STOP);
-	m_pBg[1]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.7f));
+	m_pBg[1]->SetCollar(D3DXCOLOR(0.0f, 1.0f, 1.0f, 0.7f));
 
 	//GonFox‚ÌTITLE•¶Žš
 	m_list[0] = CObject2d::Create(1);
 	m_list[0]->SetTexture(CTexture::GetInstance()->SetTexture("TITLE"));
 	m_list[0]->SetSize(CApplication::CENTER_POS);
 	m_list[0]->SetPos(CApplication::CENTER_POS);
-	m_list[0]->SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	m_list[0]->SetColar(D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f));
 
 	//ƒQ[ƒ€ƒXƒ^[ƒg‚Ì•¶Žš
 	m_list[1] = CObject2d::Create(1);
@@ -126,7 +122,7 @@ HRESULT CTitle::Init(void)
 	m_text[3]->SetTexture(CTexture::GetInstance()->SetTexture("TITLEEND"));
 	m_text[3]->SetSize(CApplication::CENTER_POS);
 	m_text[3]->SetPos(D3DXVECTOR3(CApplication::CENTER_POS.x, CApplication::CENTER_POS.y + y, 0.0f));
-	m_text[3]->SetColar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
+	m_text[3]->SetColar(D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f));
 
 	CApplication::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_TITLE);
 
