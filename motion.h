@@ -14,6 +14,7 @@
 #include "main.h"
 #include "objectX.h"
 #include "renderer.h"
+#include <vector>
 
 //*****************************************************************************
 // 前方宣言
@@ -95,7 +96,7 @@ public:
 	int GetMaxParts() { return m_nMaxParts; }			// パーツの最大数の取得
 	bool GetMotion() { return m_bMotion; }				// モーションを行っているか取得
 	bool GetMotionBlend() { return m_bMotionBlend; }	// モーションブレンドを行っているか取得
-	CParts* GetParts(int index) { return m_pParts[index]; }	// モーションブレンドを行っているか取得
+	CParts* GetParts(int index) { return m_parts[index]; }	// モーションブレンドを行っているか取得
 
 private:
 	//--------------------------------------------------------------------
@@ -113,14 +114,14 @@ private:
 	//--------------------------------------------------------------------
 	// メンバ変数
 	//--------------------------------------------------------------------
-	CModel3D	*m_pParent;								// 親
-	MyMotion	*m_motion;								// モーション
-	CParts		**m_pParts;								// パーツ
-	char		m_partsFile[MAX_MODEL_PARTS][0xff];		// パーツのXファイル名
-	int			m_nMaxParts;							// パーツ数
-	int			m_nNumMotion;							// 扱うモーション
-	bool		m_bMotion;								// モーションを行うか
-	bool		m_bMotionBlend;							// モーションブレンド
+	CModel3D	*m_pParent;						// 親
+	std::vector<MyMotion> m_motion;				// モーション
+	std::vector<CParts*> m_parts;				// パーツ
+	char m_partsFile[MAX_MODEL_PARTS][0xff];	// パーツのXファイル名
+	int m_nMaxParts;							// パーツ数
+	int m_nNumMotion;							// 扱うモーション
+	bool m_bMotion;								// モーションを行うか
+	bool m_bMotionBlend;						// モーションブレンド
 };
 #endif
 

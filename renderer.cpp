@@ -8,7 +8,6 @@
 #include "main.h"
 #include "object.h"
 #include "light.h"
-#include "particle.h"
 #include "file.h"
 #include "camera.h"
 #include "3dpolygon.h"

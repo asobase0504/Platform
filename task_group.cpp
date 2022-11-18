@@ -52,6 +52,7 @@ void CTaskGroup::Uninit()
 		{
 			CTask* next = current->GetNext();
 			current->Uninit();
+			current->Release();
 			current = next;
 		}
 	}
@@ -270,7 +271,7 @@ void CTaskGroup::DeleteTask()
 {
 	for (int i = 0; i <= m_priorityNumber; i++)
 	{
-		if (m_list.count(i) == 0)
+		if (m_list.count(i) <= 0)
 		{
 			continue;
 		}
@@ -312,6 +313,7 @@ void CTaskGroup::DeleteTask()
 			{ // 前後にタスクが入っていない場合
 				m_list.at(i).current = nullptr;
 				m_list.at(i).top = nullptr;
+				m_list.erase(i);
 			}
 
 			now->Uninit();	// 終了

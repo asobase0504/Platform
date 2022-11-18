@@ -139,7 +139,7 @@ HRESULT CTitle::Init(void)
 void CTitle::Uninit(void)
 {
 	CApplication::GetInstance()->GetSound()->Stop();
-	CApplication::GetInstance()->GetTaskGroup()->AllRelease();
+	//CApplication::GetInstance()->GetTaskGroup()->AllRelease();
 }
 
 //=============================================================================

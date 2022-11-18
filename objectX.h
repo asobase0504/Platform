@@ -37,19 +37,22 @@ public:
 
 	void CalculationVtx();				// 頂点最大小値の計算処理
 
-	// Setter
-	void SetMtxWorld(D3DXMATRIX mtxWorld) { m_mtxWorld = mtxWorld; }	// ワールドマトリックスのセッター
-	void SetMaxVtx(D3DXVECTOR3 Maxvtx);			// 頂点最大値設定処理
-	void SetMinVtx(D3DXVECTOR3 Minvtx);			// 頂点最小値設定処理
-	void SetParent(CObjectX* inParent) { m_pParent = inParent; }		// 親モデルの情報
-	void SetCollisionFlag(bool inFlag) { m_isCollision = inFlag; }
+	// ワールドマトリックス
+	void SetMtxWorld(D3DXMATRIX mtxWorld) { m_mtxWorld = mtxWorld; }	// 設定
+	const D3DXMATRIX& GetMtxWorld() { return m_mtxWorld; }				// 取得
 
-	// Getter
-	D3DXMATRIX GetMtxWorld() { return m_mtxWorld; }		// ワールドマトリックスのゲッター
-	D3DXVECTOR3 GetMaxVtx(void) { return m_MaxVtx; }	// 頂点最大値取得処理
-	D3DXVECTOR3 GetMinVtx(void) { return m_MinVtx; }	// 頂点最小値取得処理
-	CObjectX* GetParent(void) { return m_pParent; }		// 親モデルの情報
+	// 頂点位置
+	void SetMaxVtx(const D3DXVECTOR3& Maxvtx) { m_MaxVtx = Maxvtx; }	// 頂点最大値設定
+	const D3DXVECTOR3& GetMaxVtx(void) { return m_MaxVtx; }				// 頂点最大値取得
+	void SetMinVtx(const D3DXVECTOR3& Minvtx) { m_MaxVtx = Minvtx; }	// 頂点最大値設定
+	const D3DXVECTOR3& GetMinVtx(void) { return m_MinVtx; }				// 頂点最小値取得
+
+	void SetParent(CObjectX* inParent) { m_pParent = inParent; }		// 親モデルの情報
+
+	void SetCollisionFlag(bool inFlag) { m_isCollision = inFlag; }
 	bool IsCollision() { return m_isCollision; }
+
+	CObjectX* GetParent(void) const { return m_pParent; }		// 親モデルの情報
 
 	static CObjectX *Create(D3DXVECTOR3 pos, int nPriority);	// 生成処理
 	void LoadModel(const char *aFileName);						// モデルの読み込み処理

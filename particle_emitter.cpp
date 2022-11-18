@@ -9,6 +9,8 @@
 //=========================================
 #include "particle_emitter.h"
 #include "utility.h"
+#include "particle.h"
+#include "object2d.h"
 
 //=========================================
 // Ã“Iƒƒ“ƒo[•Ï”
@@ -162,7 +164,7 @@ void CParticleEmitter::PopParticle(void)
 		m_info.fAngle += D3DX_PI * 2;
 	}
 
-	CParticle::Create(popInfo, myPos);
+	CParticle::Create(new CObject2d,popInfo, myPos);
 }
 
 //-----------------------------------------

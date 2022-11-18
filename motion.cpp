@@ -27,10 +27,10 @@ CMotion::CMotion(const char * pFileName)
 	memset(&m_partsFile, 0, sizeof(m_partsFile));
 
 	// モーションの初期化
-	m_motion = nullptr;
+	m_motion.clear();
 
 	// パーツの初期化
-	m_pParts = nullptr;
+	m_parts.clear();
 
 	// パーツ数の初期化
 	m_nMaxParts = 0;
@@ -97,25 +97,23 @@ void CMotion::Uninit(void)
 			}
 		}
 	}
-	if (m_motion != nullptr)
-	{// メモリの解放
-		delete[] m_motion;
-		m_motion = nullptr;
-	}
 
 	for (int i = 0; i < m_nMaxParts; i++)
 	{
-		if (m_pParts[i] != NULL)
+		if (m_parts[i] != NULL)
 		{
-			m_pParts[i]->Uninit();
-			m_pParts[i] = nullptr;
+			m_parts[i]->Uninit();
+			m_parts[i] = nullptr;
 		}
 	}
 
-	if (m_pParts != nullptr)
+	for (int i = 0; i < (int)m_parts.size(); i++)
 	{
-		delete[] m_pParts;
-		m_pParts = nullptr;
+		if (m_parts.at(i) != nullptr)
+		{
+			delete m_parts.at(i);
+			m_parts.at(i) = nullptr;
+		}
 	}
 }
 
@@ -144,15 +142,15 @@ void CMotion::Update()
 //=============================================================================
 void CMotion::SetMotion(const int nCntMotionSet)
 {
-	CMotion::MyMotion *motion = (m_motion + nCntMotionSet);
+	CMotion::MyMotion* motion = &m_motion[nCntMotionSet];
 
 	for (int nCntParts = 0; nCntParts < m_nMaxParts; nCntParts++)
 	{
 		// 変数宣言
 		D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);					// 位置
 		D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);					// 向き
-		D3DXVECTOR3 posOrigin = m_pParts[nCntParts]->GetPosOrigin();		// 元の位置
-		D3DXVECTOR3 rotOrigin = m_pParts[nCntParts]->GetRotOrigin();		// 元の向き
+		D3DXVECTOR3 posOrigin = m_parts[nCntParts]->GetPosOrigin();		// 元の位置
+		D3DXVECTOR3 rotOrigin = m_parts[nCntParts]->GetRotOrigin();		// 元の向き
 
 		// 位置の設定
 		pos = (posOrigin + motion->pKeySet[motion->nCntKeySet].pKey[nCntParts].pos);
@@ -166,8 +164,8 @@ void CMotion::SetMotion(const int nCntMotionSet)
 		rot.z = RotNormalization(rot.z);
 
 		// 情報の更新
-		m_pParts[nCntParts]->SetPos(pos);
-		m_pParts[nCntParts]->SetRot(rot);
+		m_parts[nCntParts]->SetPos(pos);
+		m_parts[nCntParts]->SetRot(rot);
 	}
 }
 
@@ -183,13 +181,13 @@ void CMotion::SetParts(D3DXMATRIX mtxWorld)
 
 	for (int nCntParts = 0; nCntParts < m_nMaxParts; nCntParts++)
 	{// モデルの描画
-		if (m_pParts[nCntParts]->GetParent() != nullptr)
+		if (m_parts[nCntParts]->GetParent() != nullptr)
 		{
-			m_pParts[nCntParts]->Draw();
+			m_parts[nCntParts]->Draw();
 		}
 		else
 		{
-			m_pParts[nCntParts]->Draw(mtxWorld);
+			m_parts[nCntParts]->Draw(mtxWorld);
 		}
 	}
 
@@ -204,21 +202,21 @@ void CMotion::SetParts(D3DXMATRIX mtxWorld)
 //=============================================================================
 void CMotion::PlayMotion()
 {
-	CMotion::MyMotion *motion = (m_motion + m_nNumMotion);
+	CMotion::MyMotion* motion = &m_motion[m_nNumMotion];
 
 	for (int nCntParts = 0; nCntParts < m_nMaxParts; nCntParts++)
 	{
 		// 変数宣言
-		D3DXVECTOR3 pos = m_pParts[nCntParts]->GetPos();			// 位置
-		D3DXVECTOR3 rot = m_pParts[nCntParts]->GetRot();			// 向き
-		D3DXVECTOR3 posDest = m_pParts[nCntParts]->GetPosDest();	// 目的の位置
-		D3DXVECTOR3 rotDest = m_pParts[nCntParts]->GetRotDest();	// 目的の向き
+		D3DXVECTOR3 pos = m_parts[nCntParts]->GetPos();			// 位置
+		D3DXVECTOR3 rot = m_parts[nCntParts]->GetRot();			// 向き
+		D3DXVECTOR3 posDest = m_parts[nCntParts]->GetPosDest();	// 目的の位置
+		D3DXVECTOR3 rotDest = m_parts[nCntParts]->GetRotDest();	// 目的の向き
 
 		if (motion->nCntFrame == 0)
 		{// フレームカウントが0の時
 			// 変数宣言
-			D3DXVECTOR3 posOrigin = m_pParts[nCntParts]->GetPosOrigin();		// 元の位置
-			D3DXVECTOR3 rotOrigin = m_pParts[nCntParts]->GetRotOrigin();		// 元の向き
+			D3DXVECTOR3 posOrigin = m_parts[nCntParts]->GetPosOrigin();		// 元の位置
+			D3DXVECTOR3 rotOrigin = m_parts[nCntParts]->GetRotOrigin();		// 元の向き
 
 			// 目的の位置と向きの算出
 			posDest = (posOrigin + motion->pKeySet[motion->nCntKeySet].pKey[nCntParts].pos) - pos;
@@ -230,8 +228,8 @@ void CMotion::PlayMotion()
 			rotDest.z = RotNormalization(rotDest.z);
 
 			// 情報の更新
-			m_pParts[nCntParts]->SetPosDest(posDest);
-			m_pParts[nCntParts]->SetRotDest(rotDest);
+			m_parts[nCntParts]->SetPosDest(posDest);
+			m_parts[nCntParts]->SetRotDest(rotDest);
 		}
 
 		// 変数宣言
@@ -250,8 +248,8 @@ void CMotion::PlayMotion()
 		rot.z = RotNormalization(rot.z);
 
 		// 情報の更新
-		m_pParts[nCntParts]->SetPos(pos);
-		m_pParts[nCntParts]->SetRot(rot);
+		m_parts[nCntParts]->SetPos(pos);
+		m_parts[nCntParts]->SetRot(rot);
 	}
 
 	// フレームカウントの加算
@@ -287,21 +285,21 @@ void CMotion::PlayMotion()
 //=============================================================================
 void CMotion::MotionBlend()
 {
-	CMotion::MyMotion* motion = (m_motion + m_nNumMotion);
+	CMotion::MyMotion* motion = &m_motion[m_nNumMotion];
 
 	for (int nCntParts = 0; nCntParts < m_nMaxParts; nCntParts++)
 	{
 		// 変数宣言
-		D3DXVECTOR3 pos = m_pParts[nCntParts]->GetPos();			// 位置
-		D3DXVECTOR3 rot = m_pParts[nCntParts]->GetRot();			// 向き
-		D3DXVECTOR3 posDest = m_pParts[nCntParts]->GetPosDest();	// 目的の位置
-		D3DXVECTOR3 rotDest = m_pParts[nCntParts]->GetRotDest();	// 目的の向き
+		D3DXVECTOR3 pos = m_parts[nCntParts]->GetPos();			// 位置
+		D3DXVECTOR3 rot = m_parts[nCntParts]->GetRot();			// 向き
+		D3DXVECTOR3 posDest = m_parts[nCntParts]->GetPosDest();	// 目的の位置
+		D3DXVECTOR3 rotDest = m_parts[nCntParts]->GetRotDest();	// 目的の向き
 
 		if (motion->nCntFrame == 0)
 		{// フレームカウントが0の時
 			// 変数宣言
-			D3DXVECTOR3 posOrigin = m_pParts[nCntParts]->GetPosOrigin();		// 元の位置
-			D3DXVECTOR3 rotOrigin = m_pParts[nCntParts]->GetRotOrigin();		// 元の向き
+			D3DXVECTOR3 posOrigin = m_parts[nCntParts]->GetPosOrigin();		// 元の位置
+			D3DXVECTOR3 rotOrigin = m_parts[nCntParts]->GetRotOrigin();		// 元の向き
 
 			// 目的の位置と向きの算出
 			CMotion::MyKey myKey = motion->pKeySet[motion->nCntKeySet].pKey[nCntParts];
@@ -314,8 +312,8 @@ void CMotion::MotionBlend()
 			rotDest.z = RotNormalization(rotDest.z);
 
 			// 情報の更新
-			m_pParts[nCntParts]->SetPosDest(posDest);
-			m_pParts[nCntParts]->SetRotDest(rotDest);
+			m_parts[nCntParts]->SetPosDest(posDest);
+			m_parts[nCntParts]->SetRotDest(rotDest);
 		}
 
 		// 変数宣言
@@ -334,8 +332,8 @@ void CMotion::MotionBlend()
 		rot.z = RotNormalization(rot.z);
 
 		// 情報の更新
-		m_pParts[nCntParts]->SetPos(pos);
-		m_pParts[nCntParts]->SetRot(rot);
+		m_parts[nCntParts]->SetPos(pos);
+		m_parts[nCntParts]->SetRot(rot);
 	}
 
 	// フレームカウントの加算
@@ -427,18 +425,18 @@ void CMotion::LoodSetMotion(const char *pFileName)
 					fscanf(pFile, "%d", &m_nMaxParts);
 
 					// メモリの解放
-					m_pParts = new CParts*[m_nMaxParts];
-					m_motion = new MyMotion[MAX_MOTION];
+					m_parts.resize(m_nMaxParts);
+					m_motion.resize(MAX_MOTION);
 					for (int i = 0; i < MAX_MOTION; i++)
 					{
 						m_motion[i].pKeySet = nullptr;
 					}
 
-					assert(m_pParts != nullptr && m_motion != nullptr);
+					//assert(m_parts != nullptr && m_motion != nullptr);
 
 					for (int i = 0; i < m_nMaxParts; i++)
 					{// パーツの生成
-						m_pParts[i] = CParts::Create();
+						m_parts[i] = CParts::Create();
 					}
 				}
 
@@ -464,8 +462,8 @@ void CMotion::LoodSetMotion(const char *pFileName)
 							nameTag += std::to_string(nType);
 
 							// ここで読込み
-							m_pParts[nCntParts]->LoadModel(nameTag.c_str());
-							m_pParts[nCntParts]->CalculationVtx();
+							m_parts[nCntParts]->LoadModel(nameTag.c_str());
+							m_parts[nCntParts]->CalculationVtx();
 						}
 						if (strcmp(&aString[0], "PARENT") == 0)
 						{// 親の読み込み
@@ -475,7 +473,7 @@ void CMotion::LoodSetMotion(const char *pFileName)
 
 							if (nIdxParent != -1)
 							{// 親のモデルの設定
-								m_pParts[nCntParts]->SetParent(m_pParts[nIdxParent]);
+								m_parts[nCntParts]->SetParent(m_parts[nIdxParent]);
 							}
 						}
 						if (strcmp(&aString[0], "POS") == 0)
@@ -485,8 +483,8 @@ void CMotion::LoodSetMotion(const char *pFileName)
 							fscanf(pFile, "%f", &pos.x);
 							fscanf(pFile, "%f", &pos.y);
 							fscanf(pFile, "%f", &pos.z);
-							m_pParts[nCntParts]->SetPos(pos);
-							m_pParts[nCntParts]->SetPosOrigin(pos);
+							m_parts[nCntParts]->SetPos(pos);
+							m_parts[nCntParts]->SetPosOrigin(pos);
 						}
 						if (strcmp(&aString[0], "ROT") == 0)
 						{// 向きの読み込み
@@ -495,8 +493,8 @@ void CMotion::LoodSetMotion(const char *pFileName)
 							fscanf(pFile, "%f", &rot.x);
 							fscanf(pFile, "%f", &rot.y);
 							fscanf(pFile, "%f", &rot.z);
-							m_pParts[nCntParts]->SetRot(rot);
-							m_pParts[nCntParts]->SetRotOrigin(rot);
+							m_parts[nCntParts]->SetRot(rot);
+							m_parts[nCntParts]->SetRotOrigin(rot);
 						}
 					}
 
@@ -616,10 +614,10 @@ void CMotion::SetPartsOrigin()
 	for (int nCntParts = 0; nCntParts < m_nMaxParts; nCntParts++)
 	{
 		// 位置の設定
-		m_pParts[nCntParts]->SetPos(m_pParts[nCntParts]->GetPosOrigin());
+		m_parts[nCntParts]->SetPos(m_parts[nCntParts]->GetPosOrigin());
 
 		//	向きの設定
-		m_pParts[nCntParts]->SetRot(m_pParts[nCntParts]->GetRotOrigin());
+		m_parts[nCntParts]->SetRot(m_parts[nCntParts]->GetRotOrigin());
 	}
 }
 

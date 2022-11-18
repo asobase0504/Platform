@@ -11,17 +11,11 @@
     <Filter Include="00_Cord\00_Main">
       <UniqueIdentifier>{4fe637f4-6403-45e0-a73e-5e1254665700}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00_Cord\00_Main\画面遷移">
-      <UniqueIdentifier>{50f5e731-fd3b-4941-af9e-ece487b9fa44}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00_Cord\01_System">
       <UniqueIdentifier>{2a674479-747d-4b98-a217-447af06c09f1}</UniqueIdentifier>
     </Filter>
     <Filter Include="00_Cord\02_Object">
       <UniqueIdentifier>{26276af0-11f7-4f23-aa68-0ba0442fe6fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00_Cord\03_Utility">
-      <UniqueIdentifier>{7e1cb7a9-fedd-479d-9a12-e56a7686baab}</UniqueIdentifier>
     </Filter>
     <Filter Include="00_Cord\02_Object\00_Templeate">
       <UniqueIdentifier>{4d7fd24e-a1f9-4a99-9cc9-c6db6ab29039}</UniqueIdentifier>
@@ -59,25 +53,28 @@
     <Filter Include="00_Cord\01_System\03_OutSide">
       <UniqueIdentifier>{385cb0a4-5e34-4c33-9cf6-9a633bf87c89}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00_Cord\00_Main\01_Fade">
+      <UniqueIdentifier>{50f5e731-fd3b-4941-af9e-ece487b9fa44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_Cord\00_Main\00_Main">
+      <UniqueIdentifier>{ada3f5d2-49da-4048-a6c1-47dae1b75f29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_Cord\01_System\04_Utility">
+      <UniqueIdentifier>{7e1cb7a9-fedd-479d-9a12-e56a7686baab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="object.cpp">
       <Filter>00_Cord\02_Object</Filter>
     </ClCompile>
-    <ClCompile Include="utility.cpp">
-      <Filter>00_Cord\01_System</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer.cpp">
-      <Filter>00_Cord\01_System</Filter>
-    </ClCompile>
     <ClCompile Include="game.cpp">
-      <Filter>00_Cord\00_Main\画面遷移</Filter>
+      <Filter>00_Cord\00_Main\01_Fade</Filter>
     </ClCompile>
     <ClCompile Include="result.cpp">
-      <Filter>00_Cord\00_Main\画面遷移</Filter>
+      <Filter>00_Cord\00_Main\01_Fade</Filter>
     </ClCompile>
     <ClCompile Include="title.cpp">
-      <Filter>00_Cord\00_Main\画面遷移</Filter>
+      <Filter>00_Cord\00_Main\01_Fade</Filter>
     </ClCompile>
     <ClCompile Include="particle_manager.cpp">
       <Filter>00_Cord\02_Object\01_Object2D\00_Particle</Filter>
@@ -98,16 +95,16 @@
       <Filter>00_Cord\02_Object\01_Object2D\01_UI\00_Number</Filter>
     </ClCompile>
     <ClCompile Include="ranking.cpp">
-      <Filter>00_Cord\00_Main\画面遷移</Filter>
+      <Filter>00_Cord\00_Main\01_Fade</Filter>
     </ClCompile>
     <ClCompile Include="fade.cpp">
-      <Filter>00_Cord\00_Main\画面遷移</Filter>
+      <Filter>00_Cord\00_Main\01_Fade</Filter>
     </ClCompile>
     <ClCompile Include="tutorial.cpp">
-      <Filter>00_Cord\00_Main\画面遷移</Filter>
+      <Filter>00_Cord\00_Main\01_Fade</Filter>
     </ClCompile>
     <ClCompile Include="pause.cpp">
-      <Filter>00_Cord\00_Main\画面遷移</Filter>
+      <Filter>00_Cord\00_Main\01_Fade</Filter>
     </ClCompile>
     <ClCompile Include="text.cpp">
       <Filter>00_Cord\02_Object\01_Object2D\01_UI</Filter>
@@ -119,22 +116,10 @@
       <Filter>00_Cord\02_Object\00_Templeate</Filter>
     </ClCompile>
     <ClCompile Include="nameset.cpp">
-      <Filter>00_Cord\00_Main\画面遷移</Filter>
+      <Filter>00_Cord\00_Main\01_Fade</Filter>
     </ClCompile>
     <ClCompile Include="mode.cpp">
-      <Filter>00_Cord\00_Main\画面遷移</Filter>
-    </ClCompile>
-    <ClCompile Include="task_group.cpp">
-      <Filter>00_Cord\00_Main</Filter>
-    </ClCompile>
-    <ClCompile Include="task.cpp">
-      <Filter>00_Cord\00_Main</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>00_Cord\00_Main</Filter>
-    </ClCompile>
-    <ClCompile Include="application.cpp">
-      <Filter>00_Cord\00_Main</Filter>
+      <Filter>00_Cord\00_Main\01_Fade</Filter>
     </ClCompile>
     <ClCompile Include="objectX.cpp">
       <Filter>00_Cord\02_Object\01_ObjectX</Filter>
@@ -190,28 +175,37 @@
     <ClCompile Include="parts.cpp">
       <Filter>00_Cord\02_Object\01_ObjectX\00_Motion</Filter>
     </ClCompile>
+    <ClCompile Include="application.cpp">
+      <Filter>00_Cord\00_Main\00_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>00_Cord\00_Main\00_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="task.cpp">
+      <Filter>00_Cord\00_Main\00_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="task_group.cpp">
+      <Filter>00_Cord\00_Main\00_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
+      <Filter>00_Cord\00_Main\00_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="utility.cpp">
+      <Filter>00_Cord\01_System\04_Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="object.h">
       <Filter>00_Cord\02_Object</Filter>
     </ClInclude>
-    <ClInclude Include="renderer.h">
-      <Filter>00_Cord\01_System</Filter>
-    </ClInclude>
-    <ClInclude Include="main.h">
-      <Filter>00_Cord\00_Main</Filter>
-    </ClInclude>
     <ClInclude Include="game.h">
-      <Filter>00_Cord\00_Main\画面遷移</Filter>
+      <Filter>00_Cord\00_Main\01_Fade</Filter>
     </ClInclude>
     <ClInclude Include="result.h">
-      <Filter>00_Cord\00_Main\画面遷移</Filter>
+      <Filter>00_Cord\00_Main\01_Fade</Filter>
     </ClInclude>
     <ClInclude Include="title.h">
-      <Filter>00_Cord\00_Main\画面遷移</Filter>
-    </ClInclude>
-    <ClInclude Include="utility.h">
-      <Filter>00_Cord\01_System</Filter>
+      <Filter>00_Cord\00_Main\01_Fade</Filter>
     </ClInclude>
     <ClInclude Include="particle_manager.h">
       <Filter>00_Cord\02_Object\01_Object2D\00_Particle</Filter>
@@ -235,16 +229,16 @@
       <Filter>リソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="ranking.h">
-      <Filter>00_Cord\00_Main\画面遷移</Filter>
+      <Filter>00_Cord\00_Main\01_Fade</Filter>
     </ClInclude>
     <ClInclude Include="fade.h">
-      <Filter>00_Cord\00_Main\画面遷移</Filter>
+      <Filter>00_Cord\00_Main\01_Fade</Filter>
     </ClInclude>
     <ClInclude Include="tutorial.h">
-      <Filter>00_Cord\00_Main\画面遷移</Filter>
+      <Filter>00_Cord\00_Main\01_Fade</Filter>
     </ClInclude>
     <ClInclude Include="pause.h">
-      <Filter>00_Cord\00_Main\画面遷移</Filter>
+      <Filter>00_Cord\00_Main\01_Fade</Filter>
     </ClInclude>
     <ClInclude Include="text.h">
       <Filter>00_Cord\02_Object\01_Object2D\01_UI</Filter>
@@ -256,19 +250,10 @@
       <Filter>00_Cord\02_Object\00_Templeate</Filter>
     </ClInclude>
     <ClInclude Include="nameset.h">
-      <Filter>00_Cord\00_Main\画面遷移</Filter>
-    </ClInclude>
-    <ClInclude Include="task.h">
-      <Filter>00_Cord\00_Main</Filter>
+      <Filter>00_Cord\00_Main\01_Fade</Filter>
     </ClInclude>
     <ClInclude Include="mode.h">
-      <Filter>00_Cord\00_Main\画面遷移</Filter>
-    </ClInclude>
-    <ClInclude Include="task_group.h">
-      <Filter>00_Cord\00_Main</Filter>
-    </ClInclude>
-    <ClInclude Include="application.h">
-      <Filter>00_Cord\00_Main</Filter>
+      <Filter>00_Cord\00_Main\01_Fade</Filter>
     </ClInclude>
     <ClInclude Include="objectX.h">
       <Filter>00_Cord\02_Object\01_ObjectX</Filter>
@@ -323,6 +308,24 @@
     </ClInclude>
     <ClInclude Include="parts.h">
       <Filter>00_Cord\02_Object\01_ObjectX\00_Motion</Filter>
+    </ClInclude>
+    <ClInclude Include="application.h">
+      <Filter>00_Cord\00_Main\00_Main</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>00_Cord\00_Main\00_Main</Filter>
+    </ClInclude>
+    <ClInclude Include="task.h">
+      <Filter>00_Cord\00_Main\00_Main</Filter>
+    </ClInclude>
+    <ClInclude Include="task_group.h">
+      <Filter>00_Cord\00_Main\00_Main</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer.h">
+      <Filter>00_Cord\00_Main\00_Main</Filter>
+    </ClInclude>
+    <ClInclude Include="utility.h">
+      <Filter>00_Cord\01_System\04_Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

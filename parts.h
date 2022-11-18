@@ -33,26 +33,30 @@ public:
 	CParts();
 	~CParts();
 
-	//--------------------------------------------------------------------
-	// メンバ関数
-	//--------------------------------------------------------------------
-	void SetPosOrigin(const D3DXVECTOR3 &posOrigin) { m_posOrigin = posOrigin; }		// 元の位置のセッター
-	void SetRotOrigin(const D3DXVECTOR3 &rotOrigin) { m_rotOrigin = rotOrigin; }		// 元の向きのセッター
-	void SetPosDest(const D3DXVECTOR3 &posDest) { m_posDest = posDest; }				// 目的位置のセッター
-	void SetRotDest(const D3DXVECTOR3 &rotDest) { m_rotDest = rotDest; }				// 目的向きのセッター
-	D3DXVECTOR3 GetPosOrigin() { return m_posOrigin; }									// 元の位置のゲッター
-	D3DXVECTOR3 GetRotOrigin() { return m_rotOrigin; }									// 元の向きのゲッター
-	D3DXVECTOR3 GetPosDest() { return m_posDest; }										// 目的位置のゲッター
-	D3DXVECTOR3 GetRotDest() { return m_rotDest; }										// 目的向きのゲッター
+	// 元の位置
+	void SetPosOrigin(const D3DXVECTOR3 &posOrigin) { m_posOrigin = posOrigin; }	// Setter
+	D3DXVECTOR3 GetPosOrigin() const { return m_posOrigin; }						// Getter
+
+	// 元の向き
+	void SetRotOrigin(const D3DXVECTOR3 &rotOrigin) { m_rotOrigin = rotOrigin; }	// Setter
+	const D3DXVECTOR3& GetRotOrigin() { return m_rotOrigin; }						// Getter
+
+	// 目的の位置
+	void SetPosDest(const D3DXVECTOR3 &posDest) { m_posDest = posDest; }			// Setter
+	const D3DXVECTOR3& GetPosDest() { return m_posDest; }							// Getter
+
+	// 目的の向き
+	void SetRotDest(const D3DXVECTOR3 &rotDest) { m_rotDest = rotDest; }			// Setter
+	const D3DXVECTOR3& GetRotDest() { return m_rotDest; }							// Getter
 
 private:
 	//--------------------------------------------------------------------
 	// メンバ変数
 	//--------------------------------------------------------------------
-	D3DXVECTOR3 m_posOrigin;		// 元の位置
-	D3DXVECTOR3 m_rotOrigin;		// 元の向き
-	D3DXVECTOR3 m_posDest;			// 目的の位置
-	D3DXVECTOR3 m_rotDest;			// 目的の向き
+	D3DXVECTOR3 m_posOrigin;	// 元の位置
+	D3DXVECTOR3 m_rotOrigin;	// 元の向き
+	D3DXVECTOR3 m_posDest;		// 目的の位置
+	D3DXVECTOR3 m_rotDest;		// 目的の向き
 };
 
 #endif
