@@ -127,7 +127,7 @@ public:
 	void Update() override;
 	void Draw() override;
 
-	static CParticle* Create(const CObject* inObject,const Info& inParticle, const D3DXVECTOR3& inPos);
+	static CParticle* Create(CObject* inObject,const Info& inParticle, const D3DXVECTOR3& inPos);
 	void LoadTex();
 	DWORD FloattoDword(float fVal);
 

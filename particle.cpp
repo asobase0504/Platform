@@ -133,7 +133,7 @@ void CParticle::Draw()
 //--------------------------------------------------
 // ¶¬
 //--------------------------------------------------
-CParticle* CParticle::Create(const CObject* inObject,const Info& inParticle, const D3DXVECTOR3& inPos)
+CParticle* CParticle::Create(CObject* inObject,const Info& inParticle, const D3DXVECTOR3& inPos)
 {
 	CParticle* particle = nullptr;
 	if (particle == nullptr)
@@ -141,6 +141,8 @@ CParticle* CParticle::Create(const CObject* inObject,const Info& inParticle, con
 		particle = new CParticle;
 		particle->Init();
 		
+		particle->m_object = inObject;
+		particle->m_object->Init();
 		particle->m_object->SetSize(D3DXVECTOR3(particle->m_data.fWidth, particle->m_data.fWidth,0.0f));
 		particle->m_object->SetPos(inPos);
 		particle->m_data = inParticle;
