@@ -11,6 +11,7 @@
 #include "utility.h"
 #include "particle.h"
 #include "object2d.h"
+#include "3dpolygon.h"
 
 //=========================================
 // 静的メンバー変数
@@ -20,8 +21,10 @@
 // コンストラクタ
 //-----------------------------------------
 CParticleEmitter::CParticleEmitter() :
+	CObject(3),
 	m_info({}),
-	m_particleInfo({})
+	m_particleInfo({}),
+	m_objectType(EObjectType::POLIGON2D)
 {
 
 }
@@ -59,14 +62,6 @@ void CParticleEmitter::Update()
 	{
 		PopParticle();
 	}
-}
-
-//-----------------------------------------
-// 設定
-//-----------------------------------------
-void CParticleEmitter::SetPos(const D3DXVECTOR3 & inPos)
-{
-	m_pos = inPos;
 }
 
 //-----------------------------------------
@@ -164,7 +159,23 @@ void CParticleEmitter::PopParticle(void)
 		m_info.fAngle += D3DX_PI * 2;
 	}
 
-	CParticle::Create(new CObject2d,popInfo, myPos);
+	switch (m_objectType)
+	{
+	case CParticleEmitter::POLIGON2D:
+		CParticle::Create(new CObject2d, popInfo, myPos);
+		break;
+	case CParticleEmitter::POLIGON3D:
+		CParticle::Create(new C3dpolygon, popInfo, myPos);
+		break;
+	case CParticleEmitter::BILLBOARD:
+		CParticle::Create(new CObject2d, popInfo, myPos);
+		break;
+	case CParticleEmitter::MODEL:
+		CParticle::Create(new CObject2d, popInfo, myPos);
+		break;
+	default:
+		break;
+	}
 }
 
 //-----------------------------------------

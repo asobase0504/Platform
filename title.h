@@ -22,6 +22,7 @@ class CPlayer;
 class CEnemy;
 class CCamera;
 class CLight;
+class CParticleManager;
 
 //=============================================================================
 // タイトルクラス
@@ -46,8 +47,10 @@ public:
 	void Update() override;
 	void Draw() override;
 
+	static CParticleManager* GetPaticleManager() { return m_pPaticleManager; }
+
 private:
-	CCamera* m_pCamera[2];
+	CCamera* m_pCamera;
 	CLight* m_pLight;
 	//CPlayer* m_pPlayer;
 	//CEnemy* m_pEnemy[10];
@@ -61,6 +64,9 @@ private:
 	bool Sizcontroller;
 	bool ModeSelect;
 	float m_alpha;
+
+	static CParticleManager* m_pPaticleManager;	// パーティクルマネジャー
+
 };
 
 #endif

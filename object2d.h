@@ -55,18 +55,12 @@ public:
 	void Draw() override;
 
 	// Setter
-	virtual void SetPos(const D3DXVECTOR3 &pos) override;
-	virtual void SetMove(const D3DXVECTOR3 &move) override;
-	void SetRot(D3DXVECTOR3 Rot) { m_rot = Rot; };
-	void SetSize(D3DXVECTOR3 Size) { m_size = Size; };
 	void SetTexture(int texture);
 	void SetTex(PositionVec4 Tex);
-	void SetColar(const D3DXCOLOR& inColar);
+	void SetColor(const D3DXCOLOR& inColor) override;
 	void SetAnimation(const int U, const int V, const int Speed, const int Drawtimer, const bool loop);
 
 	int GetTexture();
-	D3DXCOLOR GetCollar() { return m_col; }
-	D3DXVECTOR3 GetSize() { return m_size; }
 	LPDIRECT3DVERTEXBUFFER9 &GetVtx() { return m_pVtxBuff; }
 
 private:
@@ -75,9 +69,6 @@ private:
 protected:
 	int  m_nTimer;
 	float m_nScale;
-	D3DXVECTOR3 m_size;	// 大きさ
-	D3DXVECTOR3 m_rot;	// 角度
-	D3DXCOLOR m_col;	// 色
 	D3DXMATRIX m_mtxWorld;	// マトリックス
 
 private:

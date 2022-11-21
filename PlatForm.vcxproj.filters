@@ -53,14 +53,14 @@
     <Filter Include="00_Cord\01_System\03_OutSide">
       <UniqueIdentifier>{385cb0a4-5e34-4c33-9cf6-9a633bf87c89}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00_Cord\00_Main\01_Fade">
-      <UniqueIdentifier>{50f5e731-fd3b-4941-af9e-ece487b9fa44}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00_Cord\00_Main\00_Main">
       <UniqueIdentifier>{ada3f5d2-49da-4048-a6c1-47dae1b75f29}</UniqueIdentifier>
     </Filter>
     <Filter Include="00_Cord\01_System\04_Utility">
       <UniqueIdentifier>{7e1cb7a9-fedd-479d-9a12-e56a7686baab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_Cord\00_Main\01_Mode">
+      <UniqueIdentifier>{50f5e731-fd3b-4941-af9e-ece487b9fa44}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -68,13 +68,13 @@
       <Filter>00_Cord\02_Object</Filter>
     </ClCompile>
     <ClCompile Include="game.cpp">
-      <Filter>00_Cord\00_Main\01_Fade</Filter>
+      <Filter>00_Cord\00_Main\01_Mode</Filter>
     </ClCompile>
     <ClCompile Include="result.cpp">
-      <Filter>00_Cord\00_Main\01_Fade</Filter>
+      <Filter>00_Cord\00_Main\01_Mode</Filter>
     </ClCompile>
     <ClCompile Include="title.cpp">
-      <Filter>00_Cord\00_Main\01_Fade</Filter>
+      <Filter>00_Cord\00_Main\01_Mode</Filter>
     </ClCompile>
     <ClCompile Include="particle_manager.cpp">
       <Filter>00_Cord\02_Object\01_Object2D\00_Particle</Filter>
@@ -95,16 +95,16 @@
       <Filter>00_Cord\02_Object\01_Object2D\01_UI\00_Number</Filter>
     </ClCompile>
     <ClCompile Include="ranking.cpp">
-      <Filter>00_Cord\00_Main\01_Fade</Filter>
+      <Filter>00_Cord\00_Main\01_Mode</Filter>
     </ClCompile>
     <ClCompile Include="fade.cpp">
-      <Filter>00_Cord\00_Main\01_Fade</Filter>
+      <Filter>00_Cord\00_Main\01_Mode</Filter>
     </ClCompile>
     <ClCompile Include="tutorial.cpp">
-      <Filter>00_Cord\00_Main\01_Fade</Filter>
+      <Filter>00_Cord\00_Main\01_Mode</Filter>
     </ClCompile>
     <ClCompile Include="pause.cpp">
-      <Filter>00_Cord\00_Main\01_Fade</Filter>
+      <Filter>00_Cord\00_Main\01_Mode</Filter>
     </ClCompile>
     <ClCompile Include="text.cpp">
       <Filter>00_Cord\02_Object\01_Object2D\01_UI</Filter>
@@ -116,10 +116,10 @@
       <Filter>00_Cord\02_Object\00_Templeate</Filter>
     </ClCompile>
     <ClCompile Include="nameset.cpp">
-      <Filter>00_Cord\00_Main\01_Fade</Filter>
+      <Filter>00_Cord\00_Main\01_Mode</Filter>
     </ClCompile>
     <ClCompile Include="mode.cpp">
-      <Filter>00_Cord\00_Main\01_Fade</Filter>
+      <Filter>00_Cord\00_Main\01_Mode</Filter>
     </ClCompile>
     <ClCompile Include="objectX.cpp">
       <Filter>00_Cord\02_Object\01_ObjectX</Filter>
@@ -202,13 +202,13 @@
       <Filter>00_Cord\02_Object</Filter>
     </ClInclude>
     <ClInclude Include="game.h">
-      <Filter>00_Cord\00_Main\01_Fade</Filter>
+      <Filter>00_Cord\00_Main\01_Mode</Filter>
     </ClInclude>
     <ClInclude Include="result.h">
-      <Filter>00_Cord\00_Main\01_Fade</Filter>
+      <Filter>00_Cord\00_Main\01_Mode</Filter>
     </ClInclude>
     <ClInclude Include="title.h">
-      <Filter>00_Cord\00_Main\01_Fade</Filter>
+      <Filter>00_Cord\00_Main\01_Mode</Filter>
     </ClInclude>
     <ClInclude Include="particle_manager.h">
       <Filter>00_Cord\02_Object\01_Object2D\00_Particle</Filter>
@@ -232,16 +232,16 @@
       <Filter>リソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="ranking.h">
-      <Filter>00_Cord\00_Main\01_Fade</Filter>
+      <Filter>00_Cord\00_Main\01_Mode</Filter>
     </ClInclude>
     <ClInclude Include="fade.h">
-      <Filter>00_Cord\00_Main\01_Fade</Filter>
+      <Filter>00_Cord\00_Main\01_Mode</Filter>
     </ClInclude>
     <ClInclude Include="tutorial.h">
-      <Filter>00_Cord\00_Main\01_Fade</Filter>
+      <Filter>00_Cord\00_Main\01_Mode</Filter>
     </ClInclude>
     <ClInclude Include="pause.h">
-      <Filter>00_Cord\00_Main\01_Fade</Filter>
+      <Filter>00_Cord\00_Main\01_Mode</Filter>
     </ClInclude>
     <ClInclude Include="text.h">
       <Filter>00_Cord\02_Object\01_Object2D\01_UI</Filter>
@@ -253,10 +253,10 @@
       <Filter>00_Cord\02_Object\00_Templeate</Filter>
     </ClInclude>
     <ClInclude Include="nameset.h">
-      <Filter>00_Cord\00_Main\01_Fade</Filter>
+      <Filter>00_Cord\00_Main\01_Mode</Filter>
     </ClInclude>
     <ClInclude Include="mode.h">
-      <Filter>00_Cord\00_Main\01_Fade</Filter>
+      <Filter>00_Cord\00_Main\01_Mode</Filter>
     </ClInclude>
     <ClInclude Include="objectX.h">
       <Filter>00_Cord\02_Object\01_ObjectX</Filter>

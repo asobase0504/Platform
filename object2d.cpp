@@ -197,22 +197,6 @@ CObject2d *CObject2d::Create(int list)
 	return pObject;
 }
 
-//=============================================================================
-// SetPos関数
-//=============================================================================
-void CObject2d::SetPos(const D3DXVECTOR3 &pos)
-{
-	m_pos = pos;
-}
-
-//=============================================================================
-// 移動関数
-//=============================================================================
-void CObject2d::SetMove(const D3DXVECTOR3 &move)
-{
-	m_move = move;
-}
-
 //--------------------------------------------------
 // テクスチャの設定
 //--------------------------------------------------
@@ -296,9 +280,9 @@ void CObject2d::SetTex(PositionVec4 Tex)
 //---------------------------------------
 // 色の設定
 //---------------------------------------
-void CObject2d::SetColar(const D3DXCOLOR& inColar)
+void CObject2d::SetColor(const D3DXCOLOR& inColor)
 {
-	m_col = inColar;	// 色の代入
+	m_color = inColor;	// 色の代入
 
 	VERTEX_2D *pVtx;	// 頂点へのポインタ
 
@@ -306,10 +290,10 @@ void CObject2d::SetColar(const D3DXCOLOR& inColar)
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	// 頂点カラーの設定
-	pVtx[0].col = m_col;
-	pVtx[1].col = m_col;
-	pVtx[2].col = m_col;
-	pVtx[3].col = m_col;
+	pVtx[0].col = m_color;
+	pVtx[1].col = m_color;
+	pVtx[2].col = m_color;
+	pVtx[3].col = m_color;
 
 	// 頂点バッファをアンロック
 	m_pVtxBuff->Unlock();

@@ -48,7 +48,7 @@ public:
 	};
 
 private: // 静的メンバー変数
-	static CApplication* m_pManager;
+	static CApplication* m_pApplication;
 
 public: // 静的関数
 	static CApplication* GetInstance();
@@ -79,7 +79,7 @@ private:
 	CFade* m_pFade;
 	CMode* m_pGame;
 	CSound* m_pSound;
-	MODE m_mode;
 	CInput* m_pInput;
+	MODE m_mode;
 };
 #endif

@@ -43,6 +43,7 @@ HRESULT CParticle::Init()
 //--------------------------------------------------
 void CParticle::Uninit()
 {
+	m_object->Release();
 	CTask::Uninit();
 }
 
@@ -51,8 +52,8 @@ void CParticle::Uninit()
 //--------------------------------------------------
 void CParticle::Update()
 {
+	m_object->Update();
 	CTask::Update();
-
 
 	/* ↓使用しているなら↓ */
 
@@ -83,6 +84,7 @@ void CParticle::Update()
 	if (m_data.nLife <= 0)
 	{// エフェクトの寿命
 		Release();
+		m_object->Release();
 	}
 }
 
@@ -118,6 +120,7 @@ void CParticle::Draw()
 		break;
 	}
 
+	m_object->Draw();
 	CTask::Draw();
 
 	// αブレンディングを元に戻す
@@ -143,7 +146,7 @@ CParticle* CParticle::Create(CObject* inObject,const Info& inParticle, const D3D
 		
 		particle->m_object = inObject;
 		particle->m_object->Init();
-		particle->m_object->SetSize(D3DXVECTOR3(particle->m_data.fWidth, particle->m_data.fWidth,0.0f));
+		particle->m_object->SetSize(D3DXVECTOR3(50.0f, 50.0f,0.0f));
 		particle->m_object->SetPos(inPos);
 		particle->m_data = inParticle;
 		//particle->SetTexture(particle->m_data.nIdxTex);

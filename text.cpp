@@ -103,7 +103,7 @@ void CText::NormalUpdate()
 
 		//m_pos.y -= 1.0f;
 
-		CObject2d::SetColar(m_col);
+		CObject2d::SetColor(m_col);
 
 		if (m_DesTimar <= 0)
 		{

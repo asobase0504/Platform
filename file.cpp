@@ -15,6 +15,7 @@
 #include "particle_manager.h"
 #include "game.h"
 #include "tutorial.h"
+#include "title.h"
 
 static int index = 0;
 namespace nl = nlohmann;
@@ -93,17 +94,13 @@ void LoadJson(const char* cUrl)
 
 		if (chack)
 		{
-			if (index >= 4)
-			{
-				index = 0;
-			}
 			switch (*CApplication::GetInstance()->GetMode())
 			{
 			case CApplication::MODE_TITLE:
-			
+				CTitle::GetPaticleManager()->SetBundledData(loadData);
 				break;
 			case CApplication::MODE_GAME:
-				CGame::GetParticleManager()->SetBundledData(loadData, index);			
+				CGame::GetParticleManager()->SetBundledData(loadData);			
 				break;
 			case CApplication::MODE_RESULT:
 			
@@ -111,12 +108,11 @@ void LoadJson(const char* cUrl)
 			case CApplication::MODE_RANKING:
 				break;
 			case CApplication::MODE_TUTORIAL:
-				CTutorial::GetParticleManager()->SetBundledData(loadData, index);
+				CTutorial::GetParticleManager()->SetBundledData(loadData);
 				break;
 			default:
 				break;
 			}
-			index++;
 		}
 		else
 		{

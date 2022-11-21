@@ -11,34 +11,36 @@
 #include "main.h"
 #include "renderer.h"
 #include "input.h"
-#include "game.h"
-#include "title.h"
-#include "result.h"
-#include "fade.h"
-#include "nameset.h"
 #include "sound.h"
+#include "task_group.h"
 #include "texture.h"
+#include "fade.h"
+
+/* シーンモード */
+#include "title.h"
+#include "game.h"
+#include "result.h"
+#include "nameset.h"
 #include "ranking.h"
 #include "tutorial.h"
 #include "multiply.h"
-#include "task_group.h"
 
 //-----------------------------------------------------------------------------
 // 静的メンバー変数の初期化
 //-----------------------------------------------------------------------------
-CApplication * CApplication::m_pManager = nullptr;
-const D3DXVECTOR3 CApplication::CENTER_POS = D3DXVECTOR3(1280.0f * 0.5f, 720.0f * 0.5f, 0.0f);
+CApplication * CApplication::m_pApplication = nullptr;
+const D3DXVECTOR3 CApplication::CENTER_POS = D3DXVECTOR3((float)SCREEN_WIDTH * 0.5f, (float)SCREEN_HEIGHT * 0.5f, 0.0f);
 
 //=============================================================================
 // シングルトンでのインスタンスの取得
 //=============================================================================
 CApplication * CApplication::GetInstance()
 {
-	if (m_pManager == nullptr)
+	if (m_pApplication == nullptr)
 	{
-		m_pManager = new CApplication;
+		m_pApplication = new CApplication;
 	}
-	return m_pManager;
+	return m_pApplication;
 }
 
 //=============================================================================

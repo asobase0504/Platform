@@ -37,7 +37,7 @@ HRESULT CName::Init()
 	m_divisionY = 4;
 	m_divisionMAX = m_divisionX*m_divisionY;
 	m_type = A;
-	SetColar(D3DXCOLOR(0.8f, 0.0f, 0.0f, 1.0f));
+	SetColor(D3DXCOLOR(0.8f, 0.0f, 0.0f, 1.0f));
 	int X = m_type%m_divisionX;
 	int Y = m_type/m_divisionX;
 	float DivisionX = (1.0f / m_divisionX);
@@ -87,29 +87,29 @@ void CName::Update()
 			switch (nextType/4)
 			{
 			case 0:
-				SetColar(D3DXCOLOR(0.8f, 0.0f, 0.0f, 1.0f));
+				SetColor(D3DXCOLOR(0.8f, 0.0f, 0.0f, 1.0f));
 				break;
 			case 1:
-				SetColar(D3DXCOLOR(0.8f, 0.0f, 0.8f, 1.0f));
+				SetColor(D3DXCOLOR(0.8f, 0.0f, 0.8f, 1.0f));
 				break;
 			case 2:
-				SetColar(D3DXCOLOR(0.0f, 0.0f, 0.8f, 1.0f));
+				SetColor(D3DXCOLOR(0.0f, 0.0f, 0.8f, 1.0f));
 				
 				break;
 			case 3:
-				SetColar(D3DXCOLOR(0.0f, 0.8f, 0.8f, 1.0f));
+				SetColor(D3DXCOLOR(0.0f, 0.8f, 0.8f, 1.0f));
 				break;
 			case 4:
-				SetColar(D3DXCOLOR(0.0f, 0.8f, 0.0f, 1.0f));
+				SetColor(D3DXCOLOR(0.0f, 0.8f, 0.0f, 1.0f));
 				break;
 			case 5:
-				SetColar(D3DXCOLOR(0.0f, 0.8f, 0.8f, 1.0f));
+				SetColor(D3DXCOLOR(0.0f, 0.8f, 0.8f, 1.0f));
 				break;
 			case 6:
-				SetColar(D3DXCOLOR(0.8f, 0.8f, 0.0f, 1.0f));
+				SetColor(D3DXCOLOR(0.8f, 0.8f, 0.0f, 1.0f));
 				break;
 			default:
-				SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+				SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 				break;
 			}
 			SetAlphabet((EAlphabet)nextType);
@@ -125,29 +125,29 @@ void CName::Update()
 			switch (nextType / 4)
 			{
 			case 0:
-				SetColar(D3DXCOLOR(0.8f, 0.0f, 0.0f, 1.0f));
+				SetColor(D3DXCOLOR(0.8f, 0.0f, 0.0f, 1.0f));
 				break;
 			case 1:
-				SetColar(D3DXCOLOR(0.8f, 0.0f, 0.8f, 1.0f));
+				SetColor(D3DXCOLOR(0.8f, 0.0f, 0.8f, 1.0f));
 				break;
 			case 2:
-				SetColar(D3DXCOLOR(0.0f, 0.0f, 0.8f, 1.0f));
+				SetColor(D3DXCOLOR(0.0f, 0.0f, 0.8f, 1.0f));
 
 				break;
 			case 3:
-				SetColar(D3DXCOLOR(0.0f, 0.8f, 0.8f, 1.0f));
+				SetColor(D3DXCOLOR(0.0f, 0.8f, 0.8f, 1.0f));
 				break;
 			case 4:
-				SetColar(D3DXCOLOR(0.0f, 0.8f, 0.0f, 1.0f));
+				SetColor(D3DXCOLOR(0.0f, 0.8f, 0.0f, 1.0f));
 				break;
 			case 5:
-				SetColar(D3DXCOLOR(0.0f, 0.8f, 0.8f, 1.0f));
+				SetColor(D3DXCOLOR(0.0f, 0.8f, 0.8f, 1.0f));
 				break;
 			case 6:
-				SetColar(D3DXCOLOR(0.8f, 0.8f, 0.0f, 1.0f));
+				SetColor(D3DXCOLOR(0.8f, 0.8f, 0.0f, 1.0f));
 				break;
 			default:
-				SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+				SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 				break;
 			}
 			SetAlphabet((EAlphabet)nextType);
@@ -204,28 +204,28 @@ void CName::SetAlphabet(const EAlphabet Alphabet)
 	switch (m_type / 4)
 	{
 	case 0:
-		SetColar(D3DXCOLOR(0.8f, 0.0f, 0.0f, 1.0f));
+		SetColor(D3DXCOLOR(0.8f, 0.0f, 0.0f, 1.0f));
 		break;
 	case 1:
-		SetColar(D3DXCOLOR(0.8f, 0.0f, 0.8f, 1.0f));
+		SetColor(D3DXCOLOR(0.8f, 0.0f, 0.8f, 1.0f));
 		break;
 	case 2:
-		SetColar(D3DXCOLOR(0.0f, 0.0f, 0.8f, 1.0f));
+		SetColor(D3DXCOLOR(0.0f, 0.0f, 0.8f, 1.0f));
 		break;
 	case 3:
-		SetColar(D3DXCOLOR(0.0f, 0.8f, 0.8f, 1.0f));
+		SetColor(D3DXCOLOR(0.0f, 0.8f, 0.8f, 1.0f));
 		break;
 	case 4:
-		SetColar(D3DXCOLOR(0.0f, 0.8f, 0.0f, 1.0f));
+		SetColor(D3DXCOLOR(0.0f, 0.8f, 0.0f, 1.0f));
 		break;
 	case 5:
-		SetColar(D3DXCOLOR(0.0f, 0.8f, 0.8f, 1.0f));
+		SetColor(D3DXCOLOR(0.0f, 0.8f, 0.8f, 1.0f));
 		break;
 	case 6:
-		SetColar(D3DXCOLOR(0.8f, 0.8f, 0.0f, 1.0f));
+		SetColor(D3DXCOLOR(0.8f, 0.8f, 0.0f, 1.0f));
 		break;
 	default:
-		SetColar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		break;
 
 	}
