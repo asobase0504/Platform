@@ -21,6 +21,7 @@ int CParticleManager::m_MaxIndex = 0;
 // コンストラクタ
 //-----------------------------------------
 CParticleManager::CParticleManager() :
+	CTask(0),
 	m_numAll(0),
 	m_particleEmitter({})
 {
@@ -55,8 +56,6 @@ void CParticleManager::Uninit()
 		if (emitter != nullptr)
 		{
 			emitter->Release();
-			delete emitter;
-			emitter = nullptr;
 		}
 	}
 }
@@ -101,15 +100,6 @@ int CParticleManager::Create(CParticleEmitter::EObjectType inObject,const D3DXVE
 	m_particleEmitter.push_back(emitter);
 
 	return m_particleEmitter.size();
-}
-
-//-----------------------------------------
-// リリース
-//-----------------------------------------
-void CParticleManager::Release(const int idx)
-{
-	delete m_particleEmitter.at(idx);
-	m_particleEmitter.erase(m_particleEmitter.begin() + (idx));
 }
 
 //-----------------------------------------

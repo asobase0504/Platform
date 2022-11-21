@@ -68,13 +68,6 @@ HRESULT CTitle::Init(void)
 void CTitle::Uninit(void)
 {
 	CApplication::GetInstance()->GetSound()->Stop();
-
-	if (m_pPaticleManager != nullptr)
-	{
-		m_pPaticleManager->Uninit();
-		delete m_pPaticleManager;
-		m_pPaticleManager = nullptr;
-	}
 }
 
 //=============================================================================

@@ -43,7 +43,6 @@ HRESULT CParticle::Init()
 //--------------------------------------------------
 void CParticle::Uninit()
 {
-	m_object->Release();
 	CTask::Uninit();
 }
 
