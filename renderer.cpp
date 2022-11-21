@@ -4,27 +4,40 @@
 // Author : 浜田琉雅
 //
 //=============================================================================
-
 #include "renderer.h"
 #include "main.h"
 #include "object.h"
 #include "light.h"
-#include "player.h"
-#include "particle.h"
 #include "file.h"
 #include "camera.h"
 #include "3dpolygon.h"
 #include "pause.h"
 #include "game.h"
+#include "application.h"
+#include "task_group.h"
 
- CCamera* CRenderer::pCamera[2];
- CLight*  CRenderer::pLight;
- CParticle*  CRenderer::particle;
+//=============================================================================
+// 静的メンバー変数の宣言
+//=============================================================================
+CRenderer* CRenderer::m_renderer = nullptr;
+
+//=============================================================================
+// シングルトンでのインスタンスの取得
+//=============================================================================
+CRenderer * CRenderer::GetInstance()
+{
+	if (m_renderer == nullptr)
+	{
+		m_renderer = new CRenderer;
+	}
+	return m_renderer;
+}
 
 //=============================================================================
 // コンストラクト関数
 //=============================================================================
-CRenderer::CRenderer()
+CRenderer::CRenderer() :
+	m_camera(nullptr)
 {
 
 }
@@ -58,20 +71,20 @@ HRESULT CRenderer::Init(HWND hWnd, bool bWindow)
 	}
 
 	// デバイスのプレゼンテーションパラメータの設定
-	ZeroMemory(&d3dpp, sizeof(d3dpp));								// ワークをゼロクリア
-	d3dpp.BackBufferCount = 1;							// バックバッファの数
-	d3dpp.BackBufferWidth = SCREEN_WIDTH;				// ゲーム画面サイズ(幅)
-	d3dpp.BackBufferHeight = SCREEN_HEIGHT;				// ゲーム画面サイズ(高さ)
-	d3dpp.BackBufferFormat = d3ddm.Format;				// カラーモードの指定
-	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;		// 映像信号に同期してフリップする
+	ZeroMemory(&d3dpp, sizeof(d3dpp));							// ワークをゼロクリア
+	d3dpp.BackBufferCount = 1;									// バックバッファの数
+	d3dpp.BackBufferWidth = SCREEN_WIDTH;						// ゲーム画面サイズ(幅)
+	d3dpp.BackBufferHeight = SCREEN_HEIGHT;						// ゲーム画面サイズ(高さ)
+	d3dpp.BackBufferFormat = d3ddm.Format;						// カラーモードの指定
+	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;					// 映像信号に同期してフリップする
 	d3dpp.EnableAutoDepthStencil = TRUE;						// デプスバッファ（Ｚバッファ）とステンシルバッファを作成
 	d3dpp.AutoDepthStencilFormat = D3DFMT_D16;					// デプスバッファとして16bitを使う
-	d3dpp.Windowed = bWindow;						// ウィンドウモード
-	d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;		// リフレッシュレート
+	d3dpp.Windowed = bWindow;									// ウィンドウモード
+	d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;	// リフレッシュレート
 	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;	// インターバル
 
-																// ディスプレイアダプタを表すためのデバイスを作成
-																// 描画と頂点処理をハードウェアで行なう
+	// ディスプレイアダプタを表すためのデバイスを作成
+	// 描画と頂点処理をハードウェアで行なう
 	if ((FAILED(m_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd, D3DCREATE_HARDWARE_VERTEXPROCESSING, &d3dpp, &m_pD3DDevice))) &&
 		// 上記の設定が失敗したら
 		// 描画をハードウェアで行い、頂点処理はCPUで行なう
@@ -106,15 +119,6 @@ HRESULT CRenderer::Init(HWND hWnd, bool bWindow)
 	D3DXCreateFont(m_pD3DDevice, 18, 0, 0, 0, FALSE, SHIFTJIS_CHARSET,
 		OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, _T("Terminal"), &m_pFont);
 #endif
-	pCamera[0] = new CCamera;
-	pCamera[0]->Init();
-	
-	pCamera[1] = new CCamera;
-	pCamera[1]->Init();
-
-	pLight = new CLight;
-	pLight->Init();
-
 	return S_OK;
 }
 
@@ -123,37 +127,6 @@ HRESULT CRenderer::Init(HWND hWnd, bool bWindow)
 //=============================================================================
 void CRenderer::Uninit()
 {
-	CObject::AllUninit();
-	// ライト終了処理
-	if (pLight != nullptr)
-	{
-		pLight->Uninit();
-		delete pLight;
-		pLight = nullptr;
-	}
-
-	// カメラ終了処理
-	if (pCamera[0] != nullptr)
-	{
-		pCamera[0]->Uninit();
-		delete pCamera[0];
-		pCamera[0] = nullptr;
-	}
-	// カメラ終了処理
-	if (pCamera[1] != nullptr)
-	{
-		pCamera[1]->Uninit();
-		delete pCamera[1];
-		pCamera[1] = nullptr;
-	}
-
-	if (particle != nullptr)
-	{
-		particle->Uninit();
-		delete particle;
-		particle = nullptr;
-	}
-
 #ifdef _DEBUG
 	// デバッグ情報表示用フォントの破棄
 	if (m_pFont != nullptr)
@@ -183,28 +156,8 @@ void CRenderer::Uninit()
 //=============================================================================
 void CRenderer::Update()
 {
-	CPause * pPause = CGame::GetPause();
-	
-		C3dpolygon::PolygonReset();
-		// ポリゴンの更新処理
-	
-		pLight->Update();
-		if (pPause == nullptr)
-		{
-			CObject::AllUpdate();
-		}
-		else
-		{
-			if (pPause->Get())
-			{
-				CObject::TypeUpdate(CObject::PAUSE);
-				//pPause->Update();
-			}
-			else
-			{
-				CObject::AllUpdate();
-			}
-		}
+	C3dpolygon::PolygonReset();
+	CApplication::GetInstance()->GetTaskGroup()->Update();
 }
 
 //=============================================================================
@@ -212,20 +165,13 @@ void CRenderer::Update()
 //=============================================================================
 void CRenderer::Draw()
 {
-	// バックバッファ＆Ｚバッファのクリア
 	//画面クリア(バックバッファ&Zバッファのクリア)
-	m_pD3DDevice->Clear(0,
-		NULL,
-		(D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER),
-		D3DCOLOR_RGBA(0, 0, 0, 0),
-		1.0f,
-		0);
+	m_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER), D3DCOLOR_RGBA(0, 0, 0, 0), 1.0f, 0);
 
 	// Direct3Dによる描画の開始
 	if (SUCCEEDED(m_pD3DDevice->BeginScene()))
 	{
-		pCamera[0]->Set(0);
-		CObject::AllDraw();	
+		CApplication::GetInstance()->GetTaskGroup()->Draw();
 
 #ifdef _DEBUG
 		// FPS表示
@@ -233,7 +179,6 @@ void CRenderer::Draw()
 #endif // _DEBUG
 
 		// Direct3Dによる描画の終了
-		//描画終了
 		m_pD3DDevice->EndScene();
 	}
 
@@ -241,6 +186,16 @@ void CRenderer::Draw()
 	m_pD3DDevice->Present(NULL, NULL, NULL, NULL);
 }
 
+//=============================================================================
+// カメラの設定
+//=============================================================================
+CCamera * CRenderer::SetCamera(CCamera * inCamera)
+{
+	m_camera = inCamera;
+	m_camera->Init();
+
+	return m_camera;
+}
 
 #ifdef _DEBUG
 //=============================================================================
@@ -257,13 +212,4 @@ void  CRenderer::DrawFPS()
 	// テキスト描画
 	m_pFont->DrawText(NULL, str, -1, &rect, DT_LEFT, D3DCOLOR_ARGB(0xff, 0xff, 0xff, 0xff));
 }
-
-
 #endif // _DEBUG
-//=============================================================================
-// GetCamera関数
-//=============================================================================
-CCamera *CRenderer::GetCamera()
-{
-	return pCamera[0];
-}

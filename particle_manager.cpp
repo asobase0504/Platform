@@ -12,7 +12,11 @@
 
 #include <assert.h>
 
+//-----------------------------------------
+// 静的メンバー変数
+//-----------------------------------------
 int CParticleManager::m_MaxIndex = 0;
+
 //-----------------------------------------
 // コンストラクタ
 //-----------------------------------------
@@ -50,7 +54,7 @@ void CParticleManager::Uninit()
 	{
 		if (emitter != nullptr)
 		{
-			emitter->Uninit();
+			emitter->Release();
 			delete emitter;
 			emitter = nullptr;
 		}
@@ -76,22 +80,22 @@ void CParticleManager::Update()
 //-----------------------------------------
 // 生成
 //-----------------------------------------
-int CParticleManager::Create(const D3DXVECTOR3& pos, const int& index,int Type)
+int CParticleManager::Create(CParticleEmitter::EObjectType inObject,const D3DXVECTOR3& pos, const int& index)
 {
-	
 	CParticleEmitter* emitter = new CParticleEmitter();
 
 	emitter->Init();		// 初期化
-	emitter->SetPos(pos);	// 位置の更新
+	emitter->SetPos(pos);	// 位置更新
 
-	if ((int)m_bundledData[Type].size() <= index)
+	if ((int)m_bundledData.size() <= index)
 	{
 		assert(false);
 		return 0;
 	}
 
-	emitter->SetParticle(m_bundledData[Type].at(index).particleData);	// 指定されてたパーティクルデータの挿入
-	emitter->SetEmitter(m_bundledData[Type].at(index).emitterData);
+	emitter->SetParticle(m_bundledData.at(index).particleData);	// 指定されてたパーティクルデータの挿入
+	emitter->SetEmitter(m_bundledData.at(index).emitterData);
+	emitter->SetObjectType(inObject);
 
 	m_numAll++;
 	m_particleEmitter.push_back(emitter);
@@ -111,9 +115,9 @@ void CParticleManager::Release(const int idx)
 //-----------------------------------------
 // 設定
 //-----------------------------------------
-void CParticleManager::SetBundledData(const BundledData& inData,int Data)
+void CParticleManager::SetBundledData(const BundledData& inData)
 {
-	m_bundledData[Data].push_back(inData);
+	m_bundledData.push_back(inData);
 }
 
 //-----------------------------------------
@@ -121,7 +125,7 @@ void CParticleManager::SetBundledData(const BundledData& inData,int Data)
 //-----------------------------------------
 void CParticleManager::ChangeBundledData(const int idx, const BundledData& inData)
 {
-	m_bundledData[m_Index].at(idx) = inData;
+	m_bundledData.at(idx) = inData;
 }
 
 //-----------------------------------------

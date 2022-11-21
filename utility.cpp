@@ -2,6 +2,8 @@
 // 
 // Hackathon ( utility.cpp )
 // Author  : katsuki mizuki
+// Author  : Hamada Ryuuga
+// Author  : Yuda Kaito
 // 
 //**************************************************
 
@@ -107,8 +109,8 @@ D3DXVECTOR3 WorldCastScreen(D3DXVECTOR3 *screenPos,			// スクリーン座標
 	D3DXMatrixInverse(&InvView, NULL, mtxView);
 	D3DXMatrixInverse(&InvPrj, NULL, mtxProjection);
 	D3DXMatrixIdentity(&VP);
-	VP._11 = screenSize.x / 2.0f; VP._22 = -screenSize.y / 2.0f;
-	VP._41 = screenSize.x / 2.0f; VP._42 = screenSize.y / 2.0f;
+	VP._11 = screenSize.x * 0.5f; VP._22 = -screenSize.y * 0.5f;
+	VP._41 = screenSize.x * 0.5f; VP._42 = screenSize.y * 0.5f;
 	D3DXMatrixInverse(&InvViewport, NULL, &VP);
 
 	// ワールド座標へのキャスト
@@ -121,19 +123,15 @@ D3DXVECTOR3 WorldCastScreen(D3DXVECTOR3 *screenPos,			// スクリーン座標
 //---------------------------------------------------------------------------
 // スクリーン座標をワールド座標へのキャスト
 //---------------------------------------------------------------------------
-D3DXVECTOR3 ScreenCastWorld(D3DXVECTOR3 *screenPos,			// スクリーン座標
-	D3DXVECTOR3 screenSize									// スクリーンサイズ
-)															// プロジェクションマトリックス
+D3DXVECTOR3 ScreenCastWorld(const D3DXVECTOR3 &screenPos, D3DXVECTOR3 screenSize)
 {
-	// 変数宣言
+	D3DXVECTOR3 pos = screenPos;
 
-	D3DXVECTOR3 pos = *screenPos;
-
-	D3DXVECTOR3 Camerapos = *(CRenderer::GetCamera()->GetPos());
+	D3DXVECTOR3 Camerapos = *(CRenderer::GetInstance()->GetCamera()->GetPos());
 
 	pos.y *= -1;
 
-	pos -= (Camerapos - D3DXVECTOR3(screenSize.x / 2, screenSize.y / 2, 0.0f));
+	pos -= (Camerapos - D3DXVECTOR3(screenSize.x * 0.5f, screenSize.y * 0.5f, 0.0f));
 
 	return pos;
 }
@@ -165,3 +163,45 @@ bool CollisionCircle(D3DXVECTOR3 Pos1, float fRadius1, D3DXVECTOR3 Pos2, float f
 	return false;
 }
 
+//--------------------------------------------------
+// マトリックスの計算
+// Author : Hamada Ryuuga
+//--------------------------------------------------
+D3DXMATRIX * GiftMtx(D3DXMATRIX * pOut, D3DXVECTOR3 inPos, D3DXVECTOR3 inRot)
+{
+	// 計算用マトリックス
+	D3DXMATRIX mtxRot, mtxTrans;
+
+	// ワールドマトリックスの初期化
+	// 行列初期化関数(第1引数の行列を単位行列に初期化)
+	D3DXMatrixIdentity(pOut);
+
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, inRot.x, inRot.y, inRot.z);
+	// 行列掛け算関数(第2引数×第3引数第を１引数に格納)
+	D3DXMatrixMultiply(pOut, pOut, &mtxRot);
+
+	// 位置を反映
+	// 行列移動関数(第１引数にX,Y,Z方向の移動行列を作成)
+	D3DXMatrixTranslation(&mtxTrans, inPos.x, inPos.y, inPos.z);
+	// 行列掛け算関数(第2引数×第3引数第を１引数に格納)
+	D3DXMatrixMultiply(pOut, pOut, &mtxTrans);
+	return pOut;
+}
+
+//--------------------------------------------------
+// イージングサイン計算
+// Author : Hamada Ryuuga
+//--------------------------------------------------
+float easeInSine(float X)
+{
+	return 1 - cos((X * D3DX_PI) * 0.5f);
+}
+
+//--------------------------------------------------
+// イージング累乗計算
+// Author : Hamada Ryuuga
+//--------------------------------------------------
+float easeInQuad(float X)
+{
+	return X * X;
+}

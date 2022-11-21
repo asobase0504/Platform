@@ -102,12 +102,39 @@ D3DXVECTOR3 WorldCastScreen(D3DXVECTOR3 *screenPos,			// スクリーン座標
 // 引数2  : D3DXVECTOR3 screenSize
 // 返値  : D3DXVECTOR3 / 3Dを2D
 //--------------------------------------------------
-D3DXVECTOR3 ScreenCastWorld(D3DXVECTOR3 *screenPos,			// スクリーン座標
+D3DXVECTOR3 ScreenCastWorld(const D3DXVECTOR3 &screenPos,			// スクリーン座標
 	D3DXVECTOR3 screenSize);
 
 bool CollisionCircle(D3DXVECTOR3 Pos1,
 	                 float fRadius1, 
 	                 D3DXVECTOR3 Pos2,
 	                 float fRadius2);
+
+//--------------------------------------------------
+// ScreenCastWorld
+// Author : Hamada Ryuuga
+// 引数1  : D3DXMATRIX  *pOut // スクリーン座標
+// 引数2  : D3DXVECTOR3 inPos
+// 引数3  : D3DXVECTOR3 inRot
+// 返値  : D3DXMATRIX / 計算したマトリックス
+//--------------------------------------------------
+D3DXMATRIX *GiftMtx(D3DXMATRIX *pOut, D3DXVECTOR3 inPos, D3DXVECTOR3 inRot);
+
+//--------------------------------------------------
+// ScreenCastWorld
+// Author : Hamada Ryuuga
+// 引数1  : float X		// 時間
+// 返値  : float / 計算結果
+//--------------------------------------------------
+float easeInSine(float X);
+
+//--------------------------------------------------
+// easeInQuad
+// Author : Hamada Ryuuga
+// 引数1  : float X		// 時間
+// 返値  : float / 計算結果
+//--------------------------------------------------
+float easeInQuad(float X);
+
 
 #endif // !_UTILITY_H_

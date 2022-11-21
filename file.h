@@ -23,12 +23,12 @@
 #include <sstream>
 
 #include "main.h"
-#include "particle.h"
 
 //-----------------------------------------------------------------------------
 // プロトタイプ宣言
 //-----------------------------------------------------------------------------
 void OutputStatus();
 void LoadJson(const char* cUrl);
+nlohmann::json LoadJsonStage(const wchar_t* cUrl);
 
 #endif		// _FILE_H_

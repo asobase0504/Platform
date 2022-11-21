@@ -13,11 +13,12 @@
 #include "main.h"
 #include "object2d.h"
 #include "name.h"
+#include "mode.h"
 
 //=============================================================================
 // ñºëOÇÃçÏê¨ÉNÉâÉX
 //=============================================================================
-class CNameSet : public CObject
+class CNameSet : public CMode
 {
 public:
 	CNameSet();

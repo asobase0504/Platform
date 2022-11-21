@@ -6,7 +6,7 @@
 //============================
 
 #include "number.h"
-#include "manager.h"
+#include "application.h"
 
 
 //=============================================================================
@@ -31,7 +31,7 @@ HRESULT CNumber::Init()
 	m_MyNumber = 0;
 	m_Speed = 0.0f;
 	CObject2d::Init();
-	CObject2d::SetTexture(CTexture::TEXTURE_SCORE);
+	CObject2d::SetTexture(CTexture::GetInstance()->SetTexture("SCORE"));
 	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
 	SetTex(PositionVec4(
@@ -54,9 +54,9 @@ void CNumber::Uninit()
 //=============================================================================
 // çXêVä÷êî
 //=============================================================================
-void CNumber::Update()
+void CNumber::NormalUpdate()
 {
-	CObject2d::Update();
+	CObject2d::NormalUpdate();
 
 	if (m_isRelease)
 	{
@@ -66,7 +66,7 @@ void CNumber::Update()
 
 		m_pos.y -= 1.0f;
 
-		CObject2d::SetColar(m_col);
+		CObject2d::SetColor(m_col);
 
 		if (m_DesTimar <= 0)
 		{
@@ -88,7 +88,7 @@ void CNumber::Update()
 //=============================================================================
 void CNumber::Draw()
 {
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();
 
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);

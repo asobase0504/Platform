@@ -10,11 +10,12 @@
 #include "file.h"
 #include "letter.h"
 #include "particle.h"
-#include "manager.h"
+#include "application.h"
 #include "texture.h"
 #include "particle_manager.h"
 #include "game.h"
 #include "tutorial.h"
+#include "title.h"
 
 static int index = 0;
 namespace nl = nlohmann;
@@ -22,49 +23,25 @@ namespace nl = nlohmann;
 nl::json Effect;//リストの生成
 
 //=============================================================================
-// 全部出力（置くだけ）
+// 読込み
 //=============================================================================
-void OutputStatus()
+nlohmann::json LoadJsonStage(const wchar_t* cUrl)
 {
-	/*DataEffect = GetImguiParticle();
+	std::ifstream ifs(cUrl);
 
-	Effect["POS"] = {{ "X", DataEffect.pos.x} ,{ "Y", DataEffect.pos.y} ,{ "Z", DataEffect.pos.z } };
-	Effect["POSMAX"] = {{ "X", DataEffect.maxPopPos.x } ,{ "Y", DataEffect.maxPopPos.y } ,{ "Z", DataEffect.maxPopPos.z } };
-	Effect["POSMIN"] = {{ "X", DataEffect.minPopPos.x } ,{ "Y", DataEffect.minPopPos.y } ,{ "Z", DataEffect.minPopPos.z } };
-	Effect["MOVE"] = { { "X", DataEffect.move.x } ,{ "Y", DataEffect.move.y } ,{ "Z", DataEffect.move.z } };
-	Effect["MOVETRANSITION"] = { { "X", DataEffect.moveTransition.x } ,{ "Y", DataEffect.moveTransition.y } ,{ "Z", DataEffect.moveTransition.z } };
-	Effect["ROT"] = { {"X", DataEffect.rot.x} ,{ "Y", DataEffect.rot.y },{ "Z", DataEffect.rot.z } };
+	if (ifs)
+	{
+		nlohmann::json list;	// リストの作成
 
-	Effect["COL"] = { { "R", DataEffect.color.color.r }, {"G" ,DataEffect.color.color.g} ,{ "B", DataEffect.color.color.b } ,{ "A", DataEffect.color.color.a } };
-	Effect["COLRANDAMMAX"] = { { "R", DataEffect.color.colRandamMax.r },{ "G" ,DataEffect.color.colRandamMax.g } ,{ "B", DataEffect.color.colRandamMax.b } ,{ "A", DataEffect.color.colRandamMax.a } };
-	Effect["COLRANDAMMIN"] = { { "R", DataEffect.color.colRandamMin.r },{ "G" ,DataEffect.color.colRandamMin.g } ,{ "B", DataEffect.color.colRandamMin.b } ,{ "A", DataEffect.color.colRandamMin.a } };
-	Effect["COLTRANSITION"] = { { "R", DataEffect.color.colTransition.r },{ "G" ,DataEffect.color.colTransition.g } ,{ "B", DataEffect.color.colTransition.b } ,{ "A", DataEffect.color.colTransition.a } };
-	Effect["DESTCOL"] = { { "R", DataEffect.color.destCol.r },{ "G" ,DataEffect.color.destCol.g } ,{ "B", DataEffect.color.destCol.b } ,{ "A", DataEffect.color.destCol.a } };
-	Effect["ENDTIME"] = DataEffect.color.nEndTime;
-	Effect["CNTTRANSITIONTIME"] = DataEffect.color.nCntTransitionTime;
-	Effect["BCOLTRANSITION"] = DataEffect.color.bColTransition;
-	Effect["COLRANDOM"] = DataEffect.color.bColRandom;
-	Effect["RANDOMTRANSITIONTIME"] = DataEffect.color.bRandomTransitionTime;
+		ifs >> list;
+		return list;
+	}
 
-	Effect["TYPE"] = DataEffect.type;
-	Effect["WIDTH"] = DataEffect.fWidth;
-	Effect["HEIGHT"] = DataEffect.fHeight;
-	Effect["ANGLE"] = DataEffect.fAngle;
-	Effect["ATTENUATION"] = DataEffect.fAttenuation;
-	Effect["RADIUS"] = DataEffect.fRadius;
-	Effect["WEIGHT"] = DataEffect.fWeight;
-	Effect["WEIGHTTRANSITION"] = DataEffect.fWeightTransition;
-	Effect["LIFE"] = DataEffect.nLife;
-	Effect["BACKROT"] = DataEffect.bBackrot;
-	Effect["SCALE"] = DataEffect.fScale;
+	/* ↓ファイルを開くのを失敗した場合↓ */
 
-	auto jobj = Effect.dump();
-	std::ofstream writing_file;
-	const std::string pathToJSON = "data/FILE/DataEffectOutput.json";
-	writing_file.open(pathToJSON, std::ios::out);
-	writing_file << jobj << std::endl;
-	writing_file.close();*/
+	return nullptr;
 }
+
 
 //=============================================================================
 // 読み込み
@@ -117,30 +94,25 @@ void LoadJson(const char* cUrl)
 
 		if (chack)
 		{
-			if (index >= 4)
+			switch (*CApplication::GetInstance()->GetMode())
 			{
-				index = 0;
-			}
-			switch (*CManager::GetInstance()->GetMode())
-			{
-			case CManager::MODE_TITLE:
+			case CApplication::MODE_TITLE:
+				CTitle::GetPaticleManager()->SetBundledData(loadData);
+				break;
+			case CApplication::MODE_GAME:
+				CGame::GetParticleManager()->SetBundledData(loadData);			
+				break;
+			case CApplication::MODE_RESULT:
 			
 				break;
-			case CManager::MODE_GAME:
-				CGame::GetParticleManager()->SetBundledData(loadData, index);			
+			case CApplication::MODE_RANKING:
 				break;
-			case CManager::MODE_RESULT:
-			
-				break;
-			case CManager::MODE_RANKING:
-				break;
-			case CManager::MODE_TUTORIAL:
-				CTutorial::GetParticleManager()->SetBundledData(loadData, index);
+			case CApplication::MODE_TUTORIAL:
+				CTutorial::GetParticleManager()->SetBundledData(loadData);
 				break;
 			default:
 				break;
 			}
-			index++;
 		}
 		else
 		{

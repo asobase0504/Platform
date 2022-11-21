@@ -10,7 +10,7 @@
 //-----------------------------------------------------------------------------
 #include "game.h"
 #include "input.h"
-#include "manager.h"
+#include "application.h"
 #include "object.h"
 #include "light.h"
 #include "player.h"
@@ -27,6 +27,9 @@
 #include "bg.h"
 
 #include "pause.h"
+#include "camera.h"
+
+#include "task_group.h"
 
 #include "text.h"
 
@@ -58,8 +61,9 @@ CGame::~CGame()
 //=============================================================================
 HRESULT CGame::Init(void)
 {
+	m_pCamera[0] = CRenderer::GetInstance()->SetCamera(new CCamera(1));
+	m_pCamera[1] = CRenderer::GetInstance()->SetCamera(new CCamera(2));
 	m_gameCount = 0;
-	m_speedUp = 300;
 
 	srand((unsigned int)time(NULL)); // 現在時刻の情報で初期化
 
@@ -70,17 +74,14 @@ HRESULT CGame::Init(void)
 		return E_FAIL;
 	}
 
-	CObject::AllCreate();
-
 	m_pPlayer = CPlayer::Create();
-	m_pPlayer->SetUp(CObject::PLAYER);
+	m_pPlayer->SetType(CObject::PLAYER);
 
-	SetBossPop(false);
-	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
+	CApplication::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
 
 	m_pPause = new CPause;
 	m_pPause->Init();
-	m_pPause->SetUp(CObject::PAUSE);
+	m_pPause->SetType(CObject::PAUSE);
 
 	return S_OK;
 }
@@ -90,8 +91,8 @@ HRESULT CGame::Init(void)
 //=============================================================================
 void CGame::Uninit(void)
 {
-	CManager::GetInstance()->GetSound()->Stop();
-	CModelManager::ReleaseAll();
+	CApplication::GetInstance()->GetSound()->Stop();
+	CApplication::GetInstance()->GetTaskGroup()->AllRelease();
 	CRanking::SetScore(CScore::GetScore());
 
 	if (m_pPaticleManager != nullptr)
@@ -99,7 +100,6 @@ void CGame::Uninit(void)
 		m_pPaticleManager->Uninit();
 		delete m_pPaticleManager;
 		m_pPaticleManager = nullptr;
-
 	}
 
 	if (m_pPause != nullptr)
@@ -107,6 +107,7 @@ void CGame::Uninit(void)
 		m_pPause->Uninit();
 		m_pPause = nullptr;
 	}
+	Release();
 }
 
 //=============================================================================
@@ -114,39 +115,18 @@ void CGame::Uninit(void)
 //=============================================================================
 void CGame::Update(void)
 {
-	m_gameCount++;
-	// 更新処理
-	if (m_gameCount == m_speedUp&&!GetMaxBoss())
-	{
-		m_gameCount = 0;
-		m_speedUp += 250;
-	}
-
 	CInput *CInputpInput = CInput::GetKey();
 
-	
 	if (CInputpInput->Trigger(CInput::KEY_DEBUG))
 	{
 		//モードの設定
-		CManager::GetInstance()->GetFade()->NextMode(CManager::MODE_RESULT);
+		CApplication::GetInstance()->GetFade()->NextMode(CApplication::MODE_RESULT);
 		return;
 	}
 	if (CInputpInput->Trigger(CInput::KEY_F2))
 	{
-	
-		//CText::Create(CText::GON,120, 10, "モンハンたのしい...");
-		CManager::GetInstance()->GetFade()->NextMode(CManager::MODE_NAMESET);
+		CApplication::GetInstance()->GetFade()->NextMode(CApplication::MODE_NAMESET);
 		return;
-	}
-	if (GetMaxEnemy() <= 0)
-	{
-		if (GetMaxBoss())
-		{
-		}
-		else
-		{
-			
-		}
 	}
 	m_pPaticleManager->Update();
 }

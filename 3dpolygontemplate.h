@@ -16,7 +16,6 @@
 class CTest3d : public C3dpolygon
 {
 public:
-	
 
 	static CTest3d *CTest3d::Create();
 
@@ -24,11 +23,8 @@ public:
 	~CTest3d() override;
 	HRESULT Init() override;
 	void Uninit() override;
-	void Update() override;
+	void NormalUpdate()override;
 	void Draw() override;
-	const D3DXVECTOR3 *GetPos() const override;
-	void SetPos(const D3DXVECTOR3 &pos) override;
-
 
 private:
 	void move();

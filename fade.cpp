@@ -14,7 +14,7 @@
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CFade::CFade() :CObject2d(3)
+CFade::CFade() :CObject2d(4)
 {
 }
 
@@ -30,6 +30,7 @@ CFade::~CFade()
 //=============================================================================
 HRESULT CFade::Init(void)
 {
+	AttachProtect();
 	// 現在のモーション番号の保管
 	CObject2d::Init();
 	m_fadeSp = 0.07f;
@@ -52,35 +53,35 @@ void CFade::Uninit(void)
 //=============================================================================
 void CFade::Update(void)
 {
-	if (fade != FADENON)
+	if (m_fade != FADENON)
 	{
 		// 現在のモーション番号の保管
 		CObject2d::Update();
-		if (fade == FADEOUT)
+		if (m_fade == FADEOUT)
 		{
 			m_fadeSet -= m_fadeSp;
 		}
-		if (fade == FADEIN)
+		if (m_fade == FADEIN)
 		{
 			m_fadeSet += m_fadeSp;
 		}
 
 		if (m_fadeSet >= 1.0f)
 		{
-			fade = FADEOUT;
+			m_fade = FADEOUT;
 			m_fadeSet = 1.0f;
-			CManager::GetInstance()->SetMode(m_nextMode);
+			CApplication::GetInstance()->SetMode(m_nextMode);
 
 		}
 		if (m_fadeSet <= 0.0f)
 		{
-			fade = FADENON;
+			m_fade = FADENON;
 
 			m_fadeSet = 0.0f;
 
 			return;
 		}
-		SetColar(D3DXCOLOR(0.0f, 0.0f, 0.0f, m_fadeSet));
+		SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, m_fadeSet));
 	}
 }
 
@@ -102,11 +103,11 @@ CFade* CFade::Create()
 	if (pObject != nullptr)
 	{
 		pObject->Init();
-		pObject->m_nextMode = CManager::MODE_TITLE;
+		pObject->m_nextMode = CApplication::MODE_TITLE;
 		pObject->SetSize(D3DXVECTOR3(1280.0f, 720.0f, 0.0f));
-		pObject->SetColar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
-		pObject->SetUp(CObject::MODE);
-		pObject->fade = FADENON;
+		pObject->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
+		pObject->SetType(CObject::MODE);
+		pObject->m_fade = FADENON;
 	}
 	return pObject;
 }
@@ -115,9 +116,9 @@ CFade* CFade::Create()
 //=============================================================================
 // 次のモードに移行
 //=============================================================================
-void CFade::NextMode(CManager::MODE nextMode)
+void CFade::NextMode(CApplication::MODE nextMode)
 {
-	if (fade != FADENON)
+	if (m_fade != FADENON)
 	{
 		return;
 	}
@@ -127,6 +128,6 @@ void CFade::NextMode(CManager::MODE nextMode)
 	Init();
 	m_nextMode = nextMode;
 	SetSize(D3DXVECTOR3(1280.0f, 720.0f, 0.0f));
-	SetColar(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
-	fade = FADEIN;
+	SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
+	m_fade = FADEIN;
 }

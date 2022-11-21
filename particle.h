@@ -10,7 +10,9 @@
 #undef new
 #include <d3dx9.h>
 #pragma pop_macro("new")
-#include "object2d.h"
+#include "task.h"
+
+class CObject;
 
 //-------------------------------------------------
 // パーティクルクラス
@@ -19,7 +21,7 @@
 // Author ; hamada 
 // 概要 : パーティクルの処理を担当するクラス
 //-------------------------------------------------
-class CParticle : public CObject2d
+class CParticle : public CTask
 {
 public:	// 定数
 	static const int maxNumber = 21000;
@@ -125,11 +127,12 @@ public:
 	void Update() override;
 	void Draw() override;
 
-	static CParticle* Create(const Info& inParticle, const D3DXVECTOR3& inPos);
+	static CParticle* Create(CObject* inObject,const Info& inParticle, const D3DXVECTOR3& inPos);
 	void LoadTex();
 	DWORD FloattoDword(float fVal);
 
 private:	// メンバー変数
+	CObject* m_object;
 	Info m_data;
 	int m_idx;
 };

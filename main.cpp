@@ -9,11 +9,9 @@
 //-----------------------------------------------------------------------------
 #include "renderer.h"
 #include "main.h"
-#include "object.h"
-#include "object2d.h"
 #include "resource1.h"
 #include "input.h"
-#include "manager.h"
+#include "application.h"
 
 //-----------------------------------------------------------------------------
 // プロトタイプ宣言
@@ -25,7 +23,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 int g_nCountFPS;
 #endif // _DEBUG
 
-CManager* pManeager;
+//-----------------------------------------------------------------------------
+// 静的変数
+//-----------------------------------------------------------------------------
+static CApplication* pManeager;
 
 //=============================================================================
 // メイン関数
@@ -69,9 +70,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
 		hInstance,
 		NULL);
 
-	pManeager = CManager::GetInstance();
+	pManeager = CApplication::GetInstance();
 
-	if (FAILED(pManeager->Init(hWnd, TRUE, hInstance)))	//画面サイズ
+	if (FAILED(pManeager->Init(hWnd, hInstance)))	//画面サイズ
 	{//初期化処理が失敗した場合
 		return -1;
 	}

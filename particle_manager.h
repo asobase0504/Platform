@@ -24,6 +24,7 @@ class CParticleEmitter;
 //=========================================
 class CParticleManager
 {
+public:	// 列挙型
 public:	// 構造体
 	struct BundledData
 	{
@@ -35,11 +36,12 @@ public:	// 構造体
 	{
 		NOW_STORM = 0,		// 風
 		NOW_SUN,			// 雷
-		NOW_FIRE,		    // 火
+		NOW_FIRE,			// 火
 		NOW_ICE,			// 氷
 		NOW_NON,
 		NOW_MAX
 	};
+
 public:
 	CParticleManager();
 	~CParticleManager();
@@ -47,18 +49,18 @@ public:
 	HRESULT Init();
 	void Uninit();
 	void Update();
-	int Create(const D3DXVECTOR3& pos, const int& idx, int Type);
+	int Create(CParticleEmitter::EObjectType inObject,const D3DXVECTOR3& pos, const int& idx);
 	void Release(const int idx);
-	void SetBundledData(const BundledData&inData, int Data);
+	void SetBundledData(const BundledData&inData);
 	void ChangeBundledData(const int idx, const BundledData&inData);
 	void SetEmitterPos(const int idx,const D3DXVECTOR3& inPos);
 
 	// ゲッタ―
-	std::vector<BundledData>& GetBundledData(int ind) { return m_bundledData[ind]; }
+	std::vector<BundledData>& GetBundledData() { return m_bundledData; }
 	std::vector<CParticleEmitter*> GetEmitter() { return m_particleEmitter; }
 private:
 	int m_numAll;	// 生成数
-	std::vector<BundledData> m_bundledData[10];	// 情報体
+	std::vector<BundledData> m_bundledData;	// 情報体
 	std::vector<CParticleEmitter*> m_particleEmitter;	// エミッタ―情報
 	int m_Index;
 	static int m_MaxIndex;

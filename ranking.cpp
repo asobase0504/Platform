@@ -11,17 +11,11 @@
 #include "ranking.h"
 #include "main.h"
 #include "input.h"
-#include "manager.h"
+#include "application.h"
 #include "texture.h"
 #include "object2d.h"
 #include "name.h"
 #include "fade.h"
-// playfab
-#include "playfab/PlayFabError.h"
-#include "playfab/PlayFabClientDataModels.h"
-#include "playfab/PlayFabClientApi.h"
-#include "playfab/PlayFabSettings.h"
-#include "playfab/PlayFabApiSettings.h"
 #include <windows.h>
 #include <functional>
 #include <iphlpapi.h>
@@ -29,6 +23,14 @@
 #include <thread>
 #include "sound.h"
 #include "text.h"
+#include "score.h"
+
+// playfab
+#include "playfab/PlayFabError.h"
+#include "playfab/PlayFabClientDataModels.h"
+#include "playfab/PlayFabClientApi.h"
+#include "playfab/PlayFabSettings.h"
+#include "playfab/PlayFabApiSettings.h"
 
 #pragma comment(lib, "iphlpapi.lib")
 
@@ -107,7 +109,7 @@ inline HRESULT CRanking::Init(void)
 	{
 		m_name[i] = "";
 	}
-	D3DXVECTOR3 pos = D3DXVECTOR3(CManager::CENTER_POS.x, 100.0f, 0.0f);
+	D3DXVECTOR3 pos = D3DXVECTOR3(CApplication::CENTER_POS.x, 100.0f, 0.0f);
 	for (int i = 0; i < MAX_RANK - 1; i++)
 	{
 		m_pRanking[i] = CScore::Create(pos);
@@ -115,7 +117,7 @@ inline HRESULT CRanking::Init(void)
 		pos.y += 100.0f;
 	}
 
-	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RANKING);
+	CApplication::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RANKING);
 	
 	CRanking::OnlineSetScore();
 
@@ -124,17 +126,17 @@ inline HRESULT CRanking::Init(void)
 
 	{ // オブジェクトの作成
 		m_pObject2d[0] = CObject2d::Create();
-		m_pObject2d[0]->SetTexture(CTexture::TEXTURE_RANKINBG);
-		m_pObject2d[0]->SetSize(CManager::CENTER_POS);
-		m_pObject2d[0]->SetPos(CManager::CENTER_POS);
+		m_pObject2d[0]->SetTexture(CTexture::GetInstance()->SetTexture("RANKINBG"));
+		m_pObject2d[0]->SetSize(CApplication::CENTER_POS);
+		m_pObject2d[0]->SetPos(CApplication::CENTER_POS);
 
 		m_pObject2d[1] = CObject2d::Create();
-		m_pObject2d[1]->SetTexture(CTexture::TEXTURE_RANKIN);
+		m_pObject2d[1]->SetTexture(CTexture::GetInstance()->SetTexture("RANKIN"));
 		m_pObject2d[1]->SetSize(D3DXVECTOR3(100.0f, 300.0f, 0.0f));
-		m_pObject2d[1]->SetPos(D3DXVECTOR3(CManager::CENTER_POS.x - 120.0f, 350.0f, 0.0f));
+		m_pObject2d[1]->SetPos(D3DXVECTOR3(CApplication::CENTER_POS.x - 120.0f, 350.0f, 0.0f));
 
 		m_pObject2d[2] = CObject2d::Create();
-		m_pObject2d[2]->SetTexture(CTexture::TEXTURE_RANKINTITLEOFF);
+		m_pObject2d[2]->SetTexture(CTexture::GetInstance()->SetTexture("RANKINTITLEOFF"));
 		m_pObject2d[2]->SetSize(D3DXVECTOR3(200.0f, 100.0f, 0.0f));
 		m_pObject2d[2]->SetPos(D3DXVECTOR3(200.0f, 150.0f, 0.0f));
 	}
@@ -166,7 +168,7 @@ inline HRESULT CRanking::Init(void)
 //=============================================================================
 void CRanking::Uninit(void)
 {
-	CManager::GetInstance()->GetSound()->Stop();
+	CApplication::GetInstance()->GetSound()->Stop();
 	m_isStop = true;
 }
 
@@ -177,7 +179,7 @@ void CRanking::Update(void)
 {
 	if (finished)
 	{
-		m_pObject2d[2]->SetTexture(CTexture::TEXTURE_RANKINTITLEON);
+		m_pObject2d[2]->SetTexture(CTexture::GetInstance()->SetTexture("RANKINTITLEON"));
 
 		if (!m_isRankingSet)
 		{
@@ -198,12 +200,12 @@ void CRanking::Update(void)
 			//モードの設定
 			if (m_score == 0)
 			{
-				CManager::GetInstance()->GetFade()->NextMode(CManager::MODE_TITLE);
+				CApplication::GetInstance()->GetFade()->NextMode(CApplication::MODE_TITLE);
 				return;
 			}
 			else
 			{
-				CManager::GetInstance()->GetFade()->NextMode(CManager::MODE_RESULT);
+				CApplication::GetInstance()->GetFade()->NextMode(CApplication::MODE_RESULT);
 				return;
 			}
 		}

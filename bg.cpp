@@ -6,8 +6,8 @@
 //============================
 
 #include "bg.h"
-#include "hamada.h"
-#include "manager.h"
+#include "utility.h"
+#include "application.h"
 
 
 //------------------------------------
@@ -46,13 +46,13 @@ void CBg::Uninit()
 //------------------------------------
 // 更新
 //------------------------------------
-void CBg::Update()
+void CBg::NormalUpdate()
 {
 	//加算の値を関数化
 		m_Speed += (m_MoveSpeed);
 	
 	C3dpolygon::SetTex(PositionVec4(0.0f+ m_Speed.x, 1.0f+ m_Speed.x,0.0f + m_Speed.y,1.0f + m_Speed.y));
-	C3dpolygon::Update();
+	C3dpolygon::NormalUpdate();
 	SetPos(D3DXVECTOR3(0.0f, 0.0f, 1000.0f));
 }
 
@@ -61,13 +61,13 @@ void CBg::Update()
 //------------------------------------
 void CBg::Draw()
 {
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();
 	//アルファブレンディングを加算合成に設定
 	//pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
 	//pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	//pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 
-	m_mtxWorld = *hmd::giftmtx(&m_mtxWorld, m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	m_mtxWorld = *GiftMtx(&m_mtxWorld, m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	C3dpolygon::Draw();
 
@@ -95,19 +95,6 @@ CBg *CBg::Create()
 	}
 
 	return pObject;
-}
-
-//------------------------------------
-// Get＆Set 
-//------------------------------------
-const D3DXVECTOR3 * CBg::GetPos() const
-{
-	return &m_pos;
-}
-
-void CBg::SetPos(const D3DXVECTOR3 & pos)
-{
-	m_pos = pos;
 }
 
 

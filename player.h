@@ -10,24 +10,13 @@
 #include "main.h"
 #include "motion.h"
 #include "renderer.h"
-#include "object3d.h"
+#include "motion_model3D.h"
 
-class  CMotion;
-class CMagicBox;
-class CPlayer : public CObject3d
+class CMotion;
+
+class CPlayer : public CMotionModel3D
 {
 public:
-
-	enum NOWMAGIC
-	{
-		NOW_FIRE = 2,		// 火
-		NOW_ICE,			// 氷
-		NOW_STORM,			// 風
-		NOW_SUN,			// 雷
-		NOW_NON,
-		NOW_MAX
-	};
-
 	//modelデータの構造体//
 	struct MODELDATAPLAYER
 	{
@@ -54,13 +43,10 @@ public:
 
 	HRESULT Init()override;	// 初期化
 	void Uninit()override;	// 破棄
-	void Update()override;	// 更新
+	void NormalUpdate()override;	// 更新
 	void Draw()override;	// 描画
 
 	static CPlayer *Create();
-	static NOWMAGIC *GetMagic();
-	static void SetMagic(CPlayer::NOWMAGIC NextMagic);
-	static CPlayer::NOWMAGIC * GetCastMagic();
 
 private:
 	
@@ -70,8 +56,6 @@ private:
 	void TutorialMove();	//動きセット
 	int m_Pow;
 	float m_MoveSpeed;
-	static NOWMAGIC m_NowMagic;			//現在の魔法
-	static NOWMAGIC m_CastMagic;		//唱えた魔法
 private:
 };
 #endif

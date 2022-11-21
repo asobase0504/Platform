@@ -10,7 +10,7 @@
 //-----------------------------------------------------------------------------
 // include
 //-----------------------------------------------------------------------------
-#include "object.h"
+#include "mode.h"
 
 //-----------------------------------------------------------------------------
 // 前方宣言
@@ -19,11 +19,12 @@ class CMagicBox;
 class CParticleManager;
 class CPlayer;
 class CPause; 
+class CCamera;
 
 //=============================================================================
 // ゲームクラス
 //=============================================================================
-class CGame :public CObject
+class CGame : public CMode
 {
 public:
 	CGame();
@@ -45,6 +46,7 @@ private:
 	static CPlayer* m_pPlayer;
 	static CParticleManager* m_pPaticleManager;	// パーティクルマネジャー
 	static CPause *m_pPause;
+	CCamera* m_pCamera[2];
 
 	int m_gameCount;
 	int m_speedUp;

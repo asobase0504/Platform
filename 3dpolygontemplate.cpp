@@ -4,11 +4,9 @@
 // Author:hamada ryuuga
 //
 //============================
-
 #include "3dpolygontemplate.h"
-#include "hamada.h"
-#include "manager.h"
-
+#include "utility.h"
+#include "application.h"
 
 //------------------------------------
 // コンストラクタ
@@ -45,16 +43,12 @@ void CTest3d::Uninit()
 //------------------------------------
 // 更新
 //------------------------------------
-void CTest3d::Update()
+void CTest3d::NormalUpdate()
 {
-	
 	//動き
 	CTest3d::move();
-	
-	C3dpolygon::Update();
-	
 
-
+	C3dpolygon::NormalUpdate();
 }
 
 //------------------------------------
@@ -62,15 +56,15 @@ void CTest3d::Update()
 //------------------------------------
 void CTest3d::Draw()
 {
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();
 	//アルファブレンディングを加算合成に設定
 	//pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
 	//pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	//pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 
 	//Ｚ軸で回転しますちなみにm_rotつかうとグルグル回ります
-	m_mtxWorld = *hmd::giftmtx(&m_mtxWorld, m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	//m_mtxWorld = *hmd::giftmtx(&m_mtxWorld, m_pos, m_rot);
+	m_mtxWorld = *GiftMtx(&m_mtxWorld, m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	//m_mtxWorld = *hmd::GiftMtx(&m_mtxWorld, m_pos, m_rot);
 	C3dpolygon::Draw();
 
 	//αブレンディングを元に戻す
@@ -90,30 +84,15 @@ CTest3d *CTest3d::Create()
 	if (pObject != nullptr)
 	{
 		pObject->Init();
-		pObject->SetTexture(CTexture::TEXTURE_EXPLOSION);//テクスチャ選択
-		pObject->SetSize(D3DXVECTOR3(640.0f, 360.0f, 0.0f));//サイズ設定
-		pObject->SetPos(D3DXVECTOR3(0.0f, 0.0f, 10200.0f));//座標設定
-		pObject->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));//色設定
-		pObject->SetMove(D3DXVECTOR3(0.0f, 0.0f, 0.0f));//moveの設定
+		pObject->SetTexture(CTexture::GetInstance()->SetTexture("EXPLOSION"));		// テクスチャ選択
+		pObject->SetSize(D3DXVECTOR3(640.0f, 360.0f, 0.0f));	// サイズ設定
+		pObject->SetPos(D3DXVECTOR3(0.0f, 0.0f, 10200.0f));		// 座標設定
+		pObject->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));	// 色設定
+		pObject->SetMove(D3DXVECTOR3(0.0f, 0.0f, 0.0f));		// moveの設定
 	}
 
 	return pObject;
 }
-
-//------------------------------------
-// Get＆Set 
-//------------------------------------
-const D3DXVECTOR3 * CTest3d::GetPos() const
-{
-	return &m_pos;
-}
-
-void CTest3d::SetPos(const D3DXVECTOR3 & pos)
-{
-	m_pos = pos;
-}
-
-
 
 //------------------------------------
 // 動き系統

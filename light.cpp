@@ -7,7 +7,7 @@
 //-----------------------------------------------------------------------------
 // include
 //-----------------------------------------------------------------------------
-#include "manager.h"
+#include "application.h"
 #include "renderer.h"
 #include "light.h"
 
@@ -29,18 +29,21 @@ CLight::~CLight()
 //=============================================================================
 // 初期化
 //=============================================================================
-void CLight::Init(void)
+HRESULT CLight::Init(void)
 {
 	// ライトをクリアする
-	ZeroMemory(m_light, sizeof(m_light));
+	memset(m_light, 0, sizeof(m_light));
 
 	// ライトの設定
-	Set(D3DLIGHT_DIRECTIONAL, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), D3DXVECTOR3(0.0f, 0.0f, 1.0f), 0);
-	Set(D3DLIGHT_DIRECTIONAL, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), D3DXVECTOR3(0.0f, 1.0f, 0.0f), 1);
-	Set(D3DLIGHT_DIRECTIONAL, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), D3DXVECTOR3(0.0f, -1.0f, 0.0f), 2);
+	D3DXCOLOR color(1.0f, 1.0f, 1.0f, 1.0f);
+	Set(D3DLIGHT_DIRECTIONAL, color, D3DXVECTOR3(0.0f, 0.0f, 1.0f), 0);
+	Set(D3DLIGHT_DIRECTIONAL, color, D3DXVECTOR3(0.0f, 1.0f, 0.0f), 1);
+	Set(D3DLIGHT_DIRECTIONAL, color, D3DXVECTOR3(0.0f, -1.0f, 0.0f), 2);
 
 	// デバイスへのポインタの取得
-	CManager::GetInstance()->GetRenderer()->GetDevice()->SetRenderState(D3DRS_AMBIENT, 0xffffffff);
+	CApplication::GetInstance()->GetRenderer()->GetDevice()->SetRenderState(D3DRS_AMBIENT, color);
+
+	return S_OK;
 }
 
 //=============================================================================
@@ -63,7 +66,7 @@ void CLight::Update(void)
 void CLight::Set(D3DLIGHTTYPE type,D3DXCOLOR col, D3DXVECTOR3 vec, int nNum)
 {
 	// デバイスへのポインタの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();
 
 	D3DXVECTOR3 vecDir;		// ライトの方向ベクトル
 

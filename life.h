@@ -27,7 +27,6 @@ public:
 	void Uninit() override;
 	void Update() override;
 	void Draw() override;
-	const D3DXVECTOR3 *GetPos() const override;
 	void SetPos(const D3DXVECTOR3 &pos) override;
 	void SetMove(const D3DXVECTOR3 &move)override;
 	
