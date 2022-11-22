@@ -20,8 +20,6 @@
 #include "particle_emitter.h"
 #include "particle.h"
 
-CParticleManager* CTitle::m_pPaticleManager = nullptr;
-
 //=============================================================================
 // コンストラクター
 //=============================================================================
@@ -52,7 +50,7 @@ HRESULT CTitle::Init(void)
 		return E_FAIL;
 	}
 
-	CObject2d* test = CObject2d::Create(2);
+	CObject2d* test = CObject2d::Create();
 	test->Init();
 	test->SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
 	test->SetPos(D3DXVECTOR3(50.0f, 50.0f, 0.0f));
@@ -75,9 +73,11 @@ void CTitle::Uninit(void)
 //=============================================================================
 void CTitle::Update(void)
 {
-	if (CInput::GetKey()->Trigger(CInput::KEY_UP))
+	static bool a = false;
+	if (CInput::GetKey()->Trigger(CInput::KEY_UP) && !a)
 	{
-		m_pPaticleManager->Create(CParticleEmitter::EObjectType::POLIGON2D,D3DXVECTOR3(70.0f,70.0f,0.0f), 1);
+		a = true;
+		m_pPaticleManager->Create(CParticleEmitter::EObjectType::POLIGON2D,CApplication::CENTER_POS, 0);
 	}
 
 	m_pPaticleManager->Update();

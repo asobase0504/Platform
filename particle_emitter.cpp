@@ -19,6 +19,7 @@
 
 //-----------------------------------------
 // コンストラクタ
+// Author YudaKaito
 //-----------------------------------------
 CParticleEmitter::CParticleEmitter() :
 	CObject(3),
@@ -31,6 +32,7 @@ CParticleEmitter::CParticleEmitter() :
 
 //-----------------------------------------
 // デストラクタ
+// Author YudaKaito
 //-----------------------------------------
 CParticleEmitter::~CParticleEmitter()
 {
@@ -39,6 +41,7 @@ CParticleEmitter::~CParticleEmitter()
 
 //-----------------------------------------
 // 初期化
+// Author YudaKaito
 //-----------------------------------------
 HRESULT CParticleEmitter::Init()
 {
@@ -47,6 +50,7 @@ HRESULT CParticleEmitter::Init()
 
 //-----------------------------------------
 // 終了
+// Author YudaKaito
 //-----------------------------------------
 void CParticleEmitter::Uninit()
 {
@@ -54,6 +58,7 @@ void CParticleEmitter::Uninit()
 
 //-----------------------------------------
 // 更新
+// Author YudaKaito
 //-----------------------------------------
 void CParticleEmitter::Update()
 {
@@ -66,23 +71,23 @@ void CParticleEmitter::Update()
 
 //-----------------------------------------
 // 出現
+// Author YudaKaito
 //-----------------------------------------
 void CParticleEmitter::PopParticle(void)
 {
-	CParticle::Info popInfo = m_particleInfo;
+	CParticle::SInfo popInfo = m_particleInfo;
 	popInfo.nMaxLife = popInfo.nLife;
 	popInfo.fWidth = popInfo.fScale;
 	popInfo.fHeight = popInfo.fScale;
-	popInfo.type = CParticle::PARTICLETYPE_NORMAL;
 
 	D3DXVECTOR3 myPos = m_pos;
 	// 生成位置の算出
-	myPos.x += FloatRandam(popInfo.maxPopPos.x, -popInfo.minPopPos.x);
-	myPos.y += FloatRandam(popInfo.maxPopPos.y, -popInfo.minPopPos.y);
-	myPos.z += FloatRandam(popInfo.maxPopPos.z, -popInfo.minPopPos.z);
+	myPos.x += FloatRandam(m_info.maxPopPos.x, -m_info.minPopPos.x);
+	myPos.y += FloatRandam(m_info.maxPopPos.y, -m_info.minPopPos.y);
+	myPos.z += FloatRandam(m_info.maxPopPos.z, -m_info.minPopPos.z);
 
 	// 色の算出
-	CParticle::Color& popColor = popInfo.color;
+	CParticle::SColor& popColor = popInfo.color;
 	popColor.nCntTransitionTime = 0;
 	if (popColor.bColRandom)
 	{// ランダムカラーを使用
@@ -180,8 +185,9 @@ void CParticleEmitter::PopParticle(void)
 
 //-----------------------------------------
 // 設定
+// Author YudaKaito
 //-----------------------------------------
-void CParticleEmitter::SetParticle(const CParticle::Info& inParticle)
+void CParticleEmitter::SetParticle(const CParticle::SInfo& inParticle)
 {
 	m_particleInfo = inParticle;
 }

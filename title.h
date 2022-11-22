@@ -47,16 +47,12 @@ public:
 	void Update() override;
 	void Draw() override;
 
-	static CParticleManager* GetPaticleManager() { return m_pPaticleManager; }
+	CParticleManager* GetPaticleManager() { return m_pPaticleManager; }
 
 private:
 	CCamera* m_pCamera;
 	CLight* m_pLight;
-	//CPlayer* m_pPlayer;
-	//CEnemy* m_pEnemy[10];
 	CBg* m_pBg[4];
-	CObject2d* m_text[4];
-	CObject2d* m_list[2];
 	CObject2d* m_fade;
 	int m_addX;
 	int m_addY;
@@ -65,7 +61,7 @@ private:
 	bool ModeSelect;
 	float m_alpha;
 
-	static CParticleManager* m_pPaticleManager;	// パーティクルマネジャー
+	CParticleManager* m_pPaticleManager;	// パーティクルマネジャー
 
 };
 

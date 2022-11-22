@@ -67,7 +67,8 @@ private:
 
 private:
 	std::unordered_map<int,SList> m_list;	// ƒŠƒXƒgˆê——
-	int m_priorityNumber;	// •`‰æ‡”
+	unsigned int m_createNumber;	// ¶¬”
+	int m_priorityNumber;			// •`‰æ‡”
 };
 
 #endif

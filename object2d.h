@@ -45,7 +45,7 @@ private:
 	static const D3DXVECTOR3 m_Vtx[4];
 
 public:
-	static CObject2d *Create(int list = 0);
+	static CObject2d *Create(int list = 2);
 
 	CObject2d(int list = 0);
 	~CObject2d() override;

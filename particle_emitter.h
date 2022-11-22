@@ -34,9 +34,13 @@ public: // 列挙型
 	};
 
 public: // 構造体
-	struct Info
+	struct SInfo
 	{
-		float fAngle;
+		D3DXVECTOR3 maxPopPos;		// 発生位置(最大)
+		D3DXVECTOR3 minPopPos;		// 発生位置(最小)
+		float fAngle;				// 発射角度
+		float fAddAngle;			// 発射角度を生成時に変化させる量
+		int popNumber;				// 一度の出現数
 	};
 public: // 静的メンバー関数
 public: // メンバー関数
@@ -48,15 +52,15 @@ public: // メンバー関数
 	void Update();
 
 	void PopParticle(void);
-	void SetParticle(const CParticle::Info& inParticle);
-	void SetEmitter(const Info& inEmitter) { m_info = inEmitter; }
-	CParticle::Info* GetParticle() { return &m_particleInfo; }
+	void SetParticle(const CParticle::SInfo& inParticle);
+	void SetEmitter(const SInfo& inEmitter) { m_info = inEmitter; }
+	CParticle::SInfo* GetParticle() { return &m_particleInfo; }
 
 	void SetObjectType(const EObjectType inType) { m_objectType = inType; }
 
 private: // メンバー変数
-	Info m_info;					// エミッターが管理する情報一覧
-	CParticle::Info m_particleInfo;	// このエミッターから出るパーティクルのデータ
+	SInfo m_info;					// エミッターが管理する情報一覧
+	CParticle::SInfo m_particleInfo;	// このエミッターから出るパーティクルのデータ
 	EObjectType m_objectType;		// 出す物体の形式
 };
 

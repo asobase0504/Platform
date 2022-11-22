@@ -46,6 +46,10 @@ private:
 	CTask* m_prev;		// 前のタスク
 	CTask* m_next;		// 後のタスク
 
+	// 親子関係
+	CTask* m_pearent;	// 親
+	std::list<CTask*> m_childrens;	// 子
+
 	bool m_isDeleted;	// 破棄予定
 	bool m_isProtect;	// 全体破棄から保護する
 };

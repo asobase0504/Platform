@@ -8497,29 +8497,29 @@ namespace PlayFab
 
         struct DeviceInfoRequest : public PlayFabRequestCommon
         {
-            Json::Value Info; // Not truly arbitrary. See documentation for restrictions on format
+            Json::Value SInfo; // Not truly arbitrary. See documentation for restrictions on format
 
             DeviceInfoRequest() :
                 PlayFabRequestCommon(),
-                Info()
+                SInfo()
             {}
 
             DeviceInfoRequest(const DeviceInfoRequest& src) :
                 PlayFabRequestCommon(),
-                Info(src.Info)
+                SInfo(src.SInfo)
             {}
 
             ~DeviceInfoRequest() = default;
 
             void FromJson(const Json::Value& input) override
             {
-                Info = input["Info"];
+                SInfo = input["Info"];
             }
 
             Json::Value ToJson() const override
             {
                 Json::Value output;
-                output["Info"] = Info;
+                output["Info"] = SInfo;
                 return output;
             }
         };

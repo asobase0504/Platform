@@ -65,6 +65,7 @@ void CTaskGroup::Uninit()
 //=============================================================================
 void CTaskGroup::Update()
 {
+	m_createNumber = 0;
 	for (int i = 0; i <= m_priorityNumber; i++)
 	{
 		if (m_list.count(i) == 0)
@@ -76,6 +77,7 @@ void CTaskGroup::Update()
 
 		while (now != nullptr)
 		{
+			m_createNumber++;
 			CTask* next = now->GetNext();
 			now->Update();
 			now = next;

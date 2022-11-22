@@ -70,7 +70,6 @@ private:
 	//-------------------------------------------------------------------------
 	D3DXVECTOR3 m_MinVtx;		// モデルの頂点最小値
 	D3DXVECTOR3 m_MaxVtx;		// モデルの頂点最大値
-	D3DXCOLOR m_col;			// 色
 	D3DXMATRIX m_mtxWorld;		// ワールドマトリックス
 	LPD3DXMESH m_pMesh;			// メッシュ情報へのポインタ
 	LPD3DXBUFFER m_pBuffMat;	// マテリアル情報へのポインタ

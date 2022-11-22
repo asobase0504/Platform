@@ -2,6 +2,7 @@
 //
 // ファイル
 // Author : Hamada Ryuuga
+// Author : Yuda Kaito
 //
 //=============================================================================
 //-----------------------------------------------------------------------------
@@ -9,23 +10,14 @@
 //-----------------------------------------------------------------------------
 #include "file.h"
 #include "letter.h"
-#include "particle.h"
 #include "application.h"
-#include "texture.h"
-#include "particle_manager.h"
-#include "game.h"
-#include "tutorial.h"
-#include "title.h"
-
-static int index = 0;
-namespace nl = nlohmann;
-
-nl::json Effect;//リストの生成
 
 //=============================================================================
 // 読込み
+// Author : Hamada Ryuuga
+// Author : Yuda Kaito
 //=============================================================================
-nlohmann::json LoadJsonStage(const wchar_t* cUrl)
+nlohmann::json LoadJson(const wchar_t* cUrl)
 {
 	std::ifstream ifs(cUrl);
 
@@ -42,81 +34,65 @@ nlohmann::json LoadJsonStage(const wchar_t* cUrl)
 	return nullptr;
 }
 
-
 //=============================================================================
-// 読み込み
+// 値の読込み
+// Author : Yuda Kaito
 //=============================================================================
-void LoadJson(const char* cUrl)
+void LoadValueBundledData(nlohmann::json* inJson, DeepTable& inTable)
 {
-	std::ifstream ifs(cUrl);
+	std::vector<ConvTable> table = inTable.table;
 
-	if (ifs)
+	for (int i = 0; i < (int)table.size(); i++)
 	{
-		CParticleManager::BundledData loadData = {};
-		CParticle::Info& particleInfo = loadData.particleData;
-
-		//StringToWString(UTF8toSjis(j["name"]));
-		//DataSet.unionsname = StringToWString(UTF8toSjis(j["unions"] ["name"]));
-		ifs >> Effect;
-
-		particleInfo.maxPopPos = D3DXVECTOR3(Effect["POSMAX"]["X"], Effect["POSMAX"]["Y"], Effect["POSMAX"]["Z"]);
-		particleInfo.minPopPos = D3DXVECTOR3(Effect["POSMIN"]["X"], Effect["POSMIN"]["Y"], Effect["POSMIN"]["Z"]);
-		//こっちで構造体にデータを入れてます//文字は変換つけないとばぐるぞ＾＾これ-＞UTF8toSjis()
-		particleInfo.move = D3DXVECTOR3(Effect["MOVE"]["X"], Effect["MOVE"]["Y"], Effect["MOVE"]["Z"]);
-		particleInfo.rot = D3DXVECTOR3(Effect["ROT"]["X"], Effect["ROT"]["Y"], Effect["ROT"]["Z"]);
-		particleInfo.moveTransition = D3DXVECTOR3(Effect["MOVETRANSITION"]["X"], Effect["MOVETRANSITION"]["Y"], Effect["MOVETRANSITION"]["Z"]);;
-
-		particleInfo.color.colBigin = D3DXCOLOR(Effect["COL"]["R"], Effect["COL"]["G"], Effect["COL"]["B"], Effect["COL"]["A"]);
-		particleInfo.color.colRandamMax = D3DXCOLOR(Effect["COLRANDAMMAX"]["R"], Effect["COLRANDAMMAX"]["G"], Effect["COLRANDAMMAX"]["B"], Effect["COLRANDAMMAX"]["A"]);
-		particleInfo.color.colRandamMin = D3DXCOLOR(Effect["COLRANDAMMIN"]["R"], Effect["COLRANDAMMIN"]["G"], Effect["COLRANDAMMIN"]["B"], Effect["COLRANDAMMIN"]["A"]);
-		particleInfo.color.colTransition = D3DXCOLOR(Effect["COLTRANSITION"]["R"], Effect["COLTRANSITION"]["G"], Effect["COLTRANSITION"]["B"], Effect["COLTRANSITION"]["A"]);
-		particleInfo.color.destCol = D3DXCOLOR(Effect["DESTCOL"]["R"], Effect["DESTCOL"]["G"], Effect["DESTCOL"]["B"], Effect["DESTCOL"]["A"]);
-		particleInfo.color.nEndTime = Effect["ENDTIME"];
-		particleInfo.color.nCntTransitionTime = Effect["CNTTRANSITIONTIME"];
-		particleInfo.color.bColTransition = Effect["BCOLTRANSITION"];
-		particleInfo.color.bColRandom = Effect["COLRANDOM"];
-		particleInfo.color.bRandomTransitionTime = Effect["RANDOMTRANSITIONTIME"];
-
-		particleInfo.type = Effect["TYPE"];
-		particleInfo.fWidth = Effect["WIDTH"];
-		particleInfo.fHeight = Effect["HEIGHT"];
-		particleInfo.fRadius = Effect["RADIUS"];
-		particleInfo.fAngle = Effect["ANGLE"];
-		particleInfo.fWeight = Effect["WEIGHT"];
-		particleInfo.nLife = Effect["LIFE"];
-		particleInfo.fAttenuation = Effect["ATTENUATION"];
-		particleInfo.fWeightTransition = Effect["WEIGHTTRANSITION"];
-		particleInfo.nLife = Effect["LIFE"];
-		particleInfo.bBackrot = Effect["BACKROT"];
-		particleInfo.fScale = Effect["SCALE"];
-
-		static bool chack = true;
-
-		if (chack)
-		{
-			switch (*CApplication::GetInstance()->GetMode())
-			{
-			case CApplication::MODE_TITLE:
-				CTitle::GetPaticleManager()->SetBundledData(loadData);
-				break;
-			case CApplication::MODE_GAME:
-				CGame::GetParticleManager()->SetBundledData(loadData);			
-				break;
-			case CApplication::MODE_RESULT:
-			
-				break;
-			case CApplication::MODE_RANKING:
-				break;
-			case CApplication::MODE_TUTORIAL:
-				CTutorial::GetParticleManager()->SetBundledData(loadData);
-				break;
-			default:
-				break;
-			}
+		if ((*inJson).count(table[i].name) == 0)
+		{ // タグがなかった場合
+			continue;
 		}
-		else
+
+		/* ↓タグがあった場合↓ */
+
+		switch (table[i].type)
 		{
-			CGame::GetParticleManager()->ChangeBundledData(0, loadData);
+		case UseChack:	// 構造体
+			if (((DeepTable*)table[i].store)->use != nullptr)
+			{
+				*((DeepTable*)table[i].store)->use = true;
+			}
+			// 再起処理
+			LoadValueBundledData(&((*inJson)[table[i].name]), *((DeepTable*)table[i].store));
+			break;
+		case Vector3:	// D3DXVECTOR3型
+		{
+			auto VectorFloatToVector3 = [](std::vector<float> inVector)->D3DXVECTOR3
+			{
+				return D3DXVECTOR3(inVector[0], inVector[1], inVector[2]);
+			};
+
+			*((D3DXVECTOR3*)table[i].store) = VectorFloatToVector3((*inJson)[table[i].name]);
+		}
+		break;
+		case SColor:	// D3DXCOLOR型
+		{
+			auto VectorFloatToColor = [](std::vector<float> inVector)->D3DXCOLOR
+			{
+				return D3DXCOLOR(inVector[0], inVector[1], inVector[2], inVector[3]);
+			};
+
+			*((D3DXCOLOR*)table[i].store) = VectorFloatToColor((*inJson)[table[i].name]);
+		}
+		break;
+		case Float:	// float型
+			*((float*)table[i].store) = (*inJson)[table[i].name];
+			break;
+		case Int:	// Int型
+			*((int*)table[i].store) = (*inJson)[table[i].name];
+			break;
+		case Bool:	// bool型
+			*((bool*)table[i].store) = (*inJson)[table[i].name];
+			break;
+
+		default:
+			break;
 		}
 	}
 }

@@ -51,7 +51,6 @@ void CParticle::Uninit()
 //--------------------------------------------------
 void CParticle::Update()
 {
-	m_object->Update();
 	CTask::Update();
 
 	/* ↓使用しているなら↓ */
@@ -88,54 +87,9 @@ void CParticle::Update()
 }
 
 //--------------------------------------------------
-// 描画
-//--------------------------------------------------
-void CParticle::Draw()
-{
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();	// デバイスの取得
-
-	switch (m_data.alphaBlend)
-	{
-	case TYPE_NONE:	// 乗算
-		break;
-
-	case TYPE_ADD:	// 加算
-		// αブレンディングを加算合成に設定
-		pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
-		pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
-		pDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
-		break;
-
-	case TYPE_SUB:	// 減算
-		// αブレンディングを減算合成に設定
-		pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_REVSUBTRACT);
-		pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
-		break;
-
-	default:
-		assert(false);
-		break;
-	}
-
-	m_object->Draw();
-	CTask::Draw();
-
-	// αブレンディングを元に戻す
-	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
-	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-	pDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
-
-	// テクスチャを引き継がない
-	pDevice->SetTexture(0, NULL);
-}
-
-//--------------------------------------------------
 // 生成
 //--------------------------------------------------
-CParticle* CParticle::Create(CObject* inObject,const Info& inParticle, const D3DXVECTOR3& inPos)
+CParticle* CParticle::Create(CObject* inObject,const SInfo& inParticle, const D3DXVECTOR3& inPos)
 {
 	CParticle* particle = nullptr;
 	if (particle == nullptr)
