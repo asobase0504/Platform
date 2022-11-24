@@ -21,7 +21,7 @@ public:
 		MAX
 	};
 
-	CText(int list);
+	CText(CTaskGroup::EPriority list = CTaskGroup::LEVEL_3D_UI);
 	~CText();
 	HRESULT Init() override;
 	void Uninit() override;
@@ -29,7 +29,7 @@ public:
 	void Draw() override;
 	static CText* Create(Type talkType, int DeleteTime, int SpeedText, const char * Text);
 
-	void Releasetimer(int nTimar);
+	void ReleaseTimer(int nTimar);
 private:
 	D3DXCOLOR  m_col;
 	int m_DesTimarMax;//è¡Ç¶ÇÈç≈ëÂéûä‘

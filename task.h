@@ -19,7 +19,7 @@
 class CTask
 {
 public:
-	CTask(unsigned int inPriority = 2, CTaskGroup::EPushMethod inMethod = CTaskGroup::EPushMethod::PUSH_CURRENT);
+	CTask(CTaskGroup::EPriority inPriority = CTaskGroup::EPriority::LEVEL_3D_1, CTaskGroup::EPushMethod inMethod = CTaskGroup::EPushMethod::PUSH_CURRENT);
 	virtual ~CTask();
 
 	virtual HRESULT Init() = 0;

@@ -22,7 +22,7 @@
 // Author YudaKaito
 //-----------------------------------------
 CParticleEmitter::CParticleEmitter() :
-	CObject(3),
+	CObject(CTaskGroup::LEVEL_2D_1),
 	m_info({}),
 	m_particleInfo({}),
 	m_objectType(EObjectType::POLIGON2D)

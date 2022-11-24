@@ -19,7 +19,7 @@ public:
 
 	static CTest3d *CTest3d::Create();
 
-	CTest3d(const int list);
+	CTest3d(CTaskGroup::EPriority list);
 	~CTest3d() override;
 	HRESULT Init() override;
 	void Uninit() override;

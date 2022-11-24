@@ -166,7 +166,7 @@ void CTaskGroup::AbsolutelyRelease()
 //=============================================================================
 // 指定したpriorityのタスクを破棄
 //=============================================================================
-void CTaskGroup::PriorityRelease(const int inPriotity)
+void CTaskGroup::PriorityRelease(const EPriority inPriotity)
 {
 	if (m_list.count(inPriotity) == 0)
 	{

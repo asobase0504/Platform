@@ -50,7 +50,7 @@ public:
 		MAX
 	};
 
-	CName(int list);
+	CName(CTaskGroup::EPriority list);
 	~CName();
 
 	HRESULT Init() override;

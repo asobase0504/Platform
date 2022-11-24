@@ -13,7 +13,7 @@
 //=============================================================================
 // コンストラクト関数
 //=============================================================================
-CName::CName(int list) : CObject2d(list)
+CName::CName(CTaskGroup::EPriority list) : CObject2d(list)
 {
 }
 
@@ -182,7 +182,7 @@ void CName::Draw()
 CName *CName::Create()
 {
 	CName * pObject = nullptr;
-	pObject = new CName(1);
+	pObject = new CName(CTaskGroup::LEVEL_2D_UI);
 
 	if (pObject != nullptr)
 	{

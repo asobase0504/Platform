@@ -39,16 +39,16 @@ public:
 	};
 
 	// çXêVèÛë‘ÇÃóÒãì
-	enum EUpdateStatus
+	enum class EUpdateStatus
 	{
 		POP = 0,
 		NORMAL,
 		END,
-		Max
+		MAX
 	};
 
 public:
-	CObject(int inPriority = 0,CTaskGroup::EPushMethod inMethod = CTaskGroup::EPushMethod::PUSH_CURRENT);
+	CObject(CTaskGroup::EPriority inPriority = CTaskGroup::LEVEL_2D_BG,CTaskGroup::EPushMethod inMethod = CTaskGroup::EPushMethod::PUSH_CURRENT);
 	virtual ~CObject() override;
 
 	void Update() override;

@@ -23,7 +23,7 @@ public:
 	//-------------------------------------------------------------------------
 	// コンストラクタとデストラクタ
 	//-------------------------------------------------------------------------
-	explicit CObjectX(int nPriority = 2);
+	explicit CObjectX(CTaskGroup::EPriority nPriority = CTaskGroup::LEVEL_3D_1);
 	~CObjectX() override;
 
 	//-------------------------------------------------------------------------
@@ -54,7 +54,7 @@ public:
 
 	CObjectX* GetParent(void) const { return m_pParent; }		// 親モデルの情報
 
-	static CObjectX *Create(D3DXVECTOR3 pos, int nPriority);	// 生成処理
+	static CObjectX *Create(D3DXVECTOR3 pos, CTaskGroup::EPriority nPriority);	// 生成処理
 	void LoadModel(const char *aFileName);						// モデルの読み込み処理
 	void Projection(void);										// 平行投影処理
 

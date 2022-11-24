@@ -9,7 +9,7 @@
 #include "application.h"
 #include "task_group.h"
 
-CTask::CTask(unsigned int inPriority, CTaskGroup::EPushMethod inMethod) :
+CTask::CTask(CTaskGroup::EPriority inPriority, CTaskGroup::EPushMethod inMethod) :
 	m_prev(nullptr),
 	m_next(nullptr),
 	m_isDeleted(false),

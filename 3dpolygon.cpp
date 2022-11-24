@@ -29,7 +29,7 @@ const D3DXVECTOR3 C3dpolygon::m_Vtx[4] =
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-C3dpolygon::C3dpolygon(int list) :
+C3dpolygon::C3dpolygon(CTaskGroup::EPriority list) :
 	CObject(list,CTaskGroup::EPushMethod::PUSH_CURRENT),
 	m_pVtxBuff(nullptr)
 {
@@ -151,7 +151,7 @@ void C3dpolygon::Draw()
 //=============================================================================
 // create関数
 //=============================================================================
-C3dpolygon *C3dpolygon::Create(int list)
+C3dpolygon *C3dpolygon::Create(CTaskGroup::EPriority list)
 {
 	C3dpolygon * pObject = nullptr;
 	pObject = new C3dpolygon(list);

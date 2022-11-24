@@ -196,6 +196,9 @@
     <ClCompile Include="objectX.cpp">
       <Filter>00_Cord\02_Object\01_Master</Filter>
     </ClCompile>
+    <ClCompile Include="objectX_group.cpp">
+      <Filter>00_Cord\01_System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -332,6 +335,9 @@
     </ClInclude>
     <ClInclude Include="objectX.h">
       <Filter>00_Cord\02_Object\01_Master</Filter>
+    </ClInclude>
+    <ClInclude Include="objectX_group.h">
+      <Filter>00_Cord\01_System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

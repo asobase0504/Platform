@@ -18,10 +18,12 @@
 	D3DXVECTOR3(-1.0f, +1.0f, 0.0f),
 	D3DXVECTOR3(+1.0f, +1.0f, 0.0f),
 };
+
 //=============================================================================
 // コンストラクト関数
 //=============================================================================
-CObject2d::CObject2d(int list):CObject(list,CTaskGroup::EPushMethod::PUSH_CURRENT)
+CObject2d::CObject2d(CTaskGroup::EPriority list) :
+	CObject(list,CTaskGroup::EPushMethod::PUSH_CURRENT)
 {
 }
 
@@ -184,7 +186,7 @@ void CObject2d::Draw()
 //=============================================================================
 // create関数
 //=============================================================================
-CObject2d *CObject2d::Create(int list)
+CObject2d *CObject2d::Create(CTaskGroup::EPriority list)
 {
 	CObject2d * pObject = nullptr;
 	pObject = new CObject2d(list);

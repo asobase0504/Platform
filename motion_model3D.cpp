@@ -46,10 +46,10 @@ CMotionModel3D * CMotionModel3D::Create()
 // Author : 唐﨑結斗
 // 概要 : インスタンス生成時に行う処理
 //=============================================================================
-CMotionModel3D::CMotionModel3D(int nPriority) :
+CMotionModel3D::CMotionModel3D(CTaskGroup::EPriority nPriority) :
 	CObjectX(nPriority),
-	m_pMotion(nullptr),		// モーション情報
-	m_posOld(D3DXVECTOR3()),									// 過去位置
+	m_pMotion(nullptr),			// モーション情報
+	m_posOld(D3DXVECTOR3()),	// 過去位置
 	m_isUpdateStop(false)
 {
 }

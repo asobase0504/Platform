@@ -11,7 +11,7 @@
 //------------------------------------
 // コンストラクタ
 //------------------------------------
-CTest3d::CTest3d(int list) :C3dpolygon(list)
+CTest3d::CTest3d(CTaskGroup::EPriority list) :C3dpolygon(list)
 {
 }
 
@@ -79,7 +79,7 @@ void CTest3d::Draw()
 CTest3d *CTest3d::Create()
 {
 	CTest3d * pObject = nullptr;
-	pObject = new CTest3d(0);
+	pObject = new CTest3d(CTaskGroup::LEVEL_3D_1);
 
 	if (pObject != nullptr)
 	{

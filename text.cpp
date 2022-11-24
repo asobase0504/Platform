@@ -12,7 +12,7 @@
 //=============================================================================
 // コンストラクト関数
 //=============================================================================
-CText::CText(int list) : CObject2d(list)
+CText::CText(CTaskGroup::EPriority list) : CObject2d(list)
 {
 }
 
@@ -150,7 +150,7 @@ void CText::Draw()
 CText *CText::Create(Type talkType,int DeleteTime, int SpeedText,const char * Text)
 {
 	CText * pObject = nullptr;
-	pObject = new CText(3);
+	pObject = new CText();
 
 	if (pObject != nullptr)
 	{
@@ -172,7 +172,7 @@ CText *CText::Create(Type talkType,int DeleteTime, int SpeedText,const char * Te
 		pObject->SetPos(D3DXVECTOR3(640.0f, 500.0f, 0.0f));
 		pObject->SetSize(D3DXVECTOR3(640.0f, 200.0f, 0.0f));
 
-		pObject->Releasetimer(DeleteTime);
+		pObject->ReleaseTimer(DeleteTime);
 		pObject->TextLetter(Text, SpeedText);
 	}
 
@@ -183,7 +183,7 @@ CText *CText::Create(Type talkType,int DeleteTime, int SpeedText,const char * Te
 //=============================================================================
 // けすまでの時間設定関数
 //=============================================================================
-void CText::Releasetimer(int nTimar)
+void CText::ReleaseTimer(int nTimar)
 {
 	m_DesTimar = nTimar;
 	m_DesTimarMax = m_DesTimar;

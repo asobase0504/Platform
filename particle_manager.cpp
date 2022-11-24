@@ -22,7 +22,7 @@ int CParticleManager::m_MaxIndex = 0;
 // Author YudaKaito
 //-----------------------------------------
 CParticleManager::CParticleManager() :
-	CTask(0),
+	CTask(CTaskGroup::LEVEL_SYSTEM),
 	m_numAll(0),
 	m_particleEmitter({})
 {

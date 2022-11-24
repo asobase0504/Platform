@@ -53,7 +53,7 @@ HRESULT CResult::Init(void)
 	m_pBg[1]->SetSize(CApplication::CENTER_POS*0.8f);
 	m_pBg[1]->SetPos(BGPos);
 
-	m_pObject2d[0] = CObject2d::Create(2);
+	m_pObject2d[0] = CObject2d::Create(CTaskGroup::LEVEL_2D_2);
 	m_pObject2d[0]->SetTexture(CTexture::GetInstance()->SetTexture("CLEAR"));
 	m_pObject2d[0]->SetSize(D3DXVECTOR3(500.0f, 200.0f, 0.0f));
 	m_pObject2d[0]->SetPos(CApplication::CENTER_POS);

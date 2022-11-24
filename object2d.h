@@ -45,9 +45,9 @@ private:
 	static const D3DXVECTOR3 m_Vtx[4];
 
 public:
-	static CObject2d *Create(int list = 2);
+	static CObject2d *Create(CTaskGroup::EPriority list = CTaskGroup::LEVEL_2D_BG);
 
-	CObject2d(int list = 0);
+	CObject2d(CTaskGroup::EPriority list = CTaskGroup::LEVEL_2D_BG);
 	~CObject2d() override;
 	HRESULT Init() override;
 	void Uninit() override;

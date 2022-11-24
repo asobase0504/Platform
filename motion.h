@@ -53,8 +53,8 @@ public:
 	//***************************************************************
 	typedef struct
 	{
-		int		nFrame;			// フレーム数
-		MyKey	*pKey;			// キー情報
+		int		nFrame;				// フレーム数
+		std::vector<MyKey>	pKey;	// キー情報
 	}MyKeySet;
 
 	//***************************************************************
@@ -62,12 +62,12 @@ public:
 	//***************************************************************
 	typedef struct
 	{
-		int				nNumKey;				// キー数
-		int				nCntKeySet;				// キーセットカウント
-		int				nCntFrame;				// フレームカウント
-		bool			bLoop;					// ループ使用状況
-		bool			bMotion;				// モーションを行っているか
-		MyKeySet		*pKeySet;				// キー設定情報
+		int nNumKey;		// キー数
+		int nCntKeySet;		// キーセットカウント
+		int nCntFrame;		// フレームカウント
+		bool bLoop;			// ループ使用状況
+		bool bMotion;		// モーションを行っているか
+		std::vector<MyKeySet> pKeySet;	// キー設定情報
 	}MyMotion;
 
 	//--------------------------------------------------------------------

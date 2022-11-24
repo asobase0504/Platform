@@ -10,14 +10,10 @@
 
 #include "object2d.h"
 
-
-
 class CNumber : public CObject2d
 {
 public:
-
-	
-	CNumber(int list);
+	CNumber(CTaskGroup::EPriority list = CTaskGroup::LEVEL_2D_UI);
 	~CNumber();
 	HRESULT Init() override;
 	void Uninit() override;
@@ -29,7 +25,8 @@ public:
 	void SetNumber(int Number) { m_MyNumber = Number; }
 	void SetMove(bool Move) { m_Move = Move; }
 	
-	void Releasetimer(int nTimar);
+	void ReleaseTimer(int nTimar);
+
 private:
 	D3DXCOLOR m_col;
 	float m_Speed;
@@ -40,6 +37,4 @@ private:
 	bool m_Move;
 	
 };
-
-
 #endif

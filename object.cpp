@@ -2,6 +2,7 @@
 //
 // オブジェクト
 // Author : Hamada Ryuuga
+// Author : Yuda Kaito
 //
 //=============================================================================
 //-----------------------------------------------------------------------------
@@ -14,9 +15,9 @@
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CObject::CObject(int inPriority, CTaskGroup::EPushMethod inMethod) :
+CObject::CObject(CTaskGroup::EPriority inPriority, CTaskGroup::EPushMethod inMethod) :
 	CTask(inPriority, inMethod),
-	m_updateStatus(POP)
+	m_updateStatus(EUpdateStatus::POP)
 {
 }
 
@@ -34,13 +35,13 @@ void CObject::Update()
 {
 	switch (m_updateStatus)
 	{
-	case CObject::POP:
+	case CObject::EUpdateStatus::POP:
 		PopUpdate();
 		break;
-	case CObject::NORMAL:
+	case CObject::EUpdateStatus::NORMAL:
 		NormalUpdate();
 		break;
-	case CObject::END:
+	case CObject::EUpdateStatus::END:
 		EndUpdate();
 		break;
 	default:
@@ -54,7 +55,7 @@ void CObject::Update()
 //=============================================================================
 void CObject::PopUpdate()
 {
-	m_updateStatus = NORMAL;
+	m_updateStatus = EUpdateStatus::NORMAL;
 }
 
 //=============================================================================

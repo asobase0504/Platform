@@ -41,9 +41,9 @@ protected:
 
 public:
 
-	static C3dpolygon *Create(int list = 0);
+	static C3dpolygon *Create(CTaskGroup::EPriority list = CTaskGroup::LEVEL_3D_1);
 
-	C3dpolygon(int list = 0);
+	C3dpolygon(CTaskGroup::EPriority list = CTaskGroup::LEVEL_3D_1);
 	~C3dpolygon() override;
 	HRESULT Init() override;
 	void Uninit() override;

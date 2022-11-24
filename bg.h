@@ -29,7 +29,7 @@ public:
 
 	static CBg *CBg::Create();
 
-	CBg(const int list);
+	CBg(CTaskGroup::EPriority list = CTaskGroup::LEVEL_2D_BG);
 	~CBg() override;
 
 	HRESULT Init() override;

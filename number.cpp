@@ -12,7 +12,7 @@
 //=============================================================================
 // コンストラクト関数
 //=============================================================================
-CNumber::CNumber(int list) : CObject2d(list)
+CNumber::CNumber(CTaskGroup::EPriority list) : CObject2d(list)
 {
 }
 
@@ -110,7 +110,7 @@ void CNumber::Draw()
 CNumber *CNumber::Create()
 {
 	CNumber * pObject = nullptr;
-	pObject = new CNumber(1);
+	pObject = new CNumber();
 
 	if (pObject != nullptr)
 	{
@@ -125,7 +125,7 @@ CNumber *CNumber::Create()
 //=============================================================================
 // けすまでの時間設定関数
 //=============================================================================
-void CNumber::Releasetimer(int nTimar)
+void CNumber::ReleaseTimer(int nTimar)
 {
 	m_DesTimar = nTimar;
 	m_DesTimarMax = m_DesTimar;

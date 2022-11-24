@@ -78,25 +78,7 @@ void CMotion::Init(void)
 //=============================================================================
 void CMotion::Uninit(void)
 {
-	for (int i = 0; i < MAX_MOTION; i++)
-	{
-		if (&m_motion[i] != nullptr)
-		{// ƒƒ‚ƒŠ‚Ì‰ð•ú
-			if (m_motion[i].pKeySet != nullptr)
-			{
-				for (int j = 0; j < m_motion[i].nNumKey; j++)
-				{
-					if (m_motion[i].pKeySet[j].pKey != nullptr)
-					{
-						delete[] m_motion[i].pKeySet[j].pKey;
-						m_motion[i].pKeySet[j].pKey = nullptr;
-					}
-				}
-				delete[] m_motion[i].pKeySet;
-				m_motion[i].pKeySet = nullptr;
-			}
-		}
-	}
+	m_motion.clear();
 
 	for (int i = 0; i < m_nMaxParts; i++)
 	{
@@ -429,7 +411,7 @@ void CMotion::LoodSetMotion(const char *pFileName)
 					m_motion.resize(MAX_MOTION);
 					for (int i = 0; i < MAX_MOTION; i++)
 					{
-						m_motion[i].pKeySet = nullptr;
+						m_motion[i].pKeySet.clear();
 					}
 
 					//assert(m_parts != nullptr && m_motion != nullptr);
@@ -525,13 +507,11 @@ void CMotion::LoodSetMotion(const char *pFileName)
 					fscanf(pFile, "%d", &m_motion[nCntMotion].nNumKey);
 
 					// ƒƒ‚ƒŠ‚ÌŠm•Û
-					m_motion[nCntMotion].pKeySet = new MyKeySet[m_motion[nCntMotion].nNumKey];
-					assert(m_motion[nCntMotion].pKeySet != nullptr);
+					m_motion[nCntMotion].pKeySet.resize(m_motion[nCntMotion].nNumKey);
 
 					for (int nCntNumKeySet = 0; nCntNumKeySet < m_motion[nCntMotion].nNumKey; nCntNumKeySet++)
 					{
-						m_motion[nCntMotion].pKeySet[nCntNumKeySet].pKey = new MyKey[m_nMaxParts];
-						assert(m_motion[nCntMotion].pKeySet[nCntNumKeySet].pKey != nullptr);
+						m_motion[nCntMotion].pKeySet[nCntNumKeySet].pKey.resize(m_nMaxParts);
 					}
 				}
 				if (strcmp(&aString[0], "KEYSET") == 0)

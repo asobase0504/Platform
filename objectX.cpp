@@ -18,7 +18,7 @@
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CObjectX::CObjectX(int nPriority) :
+CObjectX::CObjectX(CTaskGroup::EPriority nPriority) :
 	CObject(nPriority),
 	m_pParent(nullptr)
 {
@@ -64,22 +64,22 @@ void CObjectX::Update()
 //=============================================================================
 void CObjectX::Draw()
 {
-	//デバイスの取得
+	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();
 
-	D3DXMATRIX mtxRot, mtxTrans, mtxParent;		//計算用マトリックス
-	D3DMATERIAL9 matDef;				//現在のマテリアル保存用
-	D3DXMATERIAL *pMat;					//マテリアルデータへのポインタ
+	D3DXMATRIX mtxRot, mtxTrans, mtxParent;		// 計算用マトリックス
+	D3DMATERIAL9 matDef;						// 現在のマテリアル保存用
+	D3DXMATERIAL *pMat;							// マテリアルデータへのポインタ
 
-	//ワールドマトリックスの初期化
+	// ワールドマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);
 
-	//向きを反映
+	// 向きを反映
 	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 
-	//位置を反映
-	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);	//(※行列移動関数(第1引数にx,y,z方向の移動行列を作成))
+	// 位置を反映
+	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);	// (※行列移動関数(第1引数にx,y,z方向の移動行列を作成))
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
 
 	if (m_pParent != nullptr)
@@ -92,25 +92,25 @@ void CObjectX::Draw()
 
 	Projection();
 
-	//ワールドマトリックスの設定（ワールド座標行列の設定）
+	// ワールドマトリックスの設定（ワールド座標行列の設定）
 	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
 
-	//現在のマテリアルを保持
+	// 現在のマテリアルを保持
 	pDevice->GetMaterial(&matDef);
 
-	//マテリアルデータへのポインタを取得
+	// マテリアルデータへのポインタを取得
 	pMat = (D3DXMATERIAL*)m_pBuffMat->GetBufferPointer();
 
 	for (int nCntMat = 0; nCntMat < (int)m_NumMat; nCntMat++)
 	{
-		//マテリアルの設定
+		// マテリアルの設定
 		pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
 
-		//モデルパーツの描画
+		// モデルパーツの描画
 		m_pMesh->DrawSubset(nCntMat);
 	}
 
-	//保持していたマテリアルを戻す
+	// 保持していたマテリアルを戻す
 	pDevice->SetMaterial(&matDef);
 }
 
@@ -221,26 +221,26 @@ void CObjectX::CalculationVtx()
 //=============================================================================
 // 生成処理
 //=============================================================================
-CObjectX * CObjectX::Create(D3DXVECTOR3 pos, int nPriority)
+CObjectX * CObjectX::Create(D3DXVECTOR3 pos, CTaskGroup::EPriority nPriority)
 {
-	//ポインタ宣言
+	// ポインタ宣言
 	CObjectX *pObjectX = nullptr;
 
-	//インスタンス生成
+	// インスタンス生成
 	pObjectX = new CObjectX(nPriority);
 
 	if (pObjectX != nullptr)
-	{//ポインタが存在したら実行
+	{// ポインタが存在したら実行
 		pObjectX->Init();
 		pObjectX->SetPos(pos);
 		pObjectX->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 	else
-	{//ポインタが虚無だったら実行
+	{// ポインタが虚無だったら実行
 		assert(false);
 	}
 
-	//ポインタを返す
+	// ポインタを返す
 	return pObjectX;
 }
 
@@ -263,29 +263,24 @@ void CObjectX::LoadModel(const char *aFileName)
 //=============================================================================
 void CObjectX::Projection(void)
 {
-	//デバイスの取得
+	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();
 
-	D3DXMATRIX mtxRot, mtxTrans;		//計算用マトリックス
-	D3DMATERIAL9 matDef;				//現在のマテリアル保存用
-	D3DXMATERIAL *pMat;					//マテリアルデータへのポインタ
+	D3DXMATRIX mtxRot, mtxTrans;	// 計算用マトリックス
+	D3DMATERIAL9 matDef;			// 現在のマテリアル保存用
+	D3DXMATERIAL *pMat;				// マテリアルデータへのポインタ
 
-	//変数宣言
+	// 変数宣言
 	D3DXMATRIX mtxShadow;
 	D3DXPLANE planeField;
 	D3DXVECTOR4 vecLight;
 	D3DXVECTOR3 pos, normal;
 	D3DMATERIAL9 Material;
 
-	//シャドウマトリックスの初期化
+	// シャドウマトリックスの初期化
 	D3DXMatrixIdentity(&mtxShadow);
 
 	vecLight = -D3DXVECTOR4(0.2f, -0.5f, 0.3f, 0.0f);
-
-	if (m_pos.y < -20.0f)
-	{
-		pos = D3DXVECTOR3(0.0f, -209.1f, 0.0f);
-	}
 
 	if (m_pos.y >= -20.0f)
 	{
@@ -296,21 +291,21 @@ void CObjectX::Projection(void)
 	D3DXPlaneFromPointNormal(&planeField, &pos, &normal);
 	D3DXMatrixShadow(&mtxShadow,&vecLight, &planeField);
 
-	//ワールドマトリックスと掛け合わせる
+	// ワールドマトリックスと掛け合わせる
 	D3DXMatrixMultiply(&mtxShadow, &m_mtxWorld, &mtxShadow);
 
-	//ワールドマトリックスの設定（ワールド座標行列の設定）
+	// ワールドマトリックスの設定（ワールド座標行列の設定）
 	pDevice->SetTransform(D3DTS_WORLD, &mtxShadow);
 
-	//現在のマテリアルを保持
+	// 現在のマテリアルを保持
 	pDevice->GetMaterial(&matDef);
 
-	//マテリアルデータへのポインタを取得
+	// マテリアルデータへのポインタを取得
 	pMat = (D3DXMATERIAL*)m_pBuffMat->GetBufferPointer();
 
 	for (int nCntMat = 0; nCntMat < (int)m_NumMat; nCntMat++)
 	{
-		//マテリアルの設定
+		// マテリアルの設定
 		pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
 
 		Material = pMat[nCntMat].MatD3D;
@@ -318,14 +313,14 @@ void CObjectX::Projection(void)
 		Material.Diffuse = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
 		Material.Emissive = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
 
-		//マテリアルの設定
+		// マテリアルの設定
 		pDevice->SetMaterial(&Material);
 
-		//モデルパーツの描画
+		// モデルパーツの描画
 		m_pMesh->DrawSubset(nCntMat);
 	}
 
-	//保持していたマテリアルを戻す
+	// 保持していたマテリアルを戻す
 	pDevice->SetMaterial(&matDef);
 }
 

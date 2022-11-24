@@ -31,6 +31,20 @@ public:
 		CTask* current;
 	};
 
+	enum EPriority
+	{
+		LEVEL_SYSTEM = 0,
+		LEVEL_2D_BG,
+		LEVEL_3D_1,
+		LEVEL_3D_2,
+		LEVEL_2D_1,
+		LEVEL_2D_2,
+		LEVEL_2D_UI,
+		LEVEL_3D_UI,
+		LEVEL_FADE,
+		LEVEL_MAX
+	};
+
 	// ’Ç‰Á•û–@
 	enum EPushMethod
 	{
@@ -50,7 +64,7 @@ public:
 	// Release
 	void AllRelease();
 	void AbsolutelyRelease();
-	void PriorityRelease(const int inPriotity);
+	void PriorityRelease(const EPriority inPriotity);
 
 	// Setter
 	void SetPushCurrent(CTask* inTask, int inPriority = 0);

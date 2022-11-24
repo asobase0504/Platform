@@ -13,7 +13,7 @@
 //------------------------------------
 // コンストラクタ
 //------------------------------------
-CBg::CBg(int list):C3dpolygon(list)
+CBg::CBg(CTaskGroup::EPriority list):C3dpolygon(list)
 {
 }
 
@@ -83,7 +83,7 @@ void CBg::Draw()
 CBg *CBg::Create()
 {
 	CBg * pObject = nullptr;
-	pObject = new CBg(0);
+	pObject = new CBg(CTaskGroup::LEVEL_2D_BG);
 
 	if (pObject != nullptr)
 	{
