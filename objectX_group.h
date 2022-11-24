@@ -20,6 +20,9 @@
 //=============================================================================
 class CObjectXGroup
 {
+private: /* プライベート定数 */
+	static const wchar_t* filePath;
+
 public:
 	struct SModelData
 	{

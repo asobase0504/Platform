@@ -8,7 +8,7 @@
 // include
 //-----------------------------------------------------------------------------
 #include "object.h"
-#include "3dpolygon.h"
+#include "object_polygon3d.h"
 #include "application.h"
 #include "input.h"
 #include "utility.h"
@@ -17,8 +17,8 @@
 //-----------------------------------------------------------------------------
 // 静的メンバ変数
 //-----------------------------------------------------------------------------
-int C3dpolygon::m_maxPolygon;
-const D3DXVECTOR3 C3dpolygon::m_Vtx[4] =
+int CObjectPolygon3D::m_maxPolygon;
+const D3DXVECTOR3 CObjectPolygon3D::m_Vtx[4] =
 {
 	D3DXVECTOR3(-1.0f, +1.0f, 0.0f),
 	D3DXVECTOR3(+1.0f, +1.0f, 0.0f),
@@ -29,7 +29,7 @@ const D3DXVECTOR3 C3dpolygon::m_Vtx[4] =
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-C3dpolygon::C3dpolygon(CTaskGroup::EPriority list) :
+CObjectPolygon3D::CObjectPolygon3D(CTaskGroup::EPriority list) :
 	CObject(list,CTaskGroup::EPushMethod::PUSH_CURRENT),
 	m_pVtxBuff(nullptr)
 {
@@ -39,14 +39,14 @@ C3dpolygon::C3dpolygon(CTaskGroup::EPriority list) :
 //=============================================================================
 // デストラクタ
 //=============================================================================
-C3dpolygon::~C3dpolygon()
+CObjectPolygon3D::~CObjectPolygon3D()
 {
 }
 
 //=============================================================================
 // ポリゴンの初期化
 //=============================================================================
-HRESULT C3dpolygon::Init()
+HRESULT CObjectPolygon3D::Init()
 {
 	m_size = D3DXVECTOR3(50.0f, 50.0f, 0.0f);
 	m_scale = 10.0f;
@@ -90,7 +90,7 @@ HRESULT C3dpolygon::Init()
 //=============================================================================
 // ポリゴンの終了
 //=============================================================================
-void C3dpolygon::Uninit()
+void CObjectPolygon3D::Uninit()
 {
 	// 破棄
 	if (m_pVtxBuff != nullptr)
@@ -104,7 +104,7 @@ void C3dpolygon::Uninit()
 //=============================================================================
 // ポリゴンの更新
 //=============================================================================
-void C3dpolygon::NormalUpdate()
+void CObjectPolygon3D::NormalUpdate()
 {
 	m_time++;
 	m_rot.z = -D3DXToRadian(TIMER);
@@ -117,7 +117,7 @@ void C3dpolygon::NormalUpdate()
 //=============================================================================
 // ポリゴンの描画
 //=============================================================================
-void C3dpolygon::Draw()
+void CObjectPolygon3D::Draw()
 {
 	// デバイスへのポインタ
 	// デバイスの取得
@@ -151,10 +151,10 @@ void C3dpolygon::Draw()
 //=============================================================================
 // create関数
 //=============================================================================
-C3dpolygon *C3dpolygon::Create(CTaskGroup::EPriority list)
+CObjectPolygon3D *CObjectPolygon3D::Create(CTaskGroup::EPriority list)
 {
-	C3dpolygon * pObject = nullptr;
-	pObject = new C3dpolygon(list);
+	CObjectPolygon3D * pObject = nullptr;
+	pObject = new CObjectPolygon3D(list);
 
 	if (pObject != nullptr)
 	{
@@ -167,7 +167,7 @@ C3dpolygon *C3dpolygon::Create(CTaskGroup::EPriority list)
 //=============================================================================
 // SetPos関数
 //=============================================================================
-void C3dpolygon::SetPos(const D3DXVECTOR3 &pos)
+void CObjectPolygon3D::SetPos(const D3DXVECTOR3 &pos)
 {
 	m_pos.x = pos.x;
 	m_pos.y = pos.y;
@@ -176,7 +176,7 @@ void C3dpolygon::SetPos(const D3DXVECTOR3 &pos)
 //--------------------------------------------------
 // テクスチャの設定
 //--------------------------------------------------
-void C3dpolygon::SetTexture(int texture)
+void CObjectPolygon3D::SetTexture(int texture)
 {
 	m_texture = texture;
 }
@@ -184,7 +184,7 @@ void C3dpolygon::SetTexture(int texture)
 //---------------------------------------
 //セットテクスチャ(2d)
 //---------------------------------------
-void C3dpolygon::SetTex(PositionVec4 Tex)
+void CObjectPolygon3D::SetTex(PositionVec4 Tex)
 {
 	VERTEX_3D *pVtx; //頂点へのポインタ
 
@@ -204,7 +204,7 @@ void C3dpolygon::SetTex(PositionVec4 Tex)
 //---------------------------------------
 //セットサイズ
 //---------------------------------------
-void  C3dpolygon::SetSize(const D3DXVECTOR3 &size)
+void  CObjectPolygon3D::SetSize(const D3DXVECTOR3 &size)
 {
 	m_size = size;
 
@@ -231,7 +231,7 @@ void  C3dpolygon::SetSize(const D3DXVECTOR3 &size)
 //---------------------------------------
 //頂点Collarの設定
 //---------------------------------------
-void C3dpolygon::SetCollar(D3DXCOLOR Collar)
+void CObjectPolygon3D::SetCollar(D3DXCOLOR Collar)
 {
 	VERTEX_3D *pVtx; //頂点へのポインタ
 
@@ -253,7 +253,7 @@ void C3dpolygon::SetCollar(D3DXCOLOR Collar)
 //---------------------------------------
 //Vtxの取得
 //---------------------------------------
-LPDIRECT3DVERTEXBUFFER9 C3dpolygon::GetVtx()
+LPDIRECT3DVERTEXBUFFER9 CObjectPolygon3D::GetVtx()
 {
 	return m_pVtxBuff;
 }

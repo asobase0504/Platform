@@ -107,7 +107,7 @@ private:
 	void PlayMotion();	// モーションの再生
 	void MotionBlend();	// モーションブレンド
 	void LoodSetMotion(const char *pFileName);	// モーション読み込み
-	void CntReset(const int nNumMotionOld);	// カウントリセット
+	void CntReset(const int nNumMotionOld);		// カウントリセット
 
 	float RotNormalization(float inRot);
 

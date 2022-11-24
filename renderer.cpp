@@ -10,7 +10,7 @@
 #include "light.h"
 #include "file.h"
 #include "camera.h"
-#include "3dpolygon.h"
+#include "object_polygon3d.h"
 #include "pause.h"
 #include "game.h"
 #include "application.h"
@@ -156,7 +156,7 @@ void CRenderer::Uninit()
 //=============================================================================
 void CRenderer::Update()
 {
-	C3dpolygon::PolygonReset();
+	CObjectPolygon3D::PolygonReset();
 	CApplication::GetInstance()->GetTaskGroup()->Update();
 }
 
@@ -203,7 +203,7 @@ CCamera * CRenderer::SetCamera(CCamera * inCamera)
 //=============================================================================
 void  CRenderer::DrawFPS()
 {
-	int time = Gettime();
+	int time = GetTime();
 	RECT rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 	TCHAR str[256];
 

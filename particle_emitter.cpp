@@ -11,7 +11,7 @@
 #include "utility.h"
 #include "particle.h"
 #include "object2d.h"
-#include "3dpolygon.h"
+#include "object_polygon3d.h"
 
 //=========================================
 // ê√ìIÉÅÉìÉoÅ[ïœêî
@@ -170,7 +170,7 @@ void CParticleEmitter::PopParticle(void)
 		CParticle::Create(new CObject2d, popInfo, myPos);
 		break;
 	case CParticleEmitter::POLIGON3D:
-		CParticle::Create(new C3dpolygon, popInfo, myPos);
+		CParticle::Create(new CObjectPolygon3D, popInfo, myPos);
 		break;
 	case CParticleEmitter::BILLBOARD:
 		CParticle::Create(new CObject2d, popInfo, myPos);

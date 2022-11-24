@@ -13,7 +13,7 @@
 //------------------------------------
 // コンストラクタ
 //------------------------------------
-CBg::CBg(CTaskGroup::EPriority list):C3dpolygon(list)
+CBg::CBg(CTaskGroup::EPriority list):CObjectPolygon3D(list)
 {
 }
 
@@ -31,7 +31,7 @@ HRESULT CBg::Init()
 {
 	m_Speed = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_AddSpeed = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	C3dpolygon::Init();
+	CObjectPolygon3D::Init();
 	return E_NOTIMPL;
 }
 
@@ -40,7 +40,7 @@ HRESULT CBg::Init()
 //------------------------------------
 void CBg::Uninit()
 {
-	C3dpolygon::Uninit();
+	CObjectPolygon3D::Uninit();
 }
 
 //------------------------------------
@@ -51,8 +51,8 @@ void CBg::NormalUpdate()
 	//加算の値を関数化
 		m_Speed += (m_MoveSpeed);
 	
-	C3dpolygon::SetTex(PositionVec4(0.0f+ m_Speed.x, 1.0f+ m_Speed.x,0.0f + m_Speed.y,1.0f + m_Speed.y));
-	C3dpolygon::NormalUpdate();
+	CObjectPolygon3D::SetTex(PositionVec4(0.0f+ m_Speed.x, 1.0f+ m_Speed.x,0.0f + m_Speed.y,1.0f + m_Speed.y));
+	CObjectPolygon3D::NormalUpdate();
 	SetPos(D3DXVECTOR3(0.0f, 0.0f, 1000.0f));
 }
 
@@ -69,7 +69,7 @@ void CBg::Draw()
 
 	m_mtxWorld = *GiftMtx(&m_mtxWorld, m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
-	C3dpolygon::Draw();
+	CObjectPolygon3D::Draw();
 
 	//αブレンディングを元に戻す
 	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);

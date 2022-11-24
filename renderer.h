@@ -37,16 +37,15 @@ namespace
 	LPCTSTR WINDOW_NAME = _T("Fox");
 }
 
-// スクリーンの幅
-const int SCREEN_WIDTH = 1280;
-// スクリーンの高さ
-const int SCREEN_HEIGHT = 720;
+const int SCREEN_WIDTH = 1280;	// スクリーンの幅
+const int SCREEN_HEIGHT = 720;	// スクリーンの高さ
 
-int Gettime(void);
+int GetTime(void);
 
+//=============================================================================
+// 前方宣言
+//=============================================================================
 class CCamera;
-class CLight;
-class CParticle;
 
 //=============================================================================
 // 描画の設定

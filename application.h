@@ -42,8 +42,8 @@ public:
 		MODE_FADE,			// フェード画面
 		MODE_RANKING,		// ランキング画面
 		MODE_GAMEOVER,		// ゲームオーバー画面
-		MODE_TUTORIAL,
-		MODE_NAMESET,
+		MODE_TUTORIAL,		// チュートリアル画面
+		MODE_NAMESET,		// 名前入力画面
 		MODE_MAX
 	};
 

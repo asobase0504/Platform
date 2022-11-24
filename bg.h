@@ -11,13 +11,13 @@
 // include
 //-----------------------------------------------------------------------------
 #include "renderer.h"
-#include "3dpolygon.h"
+#include "object_polygon3d.h"
 #include "texture.h"
 
 //=============================================================================
 // ”wŒi‚ÌƒNƒ‰ƒX
 //=============================================================================
-class CBg : public C3dpolygon
+class CBg : public CObjectPolygon3D
 {
 public:
 	enum BgType

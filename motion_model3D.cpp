@@ -134,11 +134,11 @@ void CMotionModel3D::Draw()
 	D3DXMatrixIdentity(&mtxWorld);											// 行列初期化関数
 
 	// 向きの反映
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);			// 行列回転関数
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);		// 行列回転関数
 	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);						// 行列掛け算関数 
 
 	// 位置を反映
-	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);				// 行列移動関数
+	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);			// 行列移動関数
 	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTrans);					// 行列掛け算関数
 
 	// ワールドマトリックスの設定
@@ -264,9 +264,11 @@ bool CMotionModel3D::SegmentCollision(CObjectX* inObjectX)
 		thisVecX = D3DXVECTOR3(m_size.x, 0.0f, 0.0f);
 		thisVecY = D3DXVECTOR3(0.0f, m_size.y, 0.0f);
 		thisVecZ = D3DXVECTOR3(0.0f, 0.0f, m_size.z);
+
 		D3DXVec3TransformCoord(&thisVecX, &thisVecX, &mtxWorld);
 		D3DXVec3TransformCoord(&thisVecY, &thisVecY, &mtxWorld);
 		D3DXVec3TransformCoord(&thisVecZ, &thisVecZ, &mtxWorld);
+
 		D3DXVec3Normalize(&thisNormalizeVecX, &thisVecX);
 		D3DXVec3Normalize(&thisNormalizeVecY, &thisVecY);
 		D3DXVec3Normalize(&thisNormalizeVecZ, &thisVecZ);
@@ -275,6 +277,7 @@ bool CMotionModel3D::SegmentCollision(CObjectX* inObjectX)
 	D3DXVECTOR3 targetVecX;
 	D3DXVECTOR3 targetVecY;
 	D3DXVECTOR3 targetVecZ;
+
 	D3DXVECTOR3 targetNormalizeVecX;
 	D3DXVECTOR3 targetNormalizeVecY;
 	D3DXVECTOR3 targetNormalizeVecZ;

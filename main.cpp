@@ -217,7 +217,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 //=============================================================================
 // ŽžŠÔ
 //=============================================================================
-int Gettime(void)
+int GetTime(void)
 {
 	return g_nCountFPS;
 }

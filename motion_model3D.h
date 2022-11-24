@@ -64,9 +64,9 @@ private:
 	//--------------------------------------------------------------------
 	// メンバ変数
 	//--------------------------------------------------------------------
-	CMotion			*m_pMotion;				// モーションインスタンス
-	D3DXVECTOR3		m_posOld;				// 過去位置
-	bool			m_isUpdateStop;			// 更新を停止させる。
+	CMotion			*m_pMotion;			// モーションインスタンス
+	D3DXVECTOR3		m_posOld;			// 過去位置
+	bool			m_isUpdateStop;		// 更新を停止させる。
 };
 
 #endif

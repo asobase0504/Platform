@@ -10,10 +10,10 @@
 #define _3DPOLYGONTEMPLATE_H_			// 二重インクルード防止のマクロ定義
 
 #include "renderer.h"
-#include "3dpolygon.h"
+#include "object_polygon3d.h"
 #include "texture.h"
 
-class CTest3d : public C3dpolygon
+class CTest3d : public CObjectPolygon3D
 {
 public:
 

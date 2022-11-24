@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// 3dpolygon
+// object_polygon3d
 // Author : 浜田琉雅
 //
 //=============================================================================
@@ -22,7 +22,7 @@
 //=============================================================================
 // 3Dポリゴンクラス
 //=============================================================================
-class  C3dpolygon : public CObject
+class  CObjectPolygon3D : public CObject
 {
 public:
 	const DWORD FVF_VERTEX_3D = (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE | D3DFVF_TEX1);
@@ -35,16 +35,17 @@ public:
 		D3DCOLOR col;//カラー
 		D3DXVECTOR2 tex;//テクスチャ
 	};
+
 protected:
 	//polygonの基準サイズ
 	static const D3DXVECTOR3 m_Vtx[4];
 
 public:
 
-	static C3dpolygon *Create(CTaskGroup::EPriority list = CTaskGroup::LEVEL_3D_1);
+	static CObjectPolygon3D *Create(CTaskGroup::EPriority list = CTaskGroup::LEVEL_3D_1);
 
-	C3dpolygon(CTaskGroup::EPriority list = CTaskGroup::LEVEL_3D_1);
-	~C3dpolygon() override;
+	CObjectPolygon3D(CTaskGroup::EPriority list = CTaskGroup::LEVEL_3D_1);
+	~CObjectPolygon3D() override;
 	HRESULT Init() override;
 	void Uninit() override;
 	void NormalUpdate() override;

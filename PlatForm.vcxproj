@@ -159,7 +159,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="2dpolygontemplate.cpp" />
-    <ClCompile Include="3dpolygon.cpp" />
+    <ClCompile Include="object_polygon3d.cpp" />
     <ClCompile Include="3dpolygontemplate.cpp" />
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="camera.cpp" />
@@ -181,7 +181,6 @@
     <ClCompile Include="number.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="object2d.cpp" />
-    <ClCompile Include="object3d.cpp" />
     <ClCompile Include="objectX.cpp" />
     <ClCompile Include="objectX_group.cpp" />
     <ClCompile Include="particle.cpp" />
@@ -209,7 +208,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2dpolygontemplate.h" />
-    <ClInclude Include="3dpolygon.h" />
+    <ClInclude Include="object_polygon3d.h" />
     <ClInclude Include="3dpolygontemplate.h" />
     <ClInclude Include="bg.h" />
     <ClInclude Include="camera.h" />
@@ -231,7 +230,6 @@
     <ClInclude Include="number.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="object2d.h" />
-    <ClInclude Include="object3d.h" />
     <ClInclude Include="objectX.h" />
     <ClInclude Include="objectX_group.h" />
     <ClInclude Include="particle.h" />

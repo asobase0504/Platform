@@ -11,7 +11,7 @@
 //------------------------------------
 // コンストラクタ
 //------------------------------------
-CTest3d::CTest3d(CTaskGroup::EPriority list) :C3dpolygon(list)
+CTest3d::CTest3d(CTaskGroup::EPriority list) :CObjectPolygon3D(list)
 {
 }
 
@@ -28,7 +28,7 @@ CTest3d::~CTest3d()
 HRESULT CTest3d::Init()
 {
 
-	C3dpolygon::Init();
+	CObjectPolygon3D::Init();
 	return E_NOTIMPL;
 }
 
@@ -37,7 +37,7 @@ HRESULT CTest3d::Init()
 //------------------------------------
 void CTest3d::Uninit()
 {
-	C3dpolygon::Uninit();
+	CObjectPolygon3D::Uninit();
 }
 
 //------------------------------------
@@ -48,7 +48,7 @@ void CTest3d::NormalUpdate()
 	//動き
 	CTest3d::move();
 
-	C3dpolygon::NormalUpdate();
+	CObjectPolygon3D::NormalUpdate();
 }
 
 //------------------------------------
@@ -65,7 +65,7 @@ void CTest3d::Draw()
 	//Ｚ軸で回転しますちなみにm_rotつかうとグルグル回ります
 	m_mtxWorld = *GiftMtx(&m_mtxWorld, m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	//m_mtxWorld = *hmd::GiftMtx(&m_mtxWorld, m_pos, m_rot);
-	C3dpolygon::Draw();
+	CObjectPolygon3D::Draw();
 
 	//αブレンディングを元に戻す
 	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
