@@ -1,14 +1,14 @@
 //**************************************************
 //
-// Hackathon ( utility.h )
-// Author  : katsuki mizuki
+// utility.h
+// Author : katsuki mizuki
 //
 //**************************************************
 #ifndef _UTILITY_H_	// このマクロ定義がされてなかったら
 #define _UTILITY_H_	// ２重インクルード防止のマクロ定義
 
 //==================================================
-// デバッグ用
+// include
 //==================================================
 #include "main.h"
 
@@ -105,11 +105,6 @@ D3DXVECTOR3 WorldCastScreen(D3DXVECTOR3 *screenPos,			// スクリーン座標
 D3DXVECTOR3 ScreenCastWorld(const D3DXVECTOR3 &screenPos,			// スクリーン座標
 	D3DXVECTOR3 screenSize);
 
-bool CollisionCircle(D3DXVECTOR3 Pos1,
-	                 float fRadius1, 
-	                 D3DXVECTOR3 Pos2,
-	                 float fRadius2);
-
 //--------------------------------------------------
 // ScreenCastWorld
 // Author : Hamada Ryuuga
@@ -136,5 +131,21 @@ float easeInSine(float X);
 //--------------------------------------------------
 float easeInQuad(float X);
 
+// 算出系統
+//=============================================================================
+// 2Dの外積
+// 引数1  : D3DXVECTOR3  *v1 // 
+// 引数2  : D3DXVECTOR3*  v2
+// 返値  : float/ 外積
+//=============================================================================
+float Vec2Cross(D3DXVECTOR3* v1, D3DXVECTOR3* v2);	// 2Dの外積
+
+//=============================================================================
+// 2Dの内積
+// 引数1  : D3DXVECTOR3  *v1 // 
+// 引数2  : D3DXVECTOR3*  v2
+// 返値  : float / 内積
+//=============================================================================
+float Vec2Dot(D3DXVECTOR3* v1, D3DXVECTOR3* v2);	// 2Dの内積
 
 #endif // !_UTILITY_H_

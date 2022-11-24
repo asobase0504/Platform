@@ -94,10 +94,10 @@ float Curve(float fCurve, float fMax, float fMin)
 //---------------------------------------------------------------------------
 // スクリーン座標をワールド座標へのキャスト
 //---------------------------------------------------------------------------
-D3DXVECTOR3 WorldCastScreen(D3DXVECTOR3 *screenPos,			// スクリーン座標
-	D3DXVECTOR3 screenSize,									// スクリーンサイズ
-	D3DXMATRIX* mtxView,									// ビューマトリックス
-	D3DXMATRIX* mtxProjection)								// プロジェクションマトリックス
+D3DXVECTOR3 WorldCastScreen(D3DXVECTOR3 *screenPos,		// スクリーン座標
+	D3DXVECTOR3 screenSize,								// スクリーンサイズ
+	D3DXMATRIX* mtxView,								// ビューマトリックス
+	D3DXMATRIX* mtxProjection)							// プロジェクションマトリックス
 {
 	// 変数宣言
 	D3DXVECTOR3 ScreenPos;
@@ -134,33 +134,6 @@ D3DXVECTOR3 ScreenCastWorld(const D3DXVECTOR3 &screenPos, D3DXVECTOR3 screenSize
 	pos -= (Camerapos - D3DXVECTOR3(screenSize.x * 0.5f, screenSize.y * 0.5f, 0.0f));
 
 	return pos;
-}
-
-//-----------------------------------------------------------------------------
-//円の当たり判定
-//-----------------------------------------------------------------------------
-bool CollisionCircle(D3DXVECTOR3 Pos1, float fRadius1, D3DXVECTOR3 Pos2, float fRadius2)
-{
-	//２この物体の半径同士の和
-	float fDiff = fRadius1 + fRadius2;
-
-	//Xの差分
-	float fCalculationX = Pos1.x - Pos2.x;
-	//Yの差分
-	float fCalculationY = Pos1.y - Pos2.y;
-
-	//現在の２点の距離
-	float fLength = sqrtf(fCalculationX * fCalculationX + fCalculationY * fCalculationY);
-
-	//２この物体の半径同士の和より現在の２点の距離が小さいかどうか
-	if (fDiff >= fLength)
-	{
-		//当たった
-		return true;
-	}
-
-	//当たってない
-	return false;
 }
 
 //--------------------------------------------------
@@ -204,4 +177,22 @@ float easeInSine(float X)
 float easeInQuad(float X)
 {
 	return X * X;
+}
+
+//=========================================
+// 2Dベクトルの外積
+// Author: Yuda Kaito
+//=========================================
+float Vec2Cross(D3DXVECTOR3* v1, D3DXVECTOR3* v2)
+{
+	return v1->x * v2->z - v1->z * v2->x;
+}
+
+//=========================================
+// 2Dベクトルの内積
+// Author: hamada ryuuga
+//=========================================
+float Vec2Dot(D3DXVECTOR3* v1, D3DXVECTOR3* v2)
+{
+	return v1->x * v2->x + v1->z * v2->z;
 }

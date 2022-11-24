@@ -21,12 +21,12 @@
 //------------------------------------
 // static変数
 //------------------------------------
-const float CPlayer::ATTENUATION = 0.5f;	// 
+const float CPlayer::ATTENUATION = 0.5f;	// 移動減衰係数
 const float CPlayer::SPEED = 1.0f;			// 移動量
 const float CPlayer::WIDTH = 10.0f;			// モデルの半径
 const int CPlayer::MAX_PRAYER = 16;			// 最大数
 const int CPlayer::MAX_MOVE = 9;			// アニメーションの最大数
-const int CPlayer::INVINCIBLE = 30;		// 無敵時間
+const int CPlayer::INVINCIBLE = 30;			// 無敵時間
 
 //------------------------------------
 // コンストラクタ
