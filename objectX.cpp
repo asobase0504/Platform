@@ -9,6 +9,7 @@
 // インクルードファイル
 //=============================================================================
 #include "objectX.h"
+#include "objectX_group.h"
 #include "application.h"
 #include "renderer.h"
 #include "main.h"
@@ -249,13 +250,13 @@ CObjectX * CObjectX::Create(D3DXVECTOR3 pos, CTaskGroup::EPriority nPriority)
 //=============================================================================
 void CObjectX::LoadModel(const char *aFileName)
 {
-	//CObjectXGroup *xGroup = CApplication::GetObjectXGroup();
-	//m_pBuffMat = xGroup->GetBuffMat(aFileName);
-	//m_MaxVtx = xGroup->GetMaxVtx(aFileName);
-	//m_pMesh = xGroup->GetMesh(aFileName);
-	//m_MinVtx = xGroup->GetMinVtx(aFileName);
-	//m_NumMat = xGroup->GetNumMat(aFileName);
-	//m_size = xGroup->GetSize(aFileName);
+	CObjectXGroup *xGroup = CApplication::GetInstance()->GetObjectXGroup();
+	m_pBuffMat = xGroup->GetBuffMat(aFileName);
+	m_MaxVtx = xGroup->GetMaxVtx(aFileName);
+	m_pMesh = xGroup->GetMesh(aFileName);
+	m_MinVtx = xGroup->GetMinVtx(aFileName);
+	m_NumMat = xGroup->GetNumMat(aFileName);
+	m_size = xGroup->GetSize(aFileName);
 }
 
 //=============================================================================

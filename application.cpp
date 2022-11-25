@@ -13,6 +13,7 @@
 #include "input.h"
 #include "sound.h"
 #include "task_group.h"
+#include "objectX_group.h"
 #include "texture.h"
 #include "fade.h"
 
@@ -96,6 +97,10 @@ HRESULT CApplication::Init(HWND hWnd, HINSTANCE hInstance)
 	{
 		return E_FAIL;
 	}
+
+	// ‰¹Šyˆ—‚Ì‰Šú‰»ˆ—
+	m_pObjectXGroup = new CObjectXGroup;
+	m_pObjectXGroup->LoadAll();
 
 	m_pTexture = nullptr;
 	m_pTexture = CTexture::GetInstance();

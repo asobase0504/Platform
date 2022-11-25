@@ -99,7 +99,7 @@ CParticle* CParticle::Create(CObject* inObject,const SInfo& inParticle, const D3
 		
 		particle->m_object = inObject;
 		particle->m_object->Init();
-		particle->m_object->SetSize(D3DXVECTOR3(50.0f, 50.0f,0.0f));
+		particle->m_object->SetSize(D3DXVECTOR3(inParticle.fScale, inParticle.fScale,0.0f));
 		particle->m_object->SetPos(inPos);
 		particle->m_data = inParticle;
 		//particle->SetTexture(particle->m_data.nIdxTex);

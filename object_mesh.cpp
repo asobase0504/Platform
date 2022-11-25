@@ -24,10 +24,12 @@
 
 nlohmann::json JMesh;//リストの生成
 
+//=============================================================================
+// コンストラクタ
+//=============================================================================
 CMesh::CMesh(CTaskGroup::EPriority nPriority) :
 	CObjectPolygon3D(nPriority),
 	m_pos({ 0.0f,0.0f,0.0f }),			// 頂点座標
-	m_posOrigin({ 0.0f,0.0f,0.0f }),	// 頂点座標
 	m_rot({ 0.0f,0.0f,0.0f }),			// 回転座標
 	m_xsiz(0),							//面数
 	m_zsiz(0),							//面数
@@ -45,14 +47,17 @@ CMesh::CMesh(CTaskGroup::EPriority nPriority) :
 	m_MeshSize = { 100.0f,0.0f,100.0f };
 }
 
+//=============================================================================
+// デストラクタ
+//=============================================================================
 CMesh::~CMesh()
 {
 
 }
 
-//=========================================
+//=============================================================================
 // 初期化処理
-//=========================================
+//=============================================================================
 HRESULT CMesh::Init(void)
 {
 	m_pTextureEmesh = NULL;
@@ -71,9 +76,9 @@ HRESULT CMesh::Init(void)
 	return S_OK;
 }
 
-//=========================================
+//=============================================================================
 // 終了処理
-//=========================================
+//=============================================================================
 void CMesh::Uninit(void)
 {
 	// 頂点バッファーの解放
@@ -96,17 +101,17 @@ void CMesh::Uninit(void)
 	Release();
 }
 
-//=========================================
+//=============================================================================
 // 更新処理
-//=========================================
+//=============================================================================
 void CMesh::NormalUpdate(void)
 {
 
 }
 
-//=========================================
+//=============================================================================
 // 描画処理
-//=========================================
+//=============================================================================
 void CMesh::Draw(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();
@@ -127,7 +132,7 @@ void CMesh::Draw(void)
 
 	// 位置を反映
 	// 行列移動関数(第１引数にX,Y,Z方向の移動行列を作成)
-	D3DXMatrixTranslation(&mtxTrans, m_posOrigin.x, m_posOrigin.y, m_posOrigin.z);
+	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
 	// 行列掛け算関数(第2引数×第3引数第を１引数に格納)
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
 
@@ -160,7 +165,7 @@ void CMesh::Draw(void)
 //=============================================================================
 const D3DXVECTOR3 *CMesh::GetPos() const
 {
-	return &m_posOrigin;
+	return &m_pos;
 }
 
 //=============================================================================
@@ -169,8 +174,8 @@ const D3DXVECTOR3 *CMesh::GetPos() const
 void CMesh::SetPos(const D3DXVECTOR3 &pos)
 {
 	m_pos = pos;
-	m_posOrigin = pos;
 }
+
 //=============================================================================
 // Create関数
 //=============================================================================
@@ -189,11 +194,11 @@ CMesh* CMesh::Create()
 }
 
 
-//========================================
+//=============================================================================
 // 当たり判定
 // Author: hamada ryuuga
 // Aythor: Yuda Kaito
-//=========================================
+//=============================================================================
 bool CMesh::CollisionMesh(D3DXVECTOR3 *pPos)
 {
 
@@ -215,7 +220,7 @@ bool CMesh::CollisionMesh(D3DXVECTOR3 *pPos)
 	D3DXMatrixIdentity(&mtxWorld);
 
 	// 行列移動関数(第１引数にX,Y,Z方向の移動行列を作成)
-	D3DXMatrixTranslation(&mtxTrans, m_posOrigin.x, m_posOrigin.y, m_posOrigin.z);
+	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
 	// 行列掛け算関数(第2引数×第3引数を第１引数に格納)
 	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTrans);
 
@@ -293,10 +298,10 @@ bool CMesh::CollisionMesh(D3DXVECTOR3 *pPos)
 	return bIsLanding;
 }
 
-//=========================================
+//=============================================================================
 // メッシュの作成
 // Author:hamada ryuuga
-//=========================================
+//=============================================================================
 bool CMesh::CreateMesh(D3DXVECTOR3 *pPos)
 {
 	bool bIsLanding = false;
@@ -320,7 +325,8 @@ bool CMesh::CreateMesh(D3DXVECTOR3 *pPos)
 	D3DXMatrixIdentity(&mtxWorld);
 
 	// 行列移動関数(第１引数にX,Y,Z方向の移動行列を作成)
-	D3DXMatrixTranslation(&mtxTrans, m_posOrigin.x, m_posOrigin.y, m_posOrigin.z);
+	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
+
 	// 行列掛け算関数(第2引数×第3引数を第１引数に格納)
 	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTrans);
 
@@ -396,10 +402,10 @@ bool CMesh::CreateMesh(D3DXVECTOR3 *pPos)
 	return bIsLanding;
 }
 
-//=========================================
+//=============================================================================
 // メッシュの作成
 // Author:hamada ryuuga
-//=========================================
+//=============================================================================
 void CMesh::SetVtxMesh(VERTEX_3D* pVtx, WORD* pIdx,int nCnt,bool isUp)
 {
 	int sign = isUp ? 1 : -1;
@@ -412,9 +418,9 @@ void CMesh::SetVtxMesh(VERTEX_3D* pVtx, WORD* pIdx,int nCnt,bool isUp)
 	}
 }
 
-//------------------------------------
+//=============================================================================
 //今あるオブジェクトの読み込み
-//------------------------------------
+//=============================================================================
 void CMesh::Loadfile(const char * pFileName)
 {
 	Uninit();
@@ -448,7 +454,7 @@ void CMesh::Loadfile(const char * pFileName)
 		str = JMesh["TEXPASS"];
 		CMesh::SetTexture(str.c_str());
 
-		m_posOrigin = D3DXVECTOR3(JMesh["POSORIGIN"]["X"], JMesh["POSORIGIN"]["Y"], JMesh["POSORIGIN"]["Z"]);
+		m_pos = D3DXVECTOR3(JMesh["POSORIGIN"]["X"], JMesh["POSORIGIN"]["Y"], JMesh["POSORIGIN"]["Z"]);
 		m_MeshSize = D3DXVECTOR3(JMesh["MESHDATASIZE"]["X"], JMesh["MESHDATASIZE"]["Y"], JMesh["MESHDATASIZE"]["Z"]);
 		
 		m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
@@ -459,7 +465,7 @@ void CMesh::Loadfile(const char * pFileName)
 			float posz = ((nCnt / m_Z) - 1.0f) * -1.0f;
 
 			//めっしゅを真ん中にする補正
-			//m_pos = D3DXVECTOR3(-(posx - 1)*MAX_SIZEMESH / 2, 0.0f, -posz * MAX_SIZEMESH / 2) + m_posOrigin;
+			//m_pos = D3DXVECTOR3(-(posx - 1)*MAX_SIZEMESH / 2, 0.0f, -posz * MAX_SIZEMESH / 2) + m_pos;
 
 			std::string name = "MESH";
 			std::string Number = std::to_string(nCnt);
@@ -481,9 +487,9 @@ void CMesh::Loadfile(const char * pFileName)
 	}
 }
 
-//------------------------------------
+//=============================================================================
 //今あるオブジェクトの保存
-//------------------------------------
+//=============================================================================
 void CMesh::Savefile(const char * pFileName)
 {
 	VERTEX_3D* pVtx = NULL;
@@ -520,9 +526,9 @@ void CMesh::Savefile(const char * pFileName)
 	JMesh["TEXPASS"] = m_pFileName;
 	JMesh["MESHSIZE"] = m_xsiz;
 	JMesh["POSORIGIN"] = {
-			{ "X", m_posOrigin.x } ,
-			{ "Y", m_posOrigin.y } ,
-			{ "Z", m_posOrigin.z } };
+			{ "X", m_pos.x } ,
+			{ "Y", m_pos.y } ,
+			{ "Z", m_pos.z } };
 
 	JMesh["ANIMATION"] = false;
 
@@ -534,9 +540,9 @@ void CMesh::Savefile(const char * pFileName)
 	writing_file.close();
 }
 
-//------------------------------------
+//=============================================================================
 //サイズ初期化
-//------------------------------------
+//=============================================================================
 void CMesh::SetVtxMeshSize(int Size)
 {
 	//CMesh::Uninit();
@@ -588,10 +594,10 @@ void CMesh::SetVtxMeshSize(int Size)
 		float texU = 1.0f / m_xsiz*(i % m_X);
 		float texV = 1.0f / m_zsiz*(i / m_Z);
 
-		//めっしゅを真ん中にする補正
-		m_pos = (D3DXVECTOR3(-(posx - 1)*m_MeshSize.x / 2, 0.0f, -posz * m_MeshSize.z / 2)) + m_posOrigin;
+		// メッシュを真ん中にする補正
+		m_pos = (D3DXVECTOR3(-(posx - 1) * m_MeshSize.x / 2, 0.0f, -posz * m_MeshSize.z / 2)) + m_pos;
 
-		//座標の補正
+		// 座標の補正
 		pVtx[i].pos += D3DXVECTOR3(posx*m_MeshSize.x, 0.0f, posz * m_MeshSize.z);
 
 
@@ -614,9 +620,9 @@ void CMesh::SetVtxMeshSize(int Size)
 		&m_pTextureEmesh);
 }
 
-//------------------------------------
+//=============================================================================
 //法線とIndexの成立
-//------------------------------------
+//=============================================================================
 void CMesh::SetVtxMeshLight()
 {
 	VERTEX_3D* pVtx = NULL;
@@ -640,6 +646,7 @@ void CMesh::SetVtxMeshLight()
 			pIdx[m_X * 2 + 1 + linetop] = (WORD)(m_X * 2 + m_X * z);
 		}
 	}
+
 	//---------------------------------------
 	//ここから法線
 	//---------------------------------------
@@ -699,9 +706,9 @@ void CMesh::SetVtxMeshLight()
 	m_pIdxBuff->Unlock();
 }
 
-//--------------------------------------------------
+//=============================================================================
 // メッシュの枚数決めるやつ
-//--------------------------------------------------
+//=============================================================================
 void CMesh::SetMesh(const int Size)
 {
 	m_NowMesh = Size;//枚数保存
@@ -709,9 +716,9 @@ void CMesh::SetMesh(const int Size)
 	SetVtxMeshLight();//法線設定
 }
 
-//--------------------------------------------------
+//=============================================================================
 // テクスチャの設定
-//--------------------------------------------------
+//=============================================================================
 void CMesh::SetTexture(const char * pFileName)
 {
 	//テクスチャファイルパス設定
@@ -720,17 +727,15 @@ void CMesh::SetTexture(const char * pFileName)
 	{
 		return;
 	}
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();
 
-	if (m_pTextureEmesh != NULL)
+	if (m_pTextureEmesh != nullptr)
 	{
 		m_pTextureEmesh->Release();
-		m_pTextureEmesh = NULL;
+		m_pTextureEmesh = nullptr;
 	}
 
-	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice,
-		pFileName,
-		&m_pTextureEmesh);
-}
+	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();
 
+	//テクスチャの読み込み
+	D3DXCreateTextureFromFile(pDevice, pFileName, &m_pTextureEmesh);
+}

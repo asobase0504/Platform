@@ -69,7 +69,7 @@ public:
 	const D3DXVECTOR3 * CMesh::GetPos() const;
 	D3DXVECTOR3 GetOneMeshSize() { return m_MeshSize; }
 	D3DXVECTOR3 GetMeshSize() { return D3DXVECTOR3(m_X *m_MeshSize.x, 0.0f, m_Z *m_MeshSize.z); }
-	D3DXVECTOR3 * GetPos() { return &m_posOrigin; }
+	D3DXVECTOR3 * GetPos() { return &m_pos; }
 	float GetMove() { return m_move; }
 	int GetNumber() { return m_Number; }
 	int GetMeshType() { return m_Type; }
@@ -88,7 +88,6 @@ private:
 	LPDIRECT3DINDEXBUFFER9 m_pIdxBuff;	// インデックスバッファ
 
 	D3DXVECTOR3 m_pos;			// 頂点座標
-	D3DXVECTOR3 m_posOrigin;	// 頂点座標
 	D3DXVECTOR3 m_rot;			// 回転座標
 	D3DXMATRIX m_mtxWorld;		// ワールドマトリックス
 	int m_xsiz;					// 面数

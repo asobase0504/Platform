@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // 制作 ( タイトル )
-// Author : hamada ryuuga
+// Author : Yuda Kaito
 //
 //=============================================================================
 #ifndef _TITLE_H_
@@ -52,17 +52,6 @@ public:
 private:
 	CCamera* m_pCamera;
 	CLight* m_pLight;
-	CBg* m_pBg[4];
-	CObject2d* m_fade;
-	int m_addX;
-	int m_addY;
-	MODE NextMode;
-	bool Sizcontroller;
-	bool ModeSelect;
-	float m_alpha;
-
 	CParticleManager* m_pPaticleManager;	// パーティクルマネジャー
-
 };
-
 #endif

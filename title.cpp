@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // §ì ( ƒ^ƒCƒgƒ‹ )
-// Author : hamada ryuuga
+// Author : Yuda Kaito
 //
 //=============================================================================
 #include "title.h"
@@ -15,6 +15,7 @@
 #include "camera.h"
 #include "light.h"
 #include "renderer.h"
+#include "objectX.h"
 
 #include "particle_manager.h"
 #include "particle_emitter.h"
@@ -57,6 +58,10 @@ HRESULT CTitle::Init(void)
 	test->SetMove(D3DXVECTOR3(25.0f, 25.0f, 0.0f));
 	test->SetSize(D3DXVECTOR3(20.0f, 20.0f, 0.0f));
 
+	CObjectX* testX = CObjectX::Create(D3DXVECTOR3(0.0f,0.0f,0.0f));
+	testX->LoadModel("FOX_KAO");
+	testX->CalculationVtx();
+
 	return S_OK;
 }
 
@@ -79,8 +84,6 @@ void CTitle::Update(void)
 		a = true;
 		m_pPaticleManager->Create(CParticleEmitter::EObjectType::POLIGON2D,CApplication::CENTER_POS, 0);
 	}
-
-	m_pPaticleManager->Update();
 }
 
 //=============================================================================

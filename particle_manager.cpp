@@ -3,6 +3,7 @@
 // パーティクルエミッタ
 // Author YudaKaito
 // Author HamadaRyuuga
+//
 //=========================================
 //=========================================
 // include
@@ -13,17 +14,11 @@
 #include <assert.h>
 
 //-----------------------------------------
-// 静的メンバー変数
-//-----------------------------------------
-int CParticleManager::m_MaxIndex = 0;
-
-//-----------------------------------------
 // コンストラクタ
 // Author YudaKaito
 //-----------------------------------------
 CParticleManager::CParticleManager() :
 	CTask(CTaskGroup::LEVEL_SYSTEM),
-	m_numAll(0),
 	m_particleEmitter({})
 {
 }
@@ -90,7 +85,6 @@ CParticleEmitter* CParticleManager::Create(CParticleEmitter::EObjectType inObjec
 	emitter->SetEmitter(m_bundledData.at(index).emitterData);
 	emitter->SetObjectType(inObject);
 
-	m_numAll++;
 	m_particleEmitter.push_back(emitter);
 
 	return emitter;

@@ -52,11 +52,9 @@ public:
 	void LoadBundledData(const wchar_t* cUrl);
 
 private:
-	int m_numAll;	// 生成数
 	std::vector<BundledData> m_bundledData;	// 情報体
 	std::list<CParticleEmitter*> m_particleEmitter;	// エミッタ―情報
 	int m_Index;
-	static int m_MaxIndex;
 };
 
 #endif // !_PARTICLE_FACTORY_H_

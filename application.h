@@ -23,6 +23,7 @@ class CMode;
 class CFade;
 class CSound;
 class CTaskGroup;
+class CObjectXGroup;
 
 //=============================================================================
 // マネジャークラス
@@ -67,6 +68,7 @@ public:	// メンバー関数
 	CRenderer* GetRenderer();
 	CTexture* GetTexture();
 	CTaskGroup* GetTaskGroup() { return m_pTaskGroup; }
+	CObjectXGroup* GetObjectXGroup() { return m_pObjectXGroup; }
 	CFade* GetFade();
 	MODE* GetMode();
 	void SetMode(CApplication::MODE inMode);
@@ -80,6 +82,7 @@ private:
 	CMode* m_pGame;
 	CSound* m_pSound;
 	CInput* m_pInput;
+	CObjectXGroup* m_pObjectXGroup;
 	MODE m_mode;
 };
 #endif

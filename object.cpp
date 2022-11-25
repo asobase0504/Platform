@@ -17,7 +17,12 @@
 //=============================================================================
 CObject::CObject(CTaskGroup::EPriority inPriority, CTaskGroup::EPushMethod inMethod) :
 	CTask(inPriority, inMethod),
-	m_updateStatus(EUpdateStatus::POP)
+	m_updateStatus(EUpdateStatus::POP),
+	m_pos(D3DXVECTOR3(0.0f,0.0f,0.0f)),		// à íu
+	m_move(D3DXVECTOR3(0.0f, 0.0f, 0.0f)),	// à⁄ìÆó 
+	m_rot(D3DXVECTOR3(0.0f, 0.0f, 0.0f)),	// âÒì]ó 
+	m_size(D3DXVECTOR3(0.0f, 0.0f, 0.0f)),	// ëÂÇ´Ç≥
+	m_color(D3DXCOLOR(0.0f,0.0f,0.0f,1.0f))	// êF
 {
 }
 
