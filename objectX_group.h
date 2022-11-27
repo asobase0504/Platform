@@ -7,9 +7,9 @@
 #ifndef _OBJECTX_GROUP_H_
 #define _OBJECTX_GROUP_H_
 
-//=============================================================================
-// インクルードファイル
-//=============================================================================
+//-----------------------------------------------------------------------------
+// include
+//-----------------------------------------------------------------------------
 #include "main.h"
 #include <string>
 #include <vector>
@@ -28,9 +28,9 @@ public:
 	{
 		LPD3DXMESH pMesh;
 		LPD3DXBUFFER pBuffMat;
-		DWORD NumMat;
-		D3DXVECTOR3 MinVtx;
-		D3DXVECTOR3 MaxVtx;
+		DWORD numMat;
+		D3DXVECTOR3 minVtx;
+		D3DXVECTOR3 maxVtx;
 		D3DXVECTOR3 size;
 	};
 public:
@@ -46,7 +46,7 @@ public:
 	void LoadAll();		// 全ての読み込み
 	void UnloadAll();	// 全ての破棄
 	void Load(std::string inKey, std::string inFileName);	// 指定の読み込み
-	void Load(std::vector<std::string> inTexture);			// 指定の読み込み
+	void Load(std::vector<std::string> inModel) { Load(inModel[0], inModel[1]); }			// 指定の読み込み
 	void Unload(std::string inKey);				// 指定の破棄
 
 	// Getter

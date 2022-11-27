@@ -4,32 +4,32 @@
 // Author : Yuda Kaito
 //
 //=============================================================================
+//-----------------------------------------------------------------------------
+// include
+//-----------------------------------------------------------------------------
 #include "title.h"
-#include "input.h"
 #include "application.h"
-#include "Bg.h"
-#include "player.h"
-#include "fade.h"
+#include "input.h"
 #include "sound.h"
-#include "ranking.h"
+// 3D系統
 #include "camera.h"
 #include "light.h"
-#include "renderer.h"
+// Object系統
+#include "object2d.h"
 #include "objectX.h"
-
+// Particle系統
 #include "particle_manager.h"
 #include "particle_emitter.h"
-#include "particle.h"
 
 //=============================================================================
-// コンストラクター
+// コンストラクタ
 //=============================================================================
 CTitle::CTitle()
 {
 }
 
 //=============================================================================
-// デストラクト
+// デストラクタ
 //=============================================================================
 CTitle::~CTitle()
 {

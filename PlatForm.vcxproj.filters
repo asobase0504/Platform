@@ -205,6 +205,9 @@
     <ClCompile Include="collision.cpp">
       <Filter>00_Cord\01_System\04_Utility</Filter>
     </ClCompile>
+    <ClCompile Include="camera_quaternion.cpp">
+      <Filter>00_Cord\01_System\01_3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -347,6 +350,9 @@
     </ClInclude>
     <ClInclude Include="collision.h">
       <Filter>00_Cord\01_System\04_Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="camera_quaternion.h">
+      <Filter>00_Cord\01_System\01_3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

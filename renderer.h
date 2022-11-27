@@ -52,7 +52,7 @@ class CCamera;
 //=============================================================================
 class CRenderer
 {
-public:
+public:	// シングルトン用のインスタンス
 	static CRenderer* GetInstance();
 	static CRenderer* m_renderer;
 private:

@@ -159,6 +159,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="2dpolygontemplate.cpp" />
+    <ClCompile Include="camera_quaternion.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="object_mesh.cpp" />
     <ClCompile Include="object_polygon3d.cpp" />
@@ -210,6 +211,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2dpolygontemplate.h" />
+    <ClInclude Include="camera_quaternion.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="object_mesh.h" />
     <ClInclude Include="object_polygon3d.h" />
