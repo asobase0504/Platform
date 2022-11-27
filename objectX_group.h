@@ -24,6 +24,8 @@ private: /* プライベート定数 */
 	static const wchar_t* filePath;
 
 public:
+
+	// モデルデータ
 	struct SModelData
 	{
 		LPD3DXMESH pMesh;

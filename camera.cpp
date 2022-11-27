@@ -42,20 +42,13 @@ HRESULT CCamera::Init(void)
 
 	m_Speed = 1.0f;
 	m_rotSpeed = 0.05f;
-	m_rotSpeed2 = D3DX_PI / 2;
+	m_rotSpeed2 = D3DX_PI * 0.5f;
 
 	D3DXVECTOR3 distPos = m_posR - m_posV;
-	m_fDistance = sqrtf((m_posR.x - m_posV.x) *
-		(m_posR.x - m_posV.x) +
-		(m_posR.z - m_posV.z) *
-		(m_posR.z - m_posV.z));
+	m_fDistance = sqrtf(distPos.x * distPos.x + distPos.z * distPos.z);
+	m_fDistance = sqrtf(distPos.y * distPos.y + (m_fDistance * m_fDistance));
 
-	m_fDistance = sqrtf((m_posR.y - m_posV.y)*
-		(m_posR.y - m_posV.y) +
-		(m_fDistance*m_fDistance));
-
-	m_rot.x = atan2f((m_posR.z - m_posV.z),
-		(m_posR.y - m_posV.y));
+	m_rot.x = atan2f(distPos.z, distPos.y);
 
 	return S_OK;
 }

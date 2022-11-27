@@ -146,23 +146,8 @@ void CParticleEmitter::PopParticle(void)
 	// ======================
 	// ³‹K‰»
 	// ======================
-	if (popInfo.fRadius > D3DX_PI)
-	{
-		popInfo.fRadius -= D3DX_PI * 2;
-	}
-	else if (popInfo.fRadius < -D3DX_PI)
-	{
-		popInfo.fRadius += D3DX_PI * 2;
-	}
-
-	if (m_info.fAngle > D3DX_PI)
-	{
-		m_info.fAngle -= D3DX_PI * 2;
-	}
-	else if (m_info.fAngle < -D3DX_PI)
-	{
-		m_info.fAngle += D3DX_PI * 2;
-	}
+	NormalizeAngle(popInfo.fRadius);
+	NormalizeAngle(m_info.fAngle);
 
 	switch (m_objectType)
 	{

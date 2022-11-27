@@ -2,6 +2,7 @@
 //
 // オブジェクト
 // Author : Hamada Ryuuga
+// AUthor : Yuda Kaito
 //
 //=============================================================================
 #ifndef _OBJECT_H_			// このマクロ定義がされてなかったら
@@ -51,8 +52,15 @@ public:
 	CObject(CTaskGroup::EPriority inPriority = CTaskGroup::LEVEL_2D_BG, CTaskGroup::EPushMethod inMethod = CTaskGroup::EPushMethod::PUSH_CURRENT);
 	virtual ~CObject() override;
 
+	// 更新
 	void Update() override final;
 	void SetUpdateStatus(const EUpdateStatus inStatus) { m_updateStatus = inStatus; }
+
+	/* 種類系 */
+	void SetType(const EType inType) { m_type = inType; }
+	EType GetType() { return m_type; }
+	static CObject* SearchType(EType inType, int inPriority);
+	CObject* NextSameType();
 
 	/* 位置系 */
 	virtual void SetPos(const D3DXVECTOR3 &inPos) { m_pos = inPos; }
@@ -83,17 +91,11 @@ public:
 	void AddColor(const D3DXCOLOR &inColor) { SetColor(m_color + inColor); }
 	void MulColor(const float &inRatio) { SetColor(m_color * inRatio); }
 	const D3DXCOLOR &GetColor() const { return m_color; }
-	// 透明度
+	// 透明色のみ
 	virtual void SetColorAlpha(float inAlpha) { m_color.a = inAlpha; }
 	void AddColorAlpha(float inAlpha) { SetColorAlpha(m_color.a + inAlpha); }
 	void MulColorAlpha(float inRatio) { SetColorAlpha(m_color.a * inRatio); }
 	float GetColorAlpha() const { return m_color.a; }
-
-	// 種別
-	void SetType(const EType inType) { m_type = inType; }
-	EType GetType() { return m_type; }
-	static CObject* SearchType(EType inType, int inPriority);
-	CObject* NextSameType();
 
 	/* テスクチャ系 */
 	void SetTexture(std::string inKey) { m_textureKey = inKey; }

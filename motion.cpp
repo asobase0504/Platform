@@ -15,6 +15,7 @@
 #include "objectX.h"
 #include "parts.h"
 #include "texture.h"
+#include "utility.h"
 
 //=============================================================================
 // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
@@ -24,7 +25,7 @@
 CMotion::CMotion(const char * pFileName)
 {
 	// ƒp[ƒc–¼‚Ì‰Šú‰»
-	memset(&m_partsFile, 0, sizeof(m_partsFile));
+	m_partsFile.clear();
 
 	// ƒ‚[ƒVƒ‡ƒ“‚Ì‰Šú‰»
 	m_motion.clear();
@@ -141,9 +142,9 @@ void CMotion::SetMotion(const int nCntMotionSet)
 		rot = (rotOrigin + motion->pKeySet[motion->nCntKeySet].pKey[nCntParts].rot);
 
 		// Šp“x‚Ì³‹K‰»
-		rot.x = RotNormalization(rot.x);
-		rot.y = RotNormalization(rot.y);
-		rot.z = RotNormalization(rot.z);
+		rot.x = NormalizeAngle(rot.x);
+		rot.y = NormalizeAngle(rot.y);
+		rot.z = NormalizeAngle(rot.z);
 
 		// î•ñ‚ÌXV
 		m_parts[nCntParts]->SetPos(pos);
@@ -205,9 +206,9 @@ void CMotion::PlayMotion()
 			rotDest = (rotOrigin + motion->pKeySet[motion->nCntKeySet].pKey[nCntParts].rot) - rot;
 
 			// Šp“x‚Ì³‹K‰»
-			rotDest.x = RotNormalization(rotDest.x);
-			rotDest.y = RotNormalization(rotDest.y);
-			rotDest.z = RotNormalization(rotDest.z);
+			rotDest.x = NormalizeAngle(rotDest.x);
+			rotDest.y = NormalizeAngle(rotDest.y);
+			rotDest.z = NormalizeAngle(rotDest.z);
 
 			// î•ñ‚ÌXV
 			m_parts[nCntParts]->SetPosDest(posDest);
@@ -225,9 +226,9 @@ void CMotion::PlayMotion()
 		rot += addRot;
 
 		// Šp“x‚Ì³‹K‰»
-		rot.x = RotNormalization(rot.x);
-		rot.y = RotNormalization(rot.y);
-		rot.z = RotNormalization(rot.z);
+		rot.x = NormalizeAngle(rot.x);
+		rot.y = NormalizeAngle(rot.y);
+		rot.z = NormalizeAngle(rot.z);
 
 		// î•ñ‚ÌXV
 		m_parts[nCntParts]->SetPos(pos);
@@ -289,9 +290,9 @@ void CMotion::MotionBlend()
 			rotDest = rotOrigin + myKey.rot - rot;
 
 			// Šp“x‚Ì³‹K‰»
-			rotDest.x = RotNormalization(rotDest.x);
-			rotDest.y = RotNormalization(rotDest.y);
-			rotDest.z = RotNormalization(rotDest.z);
+			rotDest.x = NormalizeAngle(rotDest.x);
+			rotDest.y = NormalizeAngle(rotDest.y);
+			rotDest.z = NormalizeAngle(rotDest.z);
 
 			// î•ñ‚ÌXV
 			m_parts[nCntParts]->SetPosDest(posDest);
@@ -309,9 +310,9 @@ void CMotion::MotionBlend()
 		rot += addRot;
 
 		// Šp“x‚Ì³‹K‰»
-		rot.x = RotNormalization(rot.x);
-		rot.y = RotNormalization(rot.y);
-		rot.z = RotNormalization(rot.z);
+		rot.x = NormalizeAngle(rot.x);
+		rot.y = NormalizeAngle(rot.y);
+		rot.z = NormalizeAngle(rot.z);
 
 		// î•ñ‚ÌXV
 		m_parts[nCntParts]->SetPos(pos);
@@ -379,7 +380,11 @@ void CMotion::LoodSetMotion(const char *pFileName)
 		if (strcmp(&aString[0], "MODEL_FILENAME") == 0)
 		{// ƒtƒ@ƒCƒ‹–¼‚Ì“Ç‚Ýž‚Ý
 			fscanf(pFile, "%s", &g_aEqual[0]);
-			fscanf(pFile, "%s", &m_partsFile[nCntFileName][0]);
+
+			char* filePath = "\0";
+			fscanf(pFile, "%s", filePath);
+
+			m_partsFile.push_back(filePath);
 
 			// ƒ}ƒeƒŠƒAƒ‹î•ñ‚ÌŽæ“¾
 			std::string nameTag = "MOTION";
@@ -610,26 +615,6 @@ void CMotion::CntReset(const int nNumMotionOld)
 {
 	m_motion[nNumMotionOld].nCntFrame = 0;
 	m_motion[nNumMotionOld].nCntKeySet = 0;
-}
-
-//=============================================================================
-// ‰ñ“]‚Ì³‹K‰»
-// Author : “‚ú±Œ‹“l
-// ŠT—v : ƒpƒX‚Ì
-//=============================================================================
-float CMotion::RotNormalization(float inRot)
-{
-	// Šp“x‚Ì³‹K‰»(Œ»Ý‚ÌŠp“x)
-	if (inRot > D3DX_PI)
-	{
-		inRot = inRot - D3DX_PI * 2;
-	}
-	else if (inRot < -D3DX_PI)
-	{
-		inRot = inRot + D3DX_PI * 2;
-	}
-
-	return inRot;
 }
 
 //=============================================================================

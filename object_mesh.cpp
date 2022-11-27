@@ -29,15 +29,13 @@ nlohmann::json JMesh;//リストの生成
 //=============================================================================
 CMesh::CMesh(CTaskGroup::EPriority nPriority) :
 	CObjectPolygon3D(nPriority),
-	m_pos({ 0.0f,0.0f,0.0f }),			// 頂点座標
-	m_rot({ 0.0f,0.0f,0.0f }),			// 回転座標
-	m_xsiz(0),							//面数
-	m_zsiz(0),							//面数
-	m_X(0),								//辺の頂点数
-	m_Z(0),								//辺の頂点数
-	m_nVtx(0),							//頂点数
-	m_Index(0),							//インデックス
-	m_por(0),
+	m_xsiz(0),						// 面数
+	m_zsiz(0),						// 面数
+	m_vtxCountX(0),						// 辺の頂点数
+	m_vtxCountZ(0),						// 辺の頂点数
+	m_vtx(0),						// 頂点数
+	m_index(0),						// インデックス
+	m_polygonCount(0),
 	m_NowMesh(0),
 	m_Number(0),
 	m_Type(0),
@@ -60,11 +58,8 @@ CMesh::~CMesh()
 //=============================================================================
 HRESULT CMesh::Init(void)
 {
-	m_pTextureEmesh = NULL;
 	// 初期化処理
-
 	m_pVtxBuff = nullptr;		// 頂点バッファーへのポインタ
-	m_pTextureEmesh = nullptr;	// テクスチャのポインタ
 	m_pIdxBuff = nullptr;		// インデックスバッファ
 	
 	//m_pFileName = nullptr;
@@ -87,11 +82,7 @@ void CMesh::Uninit(void)
 		m_pVtxBuff->Release();
 		m_pVtxBuff = NULL;
 	}
-	if (m_pTextureEmesh != NULL)
-	{
-		m_pTextureEmesh->Release();
-		m_pTextureEmesh = NULL;
-	}
+
 	if (m_pIdxBuff != NULL)
 	{
 		m_pIdxBuff->Release();
@@ -148,32 +139,19 @@ void CMesh::Draw(void)
 	// 頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_3D);
 
+	// テクスチャの取得
+	CTexture* pTexture = CApplication::GetInstance()->GetTexture();
+
 	//テクスチャの設定
-	pDevice->SetTexture(0, m_pTextureEmesh);
+	pDevice->SetTexture(0, pTexture->GetTexture(GetTexture()));
 
 	// ポリゴンの描画
-	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, m_nVtx, 0, m_por);
+	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, m_vtx, 0, m_polygonCount);
 
 	//テクスチャの設定
 	pDevice->SetTexture(0, NULL);
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-}
-
-//=============================================================================
-// GetPos関数
-//=============================================================================
-const D3DXVECTOR3 *CMesh::GetPos() const
-{
-	return &m_pos;
-}
-
-//=============================================================================
-// SetPos関数
-//=============================================================================
-void CMesh::SetPos(const D3DXVECTOR3 &pos)
-{
-	m_pos = pos;
 }
 
 //=============================================================================
@@ -224,7 +202,7 @@ bool CMesh::CollisionMesh(D3DXVECTOR3 *pPos)
 	// 行列掛け算関数(第2引数×第3引数を第１引数に格納)
 	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTrans);
 
-	for (int nCnt = 0; nCnt < m_por; nCnt++)
+	for (int nCnt = 0; nCnt < m_polygonCount; nCnt++)
 	{
 		D3DXVECTOR3 posLineVec[nTri];
 
@@ -284,6 +262,7 @@ bool CMesh::CollisionMesh(D3DXVECTOR3 *pPos)
 			//プレイヤーの位置補正
 			SwitchCollision(true);
 			OnHit();
+
 			if (IsCollision)
 			{
 				pPos->y = (posLineVec[0].y - (Normal.x*(pPos->x - posLineVec[0].x) + Normal.z*(pPos->z - posLineVec[0].z)) / Normal.y) + 10.0f;
@@ -330,7 +309,7 @@ bool CMesh::CreateMesh(D3DXVECTOR3 *pPos)
 	// 行列掛け算関数(第2引数×第3引数を第１引数に格納)
 	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTrans);
 
-	for (int nCnt = 0; nCnt < m_por; nCnt++)
+	for (int nCnt = 0; nCnt < m_polygonCount; nCnt++)
 	{
 		D3DXVECTOR3 posLineVec[nTri];
 
@@ -459,13 +438,13 @@ void CMesh::Loadfile(const char * pFileName)
 		
 		m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-		for (int nCnt = 0; nCnt < m_nVtx; nCnt++)
+		for (int nCnt = 0; nCnt < m_vtx; nCnt++)
 		{
-			float posx = ((nCnt % m_X) - 1.0f);
-			float posz = ((nCnt / m_Z) - 1.0f) * -1.0f;
+			float posx = ((nCnt % m_vtxCountX) - 1.0f);
+			float posz = ((nCnt / m_vtxCountZ) - 1.0f) * -1.0f;
 
 			//めっしゅを真ん中にする補正
-			//m_pos = D3DXVECTOR3(-(posx - 1)*MAX_SIZEMESH / 2, 0.0f, -posz * MAX_SIZEMESH / 2) + m_pos;
+			//m_pos = D3DXVECTOR3(-(posx - 1)*MAX_SIZEMESH * 0.5f, 0.0f, -posz * MAX_SIZEMESH * 0.5f) + m_pos;
 
 			std::string name = "MESH";
 			std::string Number = std::to_string(nCnt);
@@ -498,7 +477,7 @@ void CMesh::Savefile(const char * pFileName)
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 	int nIndex = 0;
 	
-	for (int i = 0; i < m_nVtx; i++)
+	for (int i = 0; i < m_vtx; i++)
 	{
 		std::string name = "MESH";
 		std::string Number = std::to_string(nIndex);
@@ -550,21 +529,21 @@ void CMesh::SetVtxMeshSize(int Size)
 
 	m_xsiz = Size;
 	m_zsiz = Size;
-	m_X = m_xsiz + 1;	// 1多い数字
-	m_Z = m_zsiz + 1;	// 1多い数字
+	m_vtxCountX = m_xsiz + 1;	// 1多い数字
+	m_vtxCountZ = m_zsiz + 1;	// 1多い数字
 
 	// 頂点数
-	m_nVtx = m_X* m_Z;	// 頂点数を使ってるよ
+	m_vtx = m_vtxCountX* m_vtxCountZ;	// 頂点数を使ってるよ
 
 	// インデックス数
-	m_Index = (2 * m_X * m_zsiz + 2 * (m_zsiz - 1));
+	m_index = (2 * m_vtxCountX * m_zsiz + 2 * (m_zsiz - 1));
 
-	m_por = m_Index - 2;
+	m_polygonCount = m_index - 2;
 
 	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();
 
 	// 頂点バッファの生成
-	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * m_nVtx,
+	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * m_vtx,
 		D3DUSAGE_WRITEONLY,
 		FVF_VERTEX_3D,
 		D3DPOOL_MANAGED,
@@ -572,7 +551,7 @@ void CMesh::SetVtxMeshSize(int Size)
 		NULL);
 
 	//インデックスバッファ生成
-	pDevice->CreateIndexBuffer(sizeof(WORD) * m_Index,
+	pDevice->CreateIndexBuffer(sizeof(WORD) * m_index,
 		D3DUSAGE_WRITEONLY,
 		D3DFMT_INDEX16,
 		D3DPOOL_MANAGED,
@@ -585,17 +564,17 @@ void CMesh::SetVtxMeshSize(int Size)
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	// 頂点座標の設定
-	for (int i = 0; i < m_nVtx; i++)
+	for (int i = 0; i < m_vtx; i++)
 	{
 		pVtx[i].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		float posx = ((i % m_X) - 1.0f);
-		float posz = ((i / m_Z) - 1.0f)*-1.0f;
+		float posx = ((i % m_vtxCountX) - 1.0f);
+		float posz = ((i / m_vtxCountZ) - 1.0f) * -1.0f;
 
-		float texU = 1.0f / m_xsiz*(i % m_X);
-		float texV = 1.0f / m_zsiz*(i / m_Z);
+		float texU = 1.0f / m_xsiz * (i % m_vtxCountX);
+		float texV = 1.0f / m_zsiz * (i / m_vtxCountZ);
 
 		// メッシュを真ん中にする補正
-		m_pos = (D3DXVECTOR3(-(posx - 1) * m_MeshSize.x / 2, 0.0f, -posz * m_MeshSize.z / 2)) + m_pos;
+		m_pos = (D3DXVECTOR3(-(posx - 1) * m_MeshSize.x * 0.5f, 0.0f, -posz * m_MeshSize.z * 0.5f)) + m_pos;
 
 		// 座標の補正
 		pVtx[i].pos += D3DXVECTOR3(posx*m_MeshSize.x, 0.0f, posz * m_MeshSize.z);
@@ -613,11 +592,6 @@ void CMesh::SetVtxMeshSize(int Size)
 
 	// 頂点座標をアンロック
 	m_pVtxBuff->Unlock();
-
-	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice,
-		"Data/TEXTURE/rand.png",
-		&m_pTextureEmesh);
 }
 
 //=============================================================================
@@ -632,18 +606,18 @@ void CMesh::SetVtxMeshLight()
 	m_pIdxBuff->Lock(0, 0, (void**)&pIdx, 0);
 	for (int z = 0; z < m_zsiz; z++)
 	{
-		int linetop = z * (m_X * 2 + 2);
-		for (int x = 0; x < m_X; x++)
+		int linetop = z * (m_vtxCountX * 2 + 2);
+		for (int x = 0; x < m_vtxCountX; x++)
 		{
 			int nIdxData = x * 2 + linetop;
-			pIdx[nIdxData + 1] = (WORD)(x + (z * m_X));
-			pIdx[nIdxData] = (WORD)(pIdx[nIdxData + 1] + m_X);
+			pIdx[nIdxData + 1] = (WORD)(x + (z * m_vtxCountX));
+			pIdx[nIdxData] = (WORD)(pIdx[nIdxData + 1] + m_vtxCountX);
 		}
 		//縮退ポリゴン設定
 		if (z < m_xsiz - 1)
 		{
-			pIdx[m_X * 2 + 0 + linetop] = (WORD)(m_xsiz + m_X*z);
-			pIdx[m_X * 2 + 1 + linetop] = (WORD)(m_X * 2 + m_X * z);
+			pIdx[m_vtxCountX * 2 + 0 + linetop] = (WORD)(m_xsiz + m_vtxCountX*z);
+			pIdx[m_vtxCountX * 2 + 1 + linetop] = (WORD)(m_vtxCountX * 2 + m_vtxCountX * z);
 		}
 	}
 
@@ -656,7 +630,7 @@ void CMesh::SetVtxMeshLight()
 
 	D3DXVECTOR3 posLineVec[nTri];//ベクトル
 
-	for (int nCnt = 0; nCnt < m_por; nCnt++) // プリミティブの数だけまわす。
+	for (int nCnt = 0; nCnt < m_polygonCount; nCnt++) // プリミティブの数だけまわす。
 	{
 		//ベクトルを求める
 		posLineVec[0] = pVtx[pIdx[nCnt + 0]].pos;
@@ -695,7 +669,7 @@ void CMesh::SetVtxMeshLight()
 		}
 	}
 
-	for (int nCnt = 0; nCnt < m_nVtx; nCnt++)
+	for (int nCnt = 0; nCnt < m_vtx; nCnt++)
 	{
 		//norをノーマライズして、長さ 1にする。
 		D3DXVec3Normalize(&pVtx[nCnt].nor, &pVtx[nCnt].nor);
@@ -714,28 +688,4 @@ void CMesh::SetMesh(const int Size)
 	m_NowMesh = Size;//枚数保存
 	SetVtxMeshSize(Size);//サイズ決定
 	SetVtxMeshLight();//法線設定
-}
-
-//=============================================================================
-// テクスチャの設定
-//=============================================================================
-void CMesh::SetTexture(const char * pFileName)
-{
-	//テクスチャファイルパス設定
-	m_pFileName = pFileName;
-	if (m_pFileName.size() == 0)
-	{
-		return;
-	}
-
-	if (m_pTextureEmesh != nullptr)
-	{
-		m_pTextureEmesh->Release();
-		m_pTextureEmesh = nullptr;
-	}
-
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();
-
-	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, pFileName, &m_pTextureEmesh);
 }

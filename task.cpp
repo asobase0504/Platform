@@ -4,6 +4,9 @@
 // Author : Yuda Kaito
 //
 //=============================================================================
+//-----------------------------------------------------------------------------
+// include
+//-----------------------------------------------------------------------------
 #include "task.h"
 #include <assert.h>
 #include "application.h"
@@ -18,6 +21,8 @@ CTask::CTask(CTaskGroup::EPriority inPriority, CTaskGroup::EPushMethod inMethod)
 	m_isDeleted(false),
 	m_isProtect(false)
 {
+
+	// タスクグループに自身を登録する
 	switch (inMethod)
 	{
 	case CTaskGroup::PUSH_CURRENT:

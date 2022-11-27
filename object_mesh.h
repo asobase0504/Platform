@@ -50,12 +50,9 @@ public:
 	void Savefile(const char * pFileName);	// メッシュの書き出し
 	
 	//セッター
-	void SetPos(const D3DXVECTOR3 &pos);
-	void SetMove(float ismove) { m_move = ismove; }
 	void SetMesh(const int Size);
 	void SetNumber(int IsNumber) { m_Number = IsNumber; }
 	void SetType(int IsType) { m_Type = IsType; }
-	void SetTexture(const char * pFileName);
 
 	void SetOneMeshSize(D3DXVECTOR3 IsSize) 
 	{
@@ -66,15 +63,12 @@ public:
 	void SwitchCollision(bool onCollision) { IsCollision = onCollision; };
 
 	//ゲッター
-	const D3DXVECTOR3 * CMesh::GetPos() const;
 	D3DXVECTOR3 GetOneMeshSize() { return m_MeshSize; }
-	D3DXVECTOR3 GetMeshSize() { return D3DXVECTOR3(m_X *m_MeshSize.x, 0.0f, m_Z *m_MeshSize.z); }
-	D3DXVECTOR3 * GetPos() { return &m_pos; }
-	float GetMove() { return m_move; }
+	D3DXVECTOR3 GetMeshSize() { return D3DXVECTOR3(m_vtxCountX * m_MeshSize.x, 0.0f, m_vtxCountZ * m_MeshSize.z); }
 	int GetNumber() { return m_Number; }
 	int GetMeshType() { return m_Type; }
 
-	int GetMeshSizeX() { return m_X; }
+	int GetMeshSizeX() { return m_vtxCountX; }
 
 	std::string GetDataNeme() { return DataName; }
 
@@ -84,19 +78,16 @@ private:
 	void SetVtxMeshLight();
 
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;	// 頂点バッファーへのポインタ
-	LPDIRECT3DTEXTURE9 m_pTextureEmesh;	// テクスチャのポインタ
 	LPDIRECT3DINDEXBUFFER9 m_pIdxBuff;	// インデックスバッファ
 
-	D3DXVECTOR3 m_pos;			// 頂点座標
-	D3DXVECTOR3 m_rot;			// 回転座標
-	D3DXMATRIX m_mtxWorld;		// ワールドマトリックス
-	int m_xsiz;					// 面数
-	int m_zsiz;					// 面数
-	int m_X;					// 辺の頂点数
-	int m_Z;					// 辺の頂点数
-	int m_nVtx;					// 頂点数
-	int m_Index;				// インデックス
-	int m_por;
+	D3DXMATRIX m_mtxWorld;	// ワールドマトリックス
+	int m_xsiz;				// 面数
+	int m_zsiz;				// 面数
+	int m_vtxCountX;		// 辺の頂点数
+	int m_vtxCountZ;		// 辺の頂点数
+	int m_vtx;				// 頂点数
+	int m_index;			// インデックス
+	int m_polygonCount;		// ポリゴン数
 	int m_NowMesh;
 	int m_Number;
 	int m_Type;

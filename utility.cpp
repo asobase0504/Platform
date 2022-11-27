@@ -18,16 +18,18 @@
 //--------------------------------------------------
 // Šp“x‚Ì³‹K‰»
 //--------------------------------------------------
-void NormalizeAngle(float *pAngle)
+float NormalizeAngle(float& pAngle)
 {
-	if (*pAngle >= D3DX_PI)
+	if (pAngle >= D3DX_PI)
 	{// 3.14‚æ‚è‘å‚«‚¢
-		*pAngle -= D3DX_PI * 2.0f;
+		pAngle -= D3DX_PI * 2.0f;
 	}
-	else if (*pAngle <= -D3DX_PI)
+	else if (pAngle <= -D3DX_PI)
 	{// -3.14‚æ‚è¬‚³‚¢
-		*pAngle += D3DX_PI * 2.0f;
+		pAngle += D3DX_PI * 2.0f;
 	}
+
+	return pAngle;
 }
 
 //--------------------------------------------------

@@ -161,20 +161,20 @@ void CPlayer::Move()
 		m_Pow = 20;
 	}
 
-	if (m_pos.y <= -SCREEN_HEIGHT / 2 + 20.0f)
+	if (m_pos.y <= -SCREEN_HEIGHT * 0.5f + 20.0f)
 	{
-		m_pos.y = (-SCREEN_HEIGHT / 2)+20.0f;
+		m_pos.y = (-SCREEN_HEIGHT * 0.5f)+20.0f;
 	}
 
-	if (m_pos.y >= SCREEN_HEIGHT / 2 - 100.0f)
+	if (m_pos.y >= SCREEN_HEIGHT * 0.5f - 100.0f)
 	{
-		m_pos.y = SCREEN_HEIGHT / 2 - 100.0f;
+		m_pos.y = SCREEN_HEIGHT * 0.5f - 100.0f;
 	}
-	if (m_pos.x <= -SCREEN_WIDTH / 2 + 100.0f)
+	if (m_pos.x <= -SCREEN_WIDTH * 0.5f + 100.0f)
 	{
 		m_pos.x = -SCREEN_WIDTH*0.5f + 100.0f;
 	}
-	if (m_pos.x >= SCREEN_WIDTH / 2 - 80.0f)
+	if (m_pos.x >= SCREEN_WIDTH * 0.5f - 80.0f)
 	{
 		m_pos.x = SCREEN_WIDTH*0.5f - 80.0f;
 	}
@@ -186,27 +186,13 @@ void CPlayer::Move()
 	m_pos += m_move;//ˆÚ“®‚ð‰ÁŽZ
 
 	//³‹K‰»
-	if ( consumption > D3DX_PI)
-	{
-		 consumption += D3DX_PI * 2.0f;
-	}
-	if ( consumption < -D3DX_PI)
-	{
-		 consumption += -D3DX_PI * 2.0f;
-	}
+	NormalizeAngle(consumption);
 
 	//Œ¸ŽZÝ’èiŠ´«j
 	m_rot.y += (consumption)* ATTENUATION;//–Ú“I‚Ì’l-Œ»Ý‚Ì’lj–Œ¸ŠŒW”
 
 	 //³‹K‰»
-	if (m_rot.y > D3DX_PI)
-	{
-		m_rot.y += -D3DX_PI * 2;
-	}
-	if (m_rot.y <= -D3DX_PI)
-	{
-		m_rot.y += D3DX_PI * 2;
-	}
+	NormalizeAngle(m_rot.y);
 }
 
 //------------------------------------
@@ -230,37 +216,17 @@ void CPlayer::TitleMove()
 
 	m_pos += m_move;//ˆÚ“®‚ð‰ÁŽZ
 
-					//³‹K‰»
-	if (consumption > D3DX_PI)
-	{
-		consumption += D3DX_PI * 2.0f;
-	}
-	if (consumption < -D3DX_PI)
-	{
-		consumption += -D3DX_PI * 2.0f;
-	}
+	NormalizeAngle(consumption);	//³‹K‰»
 
 	//Œ¸ŽZÝ’èiŠ´«j
 	m_rot.y += (consumption)* ATTENUATION;//–Ú“I‚Ì’l-Œ»Ý‚Ì’lj–Œ¸ŠŒW”
 
-										  //³‹K‰»
-	if (m_rot.y > D3DX_PI)
-	{
-		m_rot.y += -D3DX_PI * 2;
-	}
-	if (m_rot.y <= -D3DX_PI)
-	{
-		m_rot.y += D3DX_PI * 2;
-	}
+	NormalizeAngle(m_rot.y);	//³‹K‰»
 
-
-
-	if (m_pos.x <= -SCREEN_WIDTH*0.5f-100.0f)
+	if (m_pos.x <= -SCREEN_WIDTH * 0.5f-100.0f)
 	{
-		m_pos.x = SCREEN_WIDTH*0.5f;
+		m_pos.x = SCREEN_WIDTH * 0.5f;
 	}
-	
-	
 }
 
 //------------------------------------
@@ -284,37 +250,17 @@ void CPlayer::ResetMove()
 
 	m_pos += m_move;//ˆÚ“®‚ð‰ÁŽZ
 
-					//³‹K‰»
-	if (consumption > D3DX_PI)
-	{
-		consumption += D3DX_PI * 2.0f;
-	}
-	if (consumption < -D3DX_PI)
-	{
-		consumption += -D3DX_PI * 2.0f;
-	}
+	NormalizeAngle(consumption);	//³‹K‰»
 
 	//Œ¸ŽZÝ’èiŠ´«j
-	m_rot.y += (consumption)* ATTENUATION;//–Ú“I‚Ì’l-Œ»Ý‚Ì’lj–Œ¸ŠŒW”
+	m_rot.y += (consumption) * ATTENUATION;//–Ú“I‚Ì’l-Œ»Ý‚Ì’lj–Œ¸ŠŒW”
 
-										  //³‹K‰»
-	if (m_rot.y > D3DX_PI)
-	{
-		m_rot.y += -D3DX_PI * 2;
-	}
-	if (m_rot.y <= -D3DX_PI)
-	{
-		m_rot.y += D3DX_PI * 2;
-	}
-
-
+	NormalizeAngle(m_rot.y);	//³‹K‰»
 
 	if (m_pos.x <= -SCREEN_WIDTH*0.5f - 100.0f)
 	{
 		m_pos.x = SCREEN_WIDTH*0.5f;
 	}
-
-
 }
 
 //------------------------------------
@@ -328,14 +274,14 @@ void CPlayer::TutorialMove()	//“®‚«ƒZƒbƒg
 
 	if (CInputpInput->Press(CInput::KEY_RIGHT))
 	{
-		m_move.x += sinf(D3DX_PI *0.5f + Camerarot->y) * SPEED * m_MoveSpeed;
-		m_move.z += cosf(D3DX_PI *0.5f + Camerarot->y) * SPEED * m_MoveSpeed;
+		m_move.x += sinf(D3DX_PI * 0.5f + Camerarot->y) * SPEED * m_MoveSpeed;
+		m_move.z += cosf(D3DX_PI * 0.5f + Camerarot->y) * SPEED * m_MoveSpeed;
 		//consumption = m_rotMove.x + (D3DX_PI*0.5f) - m_rot.y + Camerarot->y;
 	}
 	if (CInputpInput->Press(CInput::KEY_LEFT))
 	{
-		m_move.x += sinf(-D3DX_PI *0.5f + Camerarot->y) * SPEED * m_MoveSpeed;
-		m_move.z += cosf(-D3DX_PI *0.5f + Camerarot->y) * SPEED * m_MoveSpeed;
+		m_move.x += sinf(-D3DX_PI * 0.5f + Camerarot->y) * SPEED * m_MoveSpeed;
+		m_move.z += cosf(-D3DX_PI * 0.5f + Camerarot->y) * SPEED * m_MoveSpeed;
 	}
 	if (CInputpInput->Press(CInput::KEY_DOWN))
 	{
@@ -352,52 +298,34 @@ void CPlayer::TutorialMove()	//“®‚«ƒZƒbƒg
 	
 	}
 
-	if (m_pos.y <= -SCREEN_HEIGHT / 2 + 20.0f)
+	if (m_pos.y <= -SCREEN_HEIGHT * 0.5f + 20.0f)
 	{
-		m_pos.y = (-SCREEN_HEIGHT / 2) + 20.0f;
+		m_pos.y = (-SCREEN_HEIGHT * 0.5f) + 20.0f;
 	}
 
-	if (m_pos.y >= SCREEN_HEIGHT / 2 - 100.0f)
+	if (m_pos.y >= SCREEN_HEIGHT * 0.5f - 100.0f)
 	{
-		m_pos.y = SCREEN_HEIGHT / 2 - 100.0f;
+		m_pos.y = SCREEN_HEIGHT * 0.5f - 100.0f;
 	}
-	if (m_pos.x <= -SCREEN_WIDTH / 2 + 100.0f)
+	if (m_pos.x <= -SCREEN_WIDTH * 0.5f + 100.0f)
 	{
-		m_pos.x = -SCREEN_WIDTH*0.5f + 100.0f;
+		m_pos.x = -SCREEN_WIDTH * 0.5f + 100.0f;
 	}
-	if (m_pos.x >= SCREEN_WIDTH / 2 - 80.0f)
+	if (m_pos.x >= SCREEN_WIDTH * 0.5f - 80.0f)
 	{
-		m_pos.x = SCREEN_WIDTH*0.5f - 80.0f;
+		m_pos.x = SCREEN_WIDTH * 0.5f - 80.0f;
 	}
 
-	m_move.x += (0.0f - m_move.x)*ATTENUATION;//i–Ú“I‚Ì’l-Œ»Ý‚Ì’lj–Œ¸ŠŒW”
-	m_move.z += (0.0f - m_move.z)*ATTENUATION;
-	m_move.y += (0.0f - m_move.y)*ATTENUATION;
+	m_move.x += (0.0f - m_move.x) * ATTENUATION;	//i–Ú“I‚Ì’l-Œ»Ý‚Ì’lj* Œ¸ŠŒW”
+	m_move.z += (0.0f - m_move.z) * ATTENUATION;	//i–Ú“I‚Ì’l-Œ»Ý‚Ì’lj* Œ¸ŠŒW”
+	m_move.y += (0.0f - m_move.y) * ATTENUATION;	//i–Ú“I‚Ì’l-Œ»Ý‚Ì’lj* Œ¸ŠŒW”
 
 	m_pos += m_move;//ˆÚ“®‚ð‰ÁŽZ
 
-	//³‹K‰»
-	if (consumption > D3DX_PI)
-	{
-		consumption += D3DX_PI * 2.0f;
-	}
-	if (consumption < -D3DX_PI)
-	{
-		consumption += -D3DX_PI * 2.0f;
-	}
+	NormalizeAngle(consumption);	//³‹K‰»
 
 	//Œ¸ŽZÝ’èiŠ´«j
 	m_rot.y += (consumption)* ATTENUATION;//–Ú“I‚Ì’l-Œ»Ý‚Ì’lj–Œ¸ŠŒW”
 
-	//³‹K‰»
-	if (m_rot.y > D3DX_PI)
-	{
-		m_rot.y += -D3DX_PI * 2;
-	}
-	if (m_rot.y <= -D3DX_PI)
-	{
-		m_rot.y += D3DX_PI * 2;
-	}
-
-
+	NormalizeAngle(m_rot.y);	//³‹K‰»
 }
