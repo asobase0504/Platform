@@ -60,7 +60,7 @@ void CParticleEmitter::Uninit()
 // çXêV
 // Author YudaKaito
 //-----------------------------------------
-void CParticleEmitter::Update()
+void CParticleEmitter::NormalUpdate()
 {
 	int popNumber = 5;
 	for (int i = 0; i < popNumber; i++)

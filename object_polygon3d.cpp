@@ -55,8 +55,6 @@ HRESULT CObjectPolygon3D::Init()
 	
 	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();	//デバイスの取得
 
-	m_texture = CTexture::GetInstance()->SetTexture("NONE");
-
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * 4,	//確保するバッファのサイズ
 		D3DUSAGE_WRITEONLY,
@@ -135,7 +133,7 @@ void CObjectPolygon3D::Draw()
 	pDevice->SetFVF(FVF_VERTEX_3D);
 
 	// テクスチャの設定
-	pDevice->SetTexture(0, CApplication::GetInstance()->GetTexture()->GetTexture(m_texture));
+	pDevice->SetTexture(0, CApplication::GetInstance()->GetTexture()->GetTexture(GetTexture()));
 
 	// ポリゴンの描画
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);	// プリミティブ(ポリゴン)数
@@ -171,14 +169,6 @@ void CObjectPolygon3D::SetPos(const D3DXVECTOR3 &pos)
 {
 	m_pos.x = pos.x;
 	m_pos.y = pos.y;
-}
-
-//--------------------------------------------------
-// テクスチャの設定
-//--------------------------------------------------
-void CObjectPolygon3D::SetTexture(int texture)
-{
-	m_texture = texture;
 }
 
 //---------------------------------------

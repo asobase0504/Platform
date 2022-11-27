@@ -41,14 +41,14 @@ HRESULT CPause::Init(void)
 
 	//モード選択時の背景黒くするやつ
 	m_pBg = CObject2d::Create(CTaskGroup::LEVEL_3D_UI);
-	m_pBg->SetTexture(CTexture::GetInstance()->SetTexture("PAUSEBG"));
+	m_pBg->SetTexture("PAUSEBG");
 	m_pBg->SetSize(D3DXVECTOR3(450.0f, CApplication::CENTER_POS.y, 0.0f));
 	m_pBg->SetPos(CApplication::CENTER_POS);
 	m_pBg->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 
 	//ゲームの文字
 	m_pObject2d[0] = CObject2d::Create(CTaskGroup::LEVEL_3D_UI);
-	m_pObject2d[0]->SetTexture(CTexture::GetInstance()->SetTexture("PAUSEGAME"));
+	m_pObject2d[0]->SetTexture("PAUSEGAME");
 	m_pObject2d[0]->SetSize(D3DXVECTOR3(150.0f, 50.0f, 0.0f));
 	m_pObject2d[0]->SetPos(CApplication::CENTER_POS);
 	m_pObject2d[0]->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
@@ -57,7 +57,7 @@ HRESULT CPause::Init(void)
 
 	//チュートリアルの文字
 	m_pObject2d[1] = CObject2d::Create(CTaskGroup::LEVEL_3D_UI);
-	m_pObject2d[1]->SetTexture(CTexture::GetInstance()->SetTexture("PAUSERETURN"));
+	m_pObject2d[1]->SetTexture("PAUSERETURN");
 	m_pObject2d[1]->SetSize(D3DXVECTOR3(150.0f, 50.0f, 0.0f));
 	m_pObject2d[1]->SetPos(D3DXVECTOR3(CApplication::CENTER_POS.x, CApplication::CENTER_POS.y + y, 0.0f));
 	m_pObject2d[1]->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
@@ -66,14 +66,14 @@ HRESULT CPause::Init(void)
 
 	//ランキングの文字
 	m_pObject2d[2] = CObject2d::Create(CTaskGroup::LEVEL_3D_UI);
-	m_pObject2d[2]->SetTexture(CTexture::GetInstance()->SetTexture("PAUSETITLE"));
+	m_pObject2d[2]->SetTexture("PAUSETITLE");
 	m_pObject2d[2]->SetSize(D3DXVECTOR3(150.0f, 50.0f, 0.0f));
 	m_pObject2d[2]->SetPos(D3DXVECTOR3(CApplication::CENTER_POS.x, CApplication::CENTER_POS.y + y, 0.0f));
 	m_pObject2d[2]->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 
 	//ランキングの文字
 	m_pObject2d[3] = CObject2d::Create(CTaskGroup::LEVEL_3D_UI);
-	m_pObject2d[3]->SetTexture(CTexture::GetInstance()->SetTexture("PAUSEMENU"));
+	m_pObject2d[3]->SetTexture("PAUSEMENU");
 	m_pObject2d[3]->SetSize(D3DXVECTOR3(300.0f, 100.0f, 0.0f));
 	m_pObject2d[3]->SetPos(D3DXVECTOR3(CApplication::CENTER_POS.x, CApplication::CENTER_POS.y - y, 0.0f));
 	m_pObject2d[3]->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
@@ -92,7 +92,7 @@ void CPause::Uninit(void)
 //=============================================================================
 // 更新
 //=============================================================================
-void CPause::Update(void)
+void CPause::NormalUpdate(void)
 {
 	CInput *CInputpInput = CInput::GetKey();
 

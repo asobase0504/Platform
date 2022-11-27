@@ -49,7 +49,7 @@ public: // ƒƒ“ƒo[ŠÖ”
 
 	HRESULT Init();
 	void Uninit();
-	void Update();
+	void NormalUpdate();
 
 	void PopParticle(void);
 	void SetParticle(const CParticle::SInfo& inParticle);

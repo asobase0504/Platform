@@ -26,7 +26,7 @@ int g_nCountFPS;
 //-----------------------------------------------------------------------------
 // 静的変数
 //-----------------------------------------------------------------------------
-static CApplication* pManeager;
+static CApplication* pApplication;
 
 //=============================================================================
 // メイン関数
@@ -70,9 +70,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
 		hInstance,
 		NULL);
 
-	pManeager = CApplication::GetInstance();
+	pApplication = CApplication::GetInstance();
 
-	if (FAILED(pManeager->Init(hWnd, hInstance)))	//画面サイズ
+	if (FAILED(pApplication->Init(hWnd, hInstance)))	// 画面サイズ
 	{//初期化処理が失敗した場合
 		return -1;
 	}
@@ -128,9 +128,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
 				// 現在の時間を保存
 				dwExecLastTime = dwCurrentTime;
 
-				pManeager->Update();
+				pApplication->Update();
 
-				pManeager->Draw();
+				pApplication->Draw();
 
 #ifdef _DEBUG
 				dwFrameCount++;
@@ -139,12 +139,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
 		}
 	}
 
-	if (pManeager != nullptr)
+	if (pApplication != nullptr)
 	{// 終了処理
 
-		pManeager->Uninit();
-		delete pManeager;
-		pManeager = nullptr;
+		pApplication->Uninit();
+		delete pApplication;
+		pApplication = nullptr;
 	}
 	
 	// ウィンドウクラスの登録を解除

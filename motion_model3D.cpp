@@ -104,7 +104,7 @@ void CMotionModel3D::Uninit()
 // Author : 唐﨑結斗
 // 概要 : 2D更新を行う
 //=============================================================================
-void CMotionModel3D::Update()
+void CMotionModel3D::NormalUpdate()
 {
 	if (m_pMotion != nullptr)
 	{// モーション番号の設定

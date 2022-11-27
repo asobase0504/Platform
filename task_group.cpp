@@ -267,6 +267,98 @@ void CTaskGroup::SetPrevTask(CTask * inReference, CTask * inTask)
 }
 
 //=============================================================================
+// タスクの役割ごとの検索(Top側から検索して見つかった先頭を返す)
+//=============================================================================
+CTask * CTaskGroup::SearchRoleTop(int inRole, int inPriority)
+{
+	if (m_list.count(inPriority) == 0)
+	{
+		// 検索先のリストがなかった場合
+		assert(false);
+		return nullptr;
+	}
+
+	CTask* now = m_list.at(inPriority).top;
+
+	while (now != nullptr)
+	{
+		CTask* next = now->GetNext();
+		if (now->GetRole() == inRole)
+		{
+			return now;
+		}
+		now = next;
+	}
+	return nullptr;
+}
+
+//=============================================================================
+// タスクの役割ごとの検索(Current側から検索して見つかった先頭を返す)
+//=============================================================================
+CTask * CTaskGroup::SearchRoleCurrent(int inRole, int inPriority)
+{
+	if (m_list.count(inPriority) == 0)
+	{
+		// 検索先のリストがなかった場合
+		assert(false);
+		return nullptr;
+	}
+
+	CTask* now = m_list.at(inPriority).current;
+
+	while (now != nullptr)
+	{
+		CTask* prev = now->GetPrev();
+		if (now->GetRole() == inRole)
+		{
+			return now;
+		}
+		now = prev;
+	}
+	return nullptr;
+}
+
+//=============================================================================
+// 受けとったタスクと同じ役割のタスクを検索(Next側から検索)
+//=============================================================================
+CTask * CTaskGroup::SearchSameRoleNext(CTask* inTask)
+{
+	CTask* now = inTask;
+	CTask::ERole role = inTask->GetRole();
+
+	while (now != nullptr)
+	{
+		CTask* next = now->GetNext();
+		if (now->GetRole() == role)
+		{
+			return now;
+		}
+		now = next;
+	}
+	return nullptr;
+}
+
+//=============================================================================
+// 受けとったタスクと同じ役割のタスクを検索(Prev側から検索)
+//=============================================================================
+CTask * CTaskGroup::SearchSameRolePrev(CTask * inTask)
+{
+	CTask* now = inTask;
+	CTask::ERole role = inTask->GetRole();
+
+	while (now != nullptr)
+	{
+		CTask* prev = now->GetPrev();
+		if (now->GetRole() == role)
+		{
+			return now;
+		}
+		now = prev;
+	}
+	return nullptr;
+}
+
+//=============================================================================
 // タスクの削除
 //=============================================================================
 void CTaskGroup::DeleteTask()

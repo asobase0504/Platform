@@ -44,17 +44,17 @@ HRESULT CResult::Init(void)
 	D3DXVECTOR3 Size(3.8f, 3.8f, 3.8f);
 
 	m_pBg[0] = CBg::Create();
-	m_pBg[0]->SetTexture(CTexture::GetInstance()->SetTexture("ENDBG"));
+	m_pBg[0]->SetTexture("ENDBG");
 	m_pBg[0]->SetSize(CApplication::CENTER_POS);
 	m_pBg[0]->SetPos(BGPos);
 
 	m_pBg[1] = CBg::Create();
-	m_pBg[1]->SetTexture(CTexture::GetInstance()->SetTexture("GAME"));
+	m_pBg[1]->SetTexture("GAME");
 	m_pBg[1]->SetSize(CApplication::CENTER_POS*0.8f);
 	m_pBg[1]->SetPos(BGPos);
 
 	m_pObject2d[0] = CObject2d::Create(CTaskGroup::LEVEL_2D_2);
-	m_pObject2d[0]->SetTexture(CTexture::GetInstance()->SetTexture("CLEAR"));
+	m_pObject2d[0]->SetTexture("CLEAR");
 	m_pObject2d[0]->SetSize(D3DXVECTOR3(500.0f, 200.0f, 0.0f));
 	m_pObject2d[0]->SetPos(CApplication::CENTER_POS);
 	m_pObject2d[0]->SetMove(D3DXVECTOR3(1.0f, -1.0f, 0.0f));

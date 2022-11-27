@@ -24,6 +24,7 @@ CObject::CObject(CTaskGroup::EPriority inPriority, CTaskGroup::EPushMethod inMet
 	m_size(D3DXVECTOR3(0.0f, 0.0f, 0.0f)),	// 大きさ
 	m_color(D3DXCOLOR(0.0f,0.0f,0.0f,1.0f))	// 色
 {
+	SetRole(ROLE_OBJECT);
 }
 
 //=============================================================================
@@ -40,19 +41,62 @@ void CObject::Update()
 {
 	switch (m_updateStatus)
 	{
-	case CObject::EUpdateStatus::POP:
+	case EUpdateStatus::POP:
 		PopUpdate();
 		break;
-	case CObject::EUpdateStatus::NORMAL:
+	case EUpdateStatus::NORMAL:
 		NormalUpdate();
 		break;
-	case CObject::EUpdateStatus::END:
+	case EUpdateStatus::END:
 		EndUpdate();
 		break;
 	default:
 		assert(false);
 		break;
 	}
+}
+
+//=============================================================================
+// 指定された種別を探す
+//=============================================================================
+CObject * CObject::SearchType(EType inType, int inPriority)
+{
+	CTaskGroup* taskGroup = CApplication::GetInstance()->GetTaskGroup();
+
+	// 指定したpriority中にある先頭CObjectを取得
+	CObject* now = (CObject*)taskGroup->SearchRoleTop(CTask::ERole::ROLE_OBJECT, inPriority);
+
+	while (now != nullptr)
+	{
+		CObject* next = (CObject*)taskGroup->SearchSameRoleNext(now);	// nowから次のCObjectを探す。
+		if (now->GetType() == inType)
+		{// 予定したタイプかチェック
+			return now;	// 合っていたら返す。
+		}
+		now = next;
+	}
+	return nullptr;
+}
+
+//=============================================================================
+// 自身と同じ種別のobjectを探す
+//=============================================================================
+CObject * CObject::NextSameType()
+{
+	CTaskGroup* taskGroup = CApplication::GetInstance()->GetTaskGroup();
+	CObject* now = (CObject*)taskGroup->SearchSameRoleNext(this);
+	EType type = this->GetType();
+
+	while (now != nullptr)
+	{
+		CObject* next = (CObject*)taskGroup->SearchSameRoleNext(now);
+		if (now->GetType() == type)
+		{
+			return now;
+		}
+		now = next;
+	}
+	return nullptr;
 }
 
 //=============================================================================

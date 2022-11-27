@@ -11,7 +11,7 @@
 #include "input.h"
 
 
- const D3DXVECTOR3 CObject2d::m_Vtx[4] =
+const D3DXVECTOR3 CObject2d::m_Vtx[4] =
 {
 	D3DXVECTOR3(-1.0f, -1.0f, 0.0f),
 	D3DXVECTOR3(+1.0f, -1.0f, 0.0f),
@@ -43,8 +43,6 @@ HRESULT CObject2d::Init()
 	m_nScale = 10.0f;
 
 	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();	//デバイスの取得
-
-	m_texture = -1;
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,	//確保するバッファのサイズ
@@ -174,7 +172,7 @@ void CObject2d::Draw()
 	CTexture* pTexture = CApplication::GetInstance()->GetTexture();
 
 	// テクスチャの設定
-	pDevice->SetTexture(0, pTexture->GetTexture(m_texture));
+	pDevice->SetTexture(0, pTexture->GetTexture(GetTexture()));
 	
 	//ポリゴンの描画
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
@@ -197,22 +195,6 @@ CObject2d *CObject2d::Create(CTaskGroup::EPriority list)
 	}
 
 	return pObject;
-}
-
-//--------------------------------------------------
-// テクスチャの設定
-//--------------------------------------------------
-void CObject2d::SetTexture(int texture)
-{
-	m_texture = texture;
-} 
-
-//--------------------------------------------------
-// テクスチャの設定
-//--------------------------------------------------
-int CObject2d::GetTexture()
-{
-	return m_texture;
 }
 
 //--------------------------------------------------
@@ -323,5 +305,4 @@ void CObject2d::SetAnimation(const int U, const int V,const int Speed,const int 
 		, 1.0f / m_DivisionX *(m_PatternAnimX / (m_DivisionX)) + 1.0f / m_DivisionX
 		, 1.0f / m_DivisionY * (m_PatternAnimY % (m_DivisionY))
 		, 1.0f / m_DivisionY * (m_PatternAnimY % (m_DivisionY)+1.0f / m_DivisionY* m_DivisionY)));
-
 }

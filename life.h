@@ -25,7 +25,7 @@ public:
 	~CLife() override;
 	HRESULT Init() override;
 	void Uninit() override;
-	void Update() override;
+	void NormalUpdate() override;
 	void Draw() override;
 	void SetPos(const D3DXVECTOR3 &pos) override;
 	void SetMove(const D3DXVECTOR3 &move)override;

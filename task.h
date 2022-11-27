@@ -19,6 +19,14 @@
 class CTask
 {
 public:
+	// タイプ
+	enum ERole
+	{
+		ROLE_OBJECT = 0,
+		ROLE_CAMERA
+	};
+
+public:
 	CTask(CTaskGroup::EPriority inPriority = CTaskGroup::EPriority::LEVEL_3D_1, CTaskGroup::EPushMethod inMethod = CTaskGroup::EPushMethod::PUSH_CURRENT);
 	virtual ~CTask();
 
@@ -42,6 +50,10 @@ public:
 	void AttachProtect() { m_isProtect = true; }
 	bool IsProtect() { return m_isProtect; }
 
+	// 役割
+	void SetRole(const ERole& inJobRole) { m_role = inJobRole; }
+	const ERole& GetRole() const { return m_role; }
+
 private:
 	CTask* m_prev;		// 前のタスク
 	CTask* m_next;		// 後のタスク
@@ -52,5 +64,8 @@ private:
 
 	bool m_isDeleted;	// 破棄予定
 	bool m_isProtect;	// 全体破棄から保護する
+
+	ERole m_role;		// 役割
+
 };
 #endif

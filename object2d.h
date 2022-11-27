@@ -55,12 +55,10 @@ public:
 	void Draw() override;
 
 	// Setter
-	void SetTexture(int texture);
 	void SetTex(PositionVec4 Tex);
 	void SetColor(const D3DXCOLOR& inColor) override;
 	void SetAnimation(const int U, const int V, const int Speed, const int Drawtimer, const bool loop);
 
-	int GetTexture();
 	LPDIRECT3DVERTEXBUFFER9 &GetVtx() { return m_pVtxBuff; }
 
 private:
@@ -73,7 +71,6 @@ protected:
 
 private:
 	LPDIRECT3DVERTEXBUFFER9	m_pVtxBuff = NULL;
-	int m_texture;	// テクスチャの列挙型
 
 	/* アニメーション系統 */
 	// 現在のアニメーション状況

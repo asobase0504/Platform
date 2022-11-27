@@ -76,13 +76,18 @@ public:
 	CTask* GetTop(int priority = 0) { return m_list.at(priority).top; }
 	CTask* GetCurrent(int priority = 0) { return m_list.at(priority).current; }
 
+	CTask* SearchRoleTop(int inRole, int inPriority);
+	CTask* SearchRoleCurrent(int inRole, int inPriority);
+	CTask* SearchSameRoleNext(CTask* inTask);
+	CTask* SearchSameRolePrev(CTask* inTask);
+
 private:
 	void DeleteTask();
 
 private:
 	std::unordered_map<int,SList> m_list;	// ƒŠƒXƒgˆê——
-	unsigned int m_createNumber;	// ¶¬”
-	int m_priorityNumber;			// •`‰æ‡”
+	unsigned int m_createNumber;			// ¶¬”
+	int m_priorityNumber;					// •`‰æ‡”
 };
 
 #endif

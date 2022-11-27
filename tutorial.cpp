@@ -62,7 +62,7 @@ HRESULT CTutorial::Init(void)
 	m_magic = 2;
 
 	m_pBg[0] = CBg::Create();
-	m_pBg[0]->SetTexture(CTexture::GetInstance()->SetTexture("TUTORIAL"));
+	m_pBg[0]->SetTexture("TUTORIAL");
 	m_pBg[0]->SetSize(CApplication::CENTER_POS);
 
 	m_pBg[0]->SetCollar(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));

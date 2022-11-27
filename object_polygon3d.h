@@ -53,11 +53,9 @@ public:
 
 	// Setter
 	virtual void SetPos(const D3DXVECTOR3& inPos) override;
-	void SetTexture(int inTexture);
 	void SetTex(PositionVec4 inTex);
 	void SetSize(const D3DXVECTOR3& inSize);
 	void SetCollar(D3DXCOLOR inCollar);
-	void SetRot(D3DXVECTOR3 inRot) { m_rot = inRot; }
 
 	// Getter
 	LPDIRECT3DVERTEXBUFFER9 GetVtx();
@@ -66,13 +64,11 @@ public:
 
 protected:
 	float m_scale;
-	D3DXVECTOR3 m_rot;
 	D3DXVECTOR3 m_size;
 	D3DXMATRIX m_mtxWorld;	// ワールドマトリックス
 	int  m_time;
 private:
 	static int m_maxPolygon;
 	LPDIRECT3DVERTEXBUFFER9	m_pVtxBuff;
-	int m_texture;	// テクスチャの列挙型
 };
 #endif

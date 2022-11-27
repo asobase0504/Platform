@@ -63,12 +63,12 @@ HRESULT CNameSet::Init(void)
 	m_NemePos = D3DXVECTOR3(CApplication::CENTER_POS.x-300.0f, 100.0f, 0.0f);
 
 	m_object2d[0] = CObject2d::Create();
-	m_object2d[0]->SetTexture(CTexture::GetInstance()->SetTexture("TITLEBG"));
+	m_object2d[0]->SetTexture("TITLEBG");
 	m_object2d[0]->SetSize(CApplication::CENTER_POS);
 	m_object2d[0]->SetPos(CApplication::CENTER_POS);
 
 	m_object2d[1] = CObject2d::Create();
-	m_object2d[1]->SetTexture(CTexture::GetInstance()->SetTexture("NAMETITLE"));
+	m_object2d[1]->SetTexture("NAMETITLE");
 	m_object2d[1]->SetSize(D3DXVECTOR3(500.0f, 175.0f, 0.0f));
 	m_object2d[1]->SetPos(D3DXVECTOR3(CApplication::CENTER_POS.x, 575.0f, 0.0f));
 

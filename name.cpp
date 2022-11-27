@@ -30,7 +30,7 @@ CName::~CName()
 HRESULT CName::Init()
 {
 	CObject2d::Init();
-	CObject2d::SetTexture(CTexture::GetInstance()->SetTexture("ALPHABET"));
+	CObject2d::SetTexture("ALPHABET");
 	color = PositionVec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	m_divisionX = 7;
@@ -68,7 +68,7 @@ void CName::Uninit()
 //=============================================================================
 // XVŠÖ”
 //=============================================================================
-void CName::Update()
+void CName::NormalUpdate()
 {
 	CObject2d::Update();
 
@@ -188,7 +188,7 @@ CName *CName::Create()
 	{
 		pObject->Init();
 
-		pObject->SetTexture(CTexture::GetInstance()->SetTexture("ALPHABET"));
+		pObject->SetTexture("ALPHABET");
 	}
 
 	return pObject;

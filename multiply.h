@@ -36,7 +36,7 @@ public:
 		 return S_OK;
 	 };
 	 void Uninit()override;
-	 void Update() override;
+	 void NormalUpdate() override;
 	 void Draw() override {};
 
 	void set(int Number, D3DXVECTOR3 Pos, bool extinction, bool b3D);

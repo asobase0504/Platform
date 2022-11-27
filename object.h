@@ -48,10 +48,10 @@ public:
 	};
 
 public:
-	CObject(CTaskGroup::EPriority inPriority = CTaskGroup::LEVEL_2D_BG,CTaskGroup::EPushMethod inMethod = CTaskGroup::EPushMethod::PUSH_CURRENT);
+	CObject(CTaskGroup::EPriority inPriority = CTaskGroup::LEVEL_2D_BG, CTaskGroup::EPushMethod inMethod = CTaskGroup::EPushMethod::PUSH_CURRENT);
 	virtual ~CObject() override;
 
-	void Update() override;
+	void Update() override final;
 	void SetUpdateStatus(const EUpdateStatus inStatus) { m_updateStatus = inStatus; }
 
 	/* 位置系 */
@@ -89,12 +89,15 @@ public:
 	void MulColorAlpha(float inRatio) { SetColorAlpha(m_color.a * inRatio); }
 	float GetColorAlpha() const { return m_color.a; }
 
+	// 種別
 	void SetType(const EType inType) { m_type = inType; }
 	EType GetType() { return m_type; }
+	static CObject* SearchType(EType inType, int inPriority);
+	CObject* NextSameType();
 
-	/*  */
+	/* テスクチャ系 */
 	void SetTexture(std::string inKey) { m_textureKey = inKey; }
-
+	std::string GetTexture() { return m_textureKey; }
 
 protected:
 	virtual void PopUpdate();
