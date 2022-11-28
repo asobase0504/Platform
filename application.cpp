@@ -127,6 +127,13 @@ void CApplication::Uninit()
 		m_pTaskGroup = nullptr;
 	}
 
+	if (m_pObjectXGroup != nullptr)
+	{// I—¹ˆ—
+		m_pObjectXGroup->UnloadAll();
+		delete m_pObjectXGroup;
+		m_pObjectXGroup = nullptr;
+	}
+	
 	if (m_pTexture != nullptr)
 	{// I—¹ˆ—
 		m_pTexture->UnloadAll();

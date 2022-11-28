@@ -79,7 +79,10 @@ void CTaskGroup::Update()
 		{
 			m_createNumber++;
 			CTask* next = now->GetNext();
-			now->Update();
+			if (!now->IsDeleted())
+			{
+				now->Update();
+			}
 			now = next;
 		}
 
@@ -104,7 +107,10 @@ void CTaskGroup::Draw()
 		while (now != nullptr)
 		{
 			CTask* next = now->GetNext();
-			now->Draw();
+			if (!now->IsDeleted())
+			{
+				now->Draw();
+			}
 			now = next;
 		}
 	}
@@ -196,7 +202,11 @@ void CTaskGroup::SetPushCurrent(CTask * inTask, int inPriority)
 		inList.top = nullptr;
 		inList.current = nullptr;
 		m_list.insert(std::make_pair(inPriority, inList));
-		m_priorityNumber = inPriority;
+
+		if (m_priorityNumber < inPriority)
+		{
+			m_priorityNumber = inPriority;
+		}
 	}
 
 	SList* list = &m_list.at(inPriority);
@@ -226,6 +236,11 @@ void CTaskGroup::SetPushTop(CTask * inTask, int inPriority)
 		m_list.insert(std::make_pair(inPriority, inList));
 		m_list.at(inPriority).top = nullptr;
 		m_list.at(inPriority).current = nullptr;
+
+		if (m_priorityNumber < inPriority)
+		{
+			m_priorityNumber = inPriority;
+		}
 	}
 
 	if (m_list.at(inPriority).current == nullptr && m_list.at(inPriority).top == nullptr)

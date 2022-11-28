@@ -36,12 +36,6 @@ public:
 	void Update() override;
 	void Draw() override;	
 private:
-	CObject2d* m_pObject2d[4];
-	CPlayer* m_pPlayer;
-	CEnemy* m_pEnemy[10];
-	CBg* m_pBg[4];
-	int m_addX;
-	int m_addY;
 };
 
 #endif

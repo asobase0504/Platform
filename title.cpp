@@ -11,6 +11,7 @@
 #include "application.h"
 #include "input.h"
 #include "sound.h"
+#include "fade.h"
 // 3DŒn“
 #include "camera.h"
 #include "light.h"
@@ -82,7 +83,11 @@ void CTitle::Update(void)
 	if (CInput::GetKey()->Trigger(CInput::KEY_UP) && !a)
 	{
 		a = true;
-		m_pPaticleManager->Create(CParticleEmitter::EObjectType::POLIGON2D,CApplication::CENTER_POS, 0);
+		m_pPaticleManager->Create(CParticleEmitter::EObjectType::POLIGON2D, CApplication::CENTER_POS, 0);
+	}
+	if (CInput::GetKey()->Trigger(CInput::KEY_DOWN))
+	{
+		CApplication::GetInstance()->GetFade()->NextMode(CApplication::MODE_GAME);
 	}
 }
 

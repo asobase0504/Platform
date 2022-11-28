@@ -92,7 +92,7 @@ public:
 	void MulColor(const float &inRatio) { SetColor(m_color * inRatio); }
 	const D3DXCOLOR &GetColor() const { return m_color; }
 	// ìßñæêFÇÃÇ›
-	virtual void SetColorAlpha(float inAlpha) { m_color.a = inAlpha; }
+	virtual void SetColorAlpha(float inAlpha) { SetColor(D3DXCOLOR(m_color.r,m_color.g,m_color.b,inAlpha)); }
 	void AddColorAlpha(float inAlpha) { SetColorAlpha(m_color.a + inAlpha); }
 	void MulColorAlpha(float inRatio) { SetColorAlpha(m_color.a * inRatio); }
 	float GetColorAlpha() const { return m_color.a; }

@@ -61,27 +61,21 @@ CGame::~CGame()
 //=============================================================================
 HRESULT CGame::Init(void)
 {
-	m_pCamera[0] = CRenderer::GetInstance()->SetCamera(new CCamera(CTaskGroup::LEVEL_3D_1));
-	m_pCamera[1] = CRenderer::GetInstance()->SetCamera(new CCamera(CTaskGroup::LEVEL_3D_2));
-	m_gameCount = 0;
-
-	srand((unsigned int)time(NULL)); // 現在時刻の情報で初期化
-
-	// パーティクル
-	m_pPaticleManager = new CParticleManager;
-	if (FAILED(m_pPaticleManager->Init()))
 	{
-		return E_FAIL;
+		CObject2d* test = CObject2d::Create(CTaskGroup::EPriority::LEVEL_2D_UI);
+		test->Init();
+		test->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.5f, 1.0f));
+		test->SetPos(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
+		test->SetSize(D3DXVECTOR3(SCREEN_WIDTH * 0.25f, SCREEN_HEIGHT * 0.25f, 0.0f));
 	}
 
-	m_pPlayer = CPlayer::Create();
-	m_pPlayer->SetType(CObject::PLAYER);
-
-	CApplication::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
-
-	m_pPause = new CPause;
-	m_pPause->Init();
-	m_pPause->SetType(CObject::PAUSE);
+	{
+		CObject2d* test = CObject2d::Create(CTaskGroup::EPriority::LEVEL_2D_2);
+		test->Init();
+		test->SetColor(D3DXCOLOR(0.5f, 1.0f, 0.5f, 1.0f));
+		test->SetPos(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
+		test->SetSize(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
+	}
 
 	return S_OK;
 }
@@ -92,20 +86,12 @@ HRESULT CGame::Init(void)
 void CGame::Uninit(void)
 {
 	CApplication::GetInstance()->GetSound()->Stop();
-	CApplication::GetInstance()->GetTaskGroup()->AllRelease();
-	CRanking::SetScore(CScore::GetScore());
 
 	if (m_pPaticleManager != nullptr)
 	{
 		m_pPaticleManager->Uninit();
 		delete m_pPaticleManager;
 		m_pPaticleManager = nullptr;
-	}
-
-	if (m_pPause != nullptr)
-	{
-		m_pPause->Uninit();
-		m_pPause = nullptr;
 	}
 	Release();
 }
@@ -115,20 +101,10 @@ void CGame::Uninit(void)
 //=============================================================================
 void CGame::Update(void)
 {
-	CInput *CInputpInput = CInput::GetKey();
-
-	if (CInputpInput->Trigger(CInput::KEY_DEBUG))
+	if (CInput::GetKey()->Trigger(CInput::KEY_DOWN))
 	{
-		//モードの設定
 		CApplication::GetInstance()->GetFade()->NextMode(CApplication::MODE_RESULT);
-		return;
 	}
-	if (CInputpInput->Trigger(CInput::KEY_F2))
-	{
-		CApplication::GetInstance()->GetFade()->NextMode(CApplication::MODE_NAMESET);
-		return;
-	}
-	m_pPaticleManager->Update();
 }
 
 //=============================================================================
@@ -138,4 +114,3 @@ void CGame::Draw(void)
 {
 
 }
-

@@ -14,7 +14,7 @@
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CFade::CFade() :CObject2d(CTaskGroup::LEVEL_FADE)
+CFade::CFade() : CObject2d(CTaskGroup::LEVEL_FADE)
 {
 }
 
@@ -33,9 +33,8 @@ HRESULT CFade::Init(void)
 	AttachProtect();
 	// 現在のモーション番号の保管
 	CObject2d::Init();
-	m_fadeSp = 0.07f;
+	m_fadeSp = 0.007f;
 	m_fadeSet = 0.0f;
-
 	return S_OK;
 }
 
@@ -53,35 +52,32 @@ void CFade::Uninit(void)
 //=============================================================================
 void CFade::NormalUpdate(void)
 {
+	CObject2d::NormalUpdate();
 	if (m_fade != FADENON)
 	{
 		// 現在のモーション番号の保管
-		CObject2d::Update();
 		if (m_fade == FADEOUT)
 		{
-			m_fadeSet -= m_fadeSp;
-		}
-		if (m_fade == FADEIN)
-		{
-			m_fadeSet += m_fadeSp;
+			AddColorAlpha(-m_fadeSp);
 		}
 
-		if (m_fadeSet >= 1.0f)
+		if (m_fade == FADEIN)
+		{
+			AddColorAlpha(m_fadeSp);
+		}
+
+		if (GetColorAlpha() >= 1.0f)
 		{
 			m_fade = FADEOUT;
-			m_fadeSet = 1.0f;
+			SetColorAlpha(1.0f);
 			CApplication::GetInstance()->SetMode(m_nextMode);
 
 		}
-		if (m_fadeSet <= 0.0f)
+		if (GetColorAlpha() <= 0.0f)
 		{
 			m_fade = FADENON;
-
-			m_fadeSet = 0.0f;
-
-			return;
+			SetColorAlpha(0.0f);
 		}
-		SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, m_fadeSet));
 	}
 }
 
@@ -104,7 +100,8 @@ CFade* CFade::Create()
 	{
 		pObject->Init();
 		pObject->m_nextMode = CApplication::MODE_TITLE;
-		pObject->SetSize(D3DXVECTOR3(1280.0f, 720.0f, 0.0f));
+		pObject->SetPos(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
+		pObject->SetSize(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
 		pObject->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 		pObject->SetType(CObject::MODE);
 		pObject->m_fade = FADENON;
@@ -127,7 +124,6 @@ void CFade::NextMode(CApplication::MODE nextMode)
 
 	Init();
 	m_nextMode = nextMode;
-	SetSize(D3DXVECTOR3(1280.0f, 720.0f, 0.0f));
 	SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 	m_fade = FADEIN;
 }
