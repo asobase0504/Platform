@@ -39,7 +39,6 @@ HRESULT CResult::Init(void)
 	test->Init();
 	test->SetColor(D3DXCOLOR(0.5f, 0.0f, 0.5f, 1.0f));
 	test->SetPos(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
-	//test->SetMove(D3DXVECTOR3(25.0f, 25.0f, 0.0f));
 	test->SetSize(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
 	return S_OK;
 }

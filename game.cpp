@@ -66,6 +66,7 @@ HRESULT CGame::Init(void)
 		test->Init();
 		test->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.5f, 1.0f));
 		test->SetPos(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
+		test->SetMove(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
 		test->SetSize(D3DXVECTOR3(SCREEN_WIDTH * 0.25f, SCREEN_HEIGHT * 0.25f, 0.0f));
 	}
 

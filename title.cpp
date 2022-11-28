@@ -56,7 +56,7 @@ HRESULT CTitle::Init(void)
 	test->Init();
 	test->SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
 	test->SetPos(D3DXVECTOR3(50.0f, 50.0f, 0.0f));
-	test->SetMove(D3DXVECTOR3(25.0f, 25.0f, 0.0f));
+	test->SetMove(D3DXVECTOR3(2.5f, 2.5f, 0.0f));
 	test->SetSize(D3DXVECTOR3(20.0f, 20.0f, 0.0f));
 
 	CObjectX* testX = CObjectX::Create(D3DXVECTOR3(0.0f,0.0f,0.0f));

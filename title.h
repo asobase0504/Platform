@@ -29,8 +29,8 @@ class CParticleManager;
 //=============================================================================
 class CTitle :public CMode
 {
-	// 画面(モード)の種類
-	enum MODE
+	// 遷移先
+	enum ESelectMode
 	{
 		MODE_GAME = 0,		// ゲーム画面	
 		MODE_TUTORIAL,		// チュートリアル画面
