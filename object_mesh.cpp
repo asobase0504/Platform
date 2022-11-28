@@ -11,7 +11,6 @@
 #include "object_mesh.h"
 #include "application.h"
 #include "utility.h"
-
 #include <iostream>
 #include <fstream>
 #include <windows.h>
@@ -31,8 +30,8 @@ CMesh::CMesh(CTaskGroup::EPriority nPriority) :
 	CObjectPolygon3D(nPriority),
 	m_xsiz(0),						// 面数
 	m_zsiz(0),						// 面数
-	m_vtxCountX(0),						// 辺の頂点数
-	m_vtxCountZ(0),						// 辺の頂点数
+	m_vtxCountX(0),					// 辺の頂点数
+	m_vtxCountZ(0),					// 辺の頂点数
 	m_vtx(0),						// 頂点数
 	m_index(0),						// インデックス
 	m_polygonCount(0),
@@ -236,8 +235,7 @@ bool CMesh::CollisionMesh(D3DXVECTOR3 *pPos)
 			float vecLine = Vec2Cross(&vecPos, &vecWall);
 
 			//三角の中に入ってるときの判定向きによって右側か左側か違うため判定を二つ用意する
-			if ((nCnt % 2 == 0 && vecLine >= 0.0f) ||
-				(nCnt % 2 != 0 && vecLine <= 0.0f))
+			if ((nCnt % 2 == 0 && vecLine >= 0.0f) || (nCnt % 2 != 0 && vecLine <= 0.0f))
 			{
 				LineCout++;
 			}
@@ -602,8 +600,10 @@ void CMesh::SetVtxMeshLight()
 	VERTEX_3D* pVtx = NULL;
 	//インデックスバッファのロック
 	WORD* pIdx;
+
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 	m_pIdxBuff->Lock(0, 0, (void**)&pIdx, 0);
+
 	for (int z = 0; z < m_zsiz; z++)
 	{
 		int linetop = z * (m_vtxCountX * 2 + 2);

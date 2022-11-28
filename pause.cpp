@@ -96,7 +96,7 @@ void CPause::NormalUpdate(void)
 {
 	CInput *CInputpInput = CInput::GetKey();
 
-	if (CInputpInput->Trigger(CInput::KEY_PAUSE)&& *CApplication::GetInstance()->GetFade()->GetFade() == CFade::FADENON)
+	if (CInputpInput->Trigger(CInput::KEY_PAUSE) && *CApplication::GetInstance()->GetFade()->GetFade() == CFade::FADENON)
 	{
 		if (m_onPause)
 		{
@@ -106,7 +106,6 @@ void CPause::NormalUpdate(void)
 			{
 				m_pObject2d[i]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
 			}
-		
 		}
 		else
 		{
@@ -118,11 +117,12 @@ void CPause::NormalUpdate(void)
 			{//‘S•”ˆê‰ñ•Ï‚¦‚é
 				m_pObject2d[i]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f));
 			}
+
 			//‘I‘ð‚µ‚Ä‚é‚â‚Â
 			m_pObject2d[m_nextMode]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		}
-
 	}
+
 	if (CInputpInput->Trigger(CInput::KEY_DECISION))
 	{
 		if (m_onPause)
@@ -158,6 +158,7 @@ void CPause::NormalUpdate(void)
 			{
 				m_pObject2d[i]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f));
 			}
+
 			m_pObject2d[m_nextMode]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 		else
@@ -165,13 +166,11 @@ void CPause::NormalUpdate(void)
 			m_pBg->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
 			for (int i = 0; i < 3; i++)
 			{
-
 				m_pObject2d[i]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
 			}
-
 		}
-
 	}
+
 	if (m_onPause)
 	{
 		if (CInputpInput->Trigger(CInput::KEY_UP))
@@ -204,10 +203,6 @@ void CPause::NormalUpdate(void)
 			m_pObject2d[m_nextMode]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 	}
-#ifdef _DEBUG
-
-
-#endif // DEBUG
 }
 
 //=============================================================================
