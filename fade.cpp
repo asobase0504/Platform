@@ -33,7 +33,7 @@ HRESULT CFade::Init(void)
 	AttachProtect();
 	// Œ»İ‚Ìƒ‚[ƒVƒ‡ƒ“”Ô†‚Ì•ÛŠÇ
 	CObject2d::Init();
-	m_fadeSp = 0.007f;
+	m_fadeSp = 0.07f;
 	m_fadeSet = 0.0f;
 	return S_OK;
 }
