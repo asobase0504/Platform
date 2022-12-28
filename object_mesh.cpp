@@ -115,14 +115,16 @@ void CMesh::Draw(void)
 	D3DXMatrixIdentity(&m_mtxWorld);
 
 	// Œü‚«‚ð”½‰f
+	D3DXVECTOR3 rot = GetRot();
 	// s—ñ‰ñ“]ŠÖ”(‘æ1ˆø”‚Éƒˆ[(y)ƒsƒbƒ`(x)ƒ[ƒ‹(z)•ûŒü‚Ì‰ñ“]s—ñ‚ðì¬)
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, rot.y, rot.x, rot.z);
 	// s—ñŠ|‚¯ŽZŠÖ”(‘æ2ˆø”~‘æ3ˆø”‘æ‚ð‚Pˆø”‚ÉŠi”[)
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 
 	// ˆÊ’u‚ð”½‰f
+	D3DXVECTOR3 pos = GetPos();
 	// s—ñˆÚ“®ŠÖ”(‘æ‚Pˆø”‚ÉX,Y,Z•ûŒü‚ÌˆÚ“®s—ñ‚ðì¬)
-	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
+	D3DXMatrixTranslation(&mtxTrans, pos.x, pos.y, pos.z);
 	// s—ñŠ|‚¯ŽZŠÖ”(‘æ2ˆø”~‘æ3ˆø”‘æ‚ð‚Pˆø”‚ÉŠi”[)
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
 
@@ -189,15 +191,16 @@ bool CMesh::CollisionMesh(D3DXVECTOR3 *pPos)
 	WORD* pIdx;
 	m_pIdxBuff->Lock(0, 0, (void**)&pIdx, 0);
 
-	D3DXMATRIX mtxRot, mtxTrans;	// ŒvŽZ—pƒ}ƒgƒŠƒbƒNƒX
+	D3DXMATRIX mtxTrans;	// ŒvŽZ—pƒ}ƒgƒŠƒbƒNƒX
 	D3DXMATRIX mtxWorld;
 
 	// ƒ[ƒ‹ƒhƒ}ƒgƒŠƒbƒNƒX‚Ì‰Šú‰»
 	// s—ñ‰Šú‰»ŠÖ”(‘æ1ˆø”‚Ìs—ñ‚ð’PˆÊs—ñ‚É‰Šú‰»)
 	D3DXMatrixIdentity(&mtxWorld);
 
+	D3DXVECTOR3 pos = GetPos();
 	// s—ñˆÚ“®ŠÖ”(‘æ‚Pˆø”‚ÉX,Y,Z•ûŒü‚ÌˆÚ“®s—ñ‚ðì¬)
-	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
+	D3DXMatrixTranslation(&mtxTrans, pos.x, pos.y, pos.z);
 	// s—ñŠ|‚¯ŽZŠÖ”(‘æ2ˆø”~‘æ3ˆø”‚ð‘æ‚Pˆø”‚ÉŠi”[)
 	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTrans);
 
@@ -294,15 +297,16 @@ bool CMesh::CreateMesh(D3DXVECTOR3 *pPos)
 	WORD* pIdx;
 	m_pIdxBuff->Lock(0, 0, (void**)&pIdx, 0);
 
-	D3DXMATRIX mtxRot, mtxTrans;	// ŒvŽZ—pƒ}ƒgƒŠƒbƒNƒX
+	D3DXMATRIX mtxTrans;	// ŒvŽZ—pƒ}ƒgƒŠƒbƒNƒX
 	D3DXMATRIX mtxWorld;
 
 	// ƒ[ƒ‹ƒhƒ}ƒgƒŠƒbƒNƒX‚Ì‰Šú‰»
 	// s—ñ‰Šú‰»ŠÖ”(‘æ1ˆø”‚Ìs—ñ‚ð’PˆÊs—ñ‚É‰Šú‰»)
 	D3DXMatrixIdentity(&mtxWorld);
 
+	D3DXVECTOR3 pos = GetPos();
 	// s—ñˆÚ“®ŠÖ”(‘æ‚Pˆø”‚ÉX,Y,Z•ûŒü‚ÌˆÚ“®s—ñ‚ðì¬)
-	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
+	D3DXMatrixTranslation(&mtxTrans, pos.x, pos.y, pos.z);
 
 	// s—ñŠ|‚¯ŽZŠÖ”(‘æ2ˆø”~‘æ3ˆø”‚ð‘æ‚Pˆø”‚ÉŠi”[)
 	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTrans);
@@ -431,17 +435,16 @@ void CMesh::Loadfile(const char * pFileName)
 		str = JMesh["TEXPASS"];
 		CMesh::SetTexture(str.c_str());
 
-		m_pos = D3DXVECTOR3(JMesh["POSORIGIN"]["X"], JMesh["POSORIGIN"]["Y"], JMesh["POSORIGIN"]["Z"]);
+		SetPos(JMesh["POSORIGIN"]["X"], JMesh["POSORIGIN"]["Y"], JMesh["POSORIGIN"]["Z"]);
 		m_MeshSize = D3DXVECTOR3(JMesh["MESHDATASIZE"]["X"], JMesh["MESHDATASIZE"]["Y"], JMesh["MESHDATASIZE"]["Z"]);
 		
 		m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 		for (int nCnt = 0; nCnt < m_vtx; nCnt++)
 		{
-			float posx = ((nCnt % m_vtxCountX) - 1.0f);
-			float posz = ((nCnt / m_vtxCountZ) - 1.0f) * -1.0f;
-
-			//‚ß‚Á‚µ‚ã‚ð^‚ñ’†‚É‚·‚é•â³
+			/* ‚ß‚Á‚µ‚ã‚ð^‚ñ’†‚É‚·‚é•â³ */
+			//float posx = ((nCnt % m_vtxCountX) - 1.0f);
+			//float posz = ((nCnt / m_vtxCountZ) - 1.0f) * -1.0f;
 			//m_pos = D3DXVECTOR3(-(posx - 1)*MAX_SIZEMESH * 0.5f, 0.0f, -posz * MAX_SIZEMESH * 0.5f) + m_pos;
 
 			std::string name = "MESH";
@@ -502,10 +505,12 @@ void CMesh::Savefile(const char * pFileName)
 	
 	JMesh["TEXPASS"] = m_pFileName;
 	JMesh["MESHSIZE"] = m_xsiz;
+
+	D3DXVECTOR3 pos = GetPos();
 	JMesh["POSORIGIN"] = {
-			{ "X", m_pos.x } ,
-			{ "Y", m_pos.y } ,
-			{ "Z", m_pos.z } };
+			{ "X", pos.x } ,
+			{ "Y", pos.y } ,
+			{ "Z", pos.z } };
 
 	JMesh["ANIMATION"] = false;
 
@@ -572,7 +577,7 @@ void CMesh::SetVtxMeshSize(int Size)
 		float texV = 1.0f / m_zsiz * (i / m_vtxCountZ);
 
 		// ƒƒbƒVƒ…‚ð^‚ñ’†‚É‚·‚é•â³
-		m_pos = (D3DXVECTOR3(-(posx - 1) * m_MeshSize.x * 0.5f, 0.0f, -posz * m_MeshSize.z * 0.5f)) + m_pos;
+		AddPos(-(posx - 1) * m_MeshSize.x * 0.5f, 0.0f, -posz * m_MeshSize.z * 0.5f);
 
 		// À•W‚Ì•â³
 		pVtx[i].pos += D3DXVECTOR3(posx*m_MeshSize.x, 0.0f, posz * m_MeshSize.z);

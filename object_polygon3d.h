@@ -10,14 +10,8 @@
 //-----------------------------------------------------------------------------
 // include
 //-----------------------------------------------------------------------------
-#include "renderer.h"
-#include "texture.h"
+#include "object.h"
 #include "object2d.h"
-
-//-----------------------------------------------------------------------------
-// マクロ宣言
-//-----------------------------------------------------------------------------
-#define TIMER (m_time + 90)
 
 //=============================================================================
 // 3Dポリゴンクラス
@@ -52,7 +46,6 @@ public:
 	void Draw() override;
 
 	// Setter
-	virtual void SetPos(const D3DXVECTOR3& inPos) override;
 	void SetTex(PositionVec4 inTex);
 	void SetSize(const D3DXVECTOR3& inSize);
 	void SetCollar(D3DXCOLOR inCollar);
@@ -60,15 +53,12 @@ public:
 	// Getter
 	LPDIRECT3DVERTEXBUFFER9 GetVtx();
 
-	static void PolygonReset() { m_maxPolygon = 0; }
-
 protected:
 	float m_scale;
 	D3DXVECTOR3 m_size;
 	D3DXMATRIX m_mtxWorld;	// ワールドマトリックス
 	int  m_time;
 private:
-	static int m_maxPolygon;
 	LPDIRECT3DVERTEXBUFFER9	m_pVtxBuff;
 };
 #endif

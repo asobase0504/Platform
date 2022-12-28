@@ -129,7 +129,7 @@ D3DXVECTOR3 ScreenCastWorld(const D3DXVECTOR3 &screenPos, D3DXVECTOR3 screenSize
 {
 	D3DXVECTOR3 pos = screenPos;
 
-	D3DXVECTOR3 Camerapos = *(CRenderer::GetInstance()->GetCamera()->GetPos());
+	D3DXVECTOR3 Camerapos = CRenderer::GetInstance()->GetCamera()->GetPos();
 
 	pos.y *= -1;
 

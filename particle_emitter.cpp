@@ -80,7 +80,8 @@ void CParticleEmitter::PopParticle(void)
 	popInfo.fWidth = popInfo.fScale;
 	popInfo.fHeight = popInfo.fScale;
 
-	D3DXVECTOR3 myPos = m_pos;
+	D3DXVECTOR3 myPos = GetPos();
+
 	// ê∂ê¨à íuÇÃéZèo
 	myPos.x += FloatRandam(m_info.maxPopPos.x, -m_info.minPopPos.x);
 	myPos.y += FloatRandam(m_info.maxPopPos.y, -m_info.minPopPos.y);

@@ -76,11 +76,13 @@ void CObjectX::Draw()
 	D3DXMatrixIdentity(&m_mtxWorld);
 
 	// Œü‚«‚ð”½‰f
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+	D3DXVECTOR3 rot = GetRot();
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, rot.y, rot.x, rot.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 
 	// ˆÊ’u‚ð”½‰f
-	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);	// (¦s—ñˆÚ“®ŠÖ”(‘æ1ˆø”‚Éx,y,z•ûŒü‚ÌˆÚ“®s—ñ‚ðì¬))
+	D3DXVECTOR3 pos = GetPos();
+	D3DXMatrixTranslation(&mtxTrans, pos.x, pos.y, pos.z);	// (¦s—ñˆÚ“®ŠÖ”(‘æ1ˆø”‚Éx,y,z•ûŒü‚ÌˆÚ“®s—ñ‚ðì¬))
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
 
 	if (m_pParent != nullptr)
@@ -132,12 +134,14 @@ void CObjectX::Draw(D3DXMATRIX mtxParent)
 	D3DXMatrixIdentity(&m_mtxWorld);
 
 	// Œü‚«‚Ì”½‰f
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);	// s—ñ‰ñ“]ŠÖ”
-	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);				// s—ñŠ|‚¯ŽZŠÖ” 
+	D3DXVECTOR3 rot = GetRot();
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, rot.y, rot.x, rot.z);	// s—ñ‰ñ“]ŠÖ”
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);			// s—ñŠ|‚¯ŽZŠÖ” 
 
 	// ˆÊ’u‚ð”½‰f
-	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);		// s—ñˆÚ“®ŠÖ”
-	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);			// s—ñŠ|‚¯ŽZŠÖ”
+	D3DXVECTOR3 pos = GetPos();
+	D3DXMatrixTranslation(&mtxTrans, pos.x, pos.y, pos.z);		// s—ñˆÚ“®ŠÖ”
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);	// s—ñŠ|‚¯ŽZŠÖ”
 
 	// s—ñŠ|‚¯ŽZŠÖ”
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxParent);
@@ -190,7 +194,8 @@ void CObjectX::CalculationVtx()
 	D3DXMatrixIdentity(&mtxWorld);
 
 	// Œü‚«‚Ì”½‰f
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);	// s—ñ‰ñ“]ŠÖ”
+	D3DXVECTOR3 rot = GetRot();
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, rot.y, rot.x, rot.z);	// s—ñ‰ñ“]ŠÖ”
 	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);					// s—ñŠ|‚¯ŽZŠÖ”
 
 	D3DXVec3TransformCoord(&m_MaxVtx, &m_MaxVtx, &mtxWorld);
@@ -256,7 +261,7 @@ void CObjectX::LoadModel(const char *aFileName)
 	m_pMesh = xGroup->GetMesh(aFileName);
 	m_MinVtx = xGroup->GetMinVtx(aFileName);
 	m_NumMat = xGroup->GetNumMat(aFileName);
-	m_size = xGroup->GetSize(aFileName);
+	SetSize(xGroup->GetSize(aFileName));
 }
 
 //=============================================================================
@@ -283,7 +288,7 @@ void CObjectX::Projection(void)
 
 	vecLight = -D3DXVECTOR4(0.2f, -0.5f, 0.3f, 0.0f);
 
-	if (m_pos.y >= -20.0f)
+	if (GetPos().y >= -20.0f)
 	{
 		pos = D3DXVECTOR3(0.0f, 0.1f, 0.0f);
 	}
@@ -477,15 +482,16 @@ bool CObjectX::UpCollision(D3DXVECTOR3 * pPos, D3DXVECTOR3 * pPosOld, D3DXVECTOR
 	// •Ï”éŒ¾
 	bool bIsLanding = false;
 
+	D3DXVECTOR3 pos = GetPos();
 	// ƒ‚ƒfƒ‹‚Ìã‘¤“–‚½‚è”»’è
-	if ((pPos->z - pSize->z * 0.5f < m_pos.z + m_MaxVtx.z) &&
-		(pPos->z + pSize->z * 0.5f > m_pos.z + m_MinVtx.z) &&
-		(pPos->x - pSize->x * 0.5f < m_pos.x + m_MaxVtx.x) &&
-		(pPos->x + pSize->x * 0.5f > m_pos.x + m_MinVtx.x) &&
-		(pPos->y <= m_pos.y + m_MaxVtx.y))
+	if ((pPos->z - pSize->z * 0.5f < pos.z + m_MaxVtx.z) &&
+		(pPos->z + pSize->z * 0.5f > pos.z + m_MinVtx.z) &&
+		(pPos->x - pSize->x * 0.5f < pos.x + m_MaxVtx.x) &&
+		(pPos->x + pSize->x * 0.5f > pos.x + m_MinVtx.x) &&
+		(pPos->y <= pos.y + m_MaxVtx.y))
 	{
 		bIsLanding = true;
-		pPos->y = m_pos.y + m_MaxVtx.y;
+		pPos->y = pos.y + m_MaxVtx.y;
 		if (pPos->y == pPosOld->y)
 		{
 			pMove->y = 0.0f;
@@ -506,15 +512,16 @@ bool CObjectX::UpCollision(D3DXVECTOR3 * pPos, D3DXVECTOR3 * pPosOld, D3DXVECTOR
 	// •Ï”éŒ¾
 	bool bIsLanding = false;
 
+	D3DXVECTOR3 pos = GetPos();
 	// ƒ‚ƒfƒ‹‚Ìã‘¤“–‚½‚è”»’è
-	if ((pPos->z + inMinVtx->z < m_pos.z + m_MaxVtx.z) &&
-		(pPos->z + inMaxVtx->z > m_pos.z + m_MinVtx.z) &&
-		(pPos->x + inMinVtx->x < m_pos.x + m_MaxVtx.x) &&
-		(pPos->x + inMaxVtx->x > m_pos.x + m_MinVtx.x) &&
-		(pPos->y <= m_pos.y + m_MaxVtx.y))
+	if ((pPos->z + inMinVtx->z < pos.z + m_MaxVtx.z) &&
+		(pPos->z + inMaxVtx->z > pos.z + m_MinVtx.z) &&
+		(pPos->x + inMinVtx->x < pos.x + m_MaxVtx.x) &&
+		(pPos->x + inMaxVtx->x > pos.x + m_MinVtx.x) &&
+		(pPos->y <= pos.y + m_MaxVtx.y))
 	{
 		bIsLanding = true;
-		pPos->y = m_pos.y + m_MaxVtx.y;
+		pPos->y = pos.y + m_MaxVtx.y;
 		if (pPos->y == pPosOld->y)
 		{
 			pMove->y = 0.0f;

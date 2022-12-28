@@ -39,7 +39,7 @@ CObject2d::~CObject2d()
 //=============================================================================
 HRESULT CObject2d::Init()
 {
-	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	SetRot(0.0f, 0.0f, 0.0f);
 	m_nScale = 10.0f;
 
 	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();	//デバイスの取得
@@ -61,10 +61,11 @@ HRESULT CObject2d::Init()
 	// 頂点情報の設定
 	//------------------------
 	//頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f);
-	pVtx[1].pos = D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f);
+	D3DXVECTOR3 pos = GetPos();
+	pVtx[0].pos = D3DXVECTOR3(pos.x, pos.y, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(pos.x, pos.y, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(pos.x, pos.y, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(pos.x, pos.y, 0.0f);
 
 	//rhwの設定
 	pVtx[0].rhw = 1.0f;
@@ -134,15 +135,18 @@ void CObject2d::NormalUpdate()
 
 	//マトリックス作成
 	D3DXMatrixIdentity(&mtx);
-	D3DXMatrixRotationYawPitchRoll(&mtx, 0.0f, 0.0f, m_rot.z);
+	D3DXMatrixRotationYawPitchRoll(&mtx, 0.0f, 0.0f, GetRot().z);
+
+	D3DXVECTOR3 pos = GetPos();
+	D3DXVECTOR3 size = GetSize();
 
 	//頂点座標
 	for (int i = 0; i < 4; ++i)
 	{
 		D3DXVec3TransformCoord(&addPos[i], &m_Vtx[i], &mtx);
 
-		pVtx[i].pos.x = m_pos.x + (addPos[i].x * m_size.x);	// サイズ変更
-		pVtx[i].pos.y = m_pos.y + (addPos[i].y * m_size.y);	// サイズ変更
+		pVtx[i].pos.x = pos.x + (addPos[i].x * size.x);	// サイズ変更
+		pVtx[i].pos.y = pos.y + (addPos[i].y * size.y);	// サイズ変更
 		pVtx[i].pos.z = 0.0f;
 	}
 
@@ -157,10 +161,7 @@ void CObject2d::NormalUpdate()
 //=============================================================================
 void CObject2d::Draw()
 {
-	LPDIRECT3DDEVICE9 pDevice;		//デバイスへのポインタ
-
-	 //デバイスの取得
-	pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();		//デバイスへのポインタ
 
 	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_2D));
@@ -266,7 +267,7 @@ void CObject2d::SetTex(PositionVec4 Tex)
 //---------------------------------------
 void CObject2d::SetColor(const D3DXCOLOR& inColor)
 {
-	m_color = inColor;	// 色の代入
+	CObject::SetColor(inColor);	// 色の代入
 
 	VERTEX_2D *pVtx;	// 頂点へのポインタ
 
@@ -274,10 +275,10 @@ void CObject2d::SetColor(const D3DXCOLOR& inColor)
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	// 頂点カラーの設定
-	pVtx[0].col = m_color;
-	pVtx[1].col = m_color;
-	pVtx[2].col = m_color;
-	pVtx[3].col = m_color;
+	pVtx[0].col = inColor;
+	pVtx[1].col = inColor;
+	pVtx[2].col = inColor;
+	pVtx[3].col = inColor;
 
 	// 頂点バッファをアンロック
 	m_pVtxBuff->Unlock();

@@ -64,7 +64,7 @@ void CNumber::NormalUpdate()
 
 		m_col.a -= 1.0f / m_DesTimarMax;
 
-		m_pos.y -= 1.0f;
+		AddPosY(-1.0f);
 
 		CObject2d::SetColor(m_col);
 

@@ -9,6 +9,7 @@
 //-----------------------------------------------------------------------------
 #include "task_group.h"
 #include "task.h"
+#include "renderer.h"
 
 //=============================================================================
 // コンストラクタ
@@ -102,11 +103,16 @@ void CTaskGroup::Draw()
 			continue;
 		}
 
-		CTask* now = m_list.at(i).top;
+		// 画面クリア(バックバッファ＆Zバッファのクリア)
+		CRenderer::GetInstance()->GetDevice()->Clear(0, NULL, D3DCLEAR_ZBUFFER, D3DCOLOR_RGBA(0, 0, 0, 0), 1.0f, 0);
+
+		CTask* now = m_list.at(i).top;	// 描画するタスクを表示
 
 		while (now != nullptr)
 		{
-			CTask* next = now->GetNext();
+			CTask* next = now->GetNext();	// 次のタスク
+
+			// 死ぬ予定がなければ描画
 			if (!now->IsDeleted())
 			{
 				now->Draw();

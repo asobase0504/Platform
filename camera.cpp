@@ -42,7 +42,6 @@ HRESULT CCamera::Init(void)
 
 	m_Speed = 1.0f;
 	m_rotSpeed = 0.05f;
-	m_rotSpeed2 = D3DX_PI * 0.5f;
 
 	D3DXVECTOR3 distPos = m_posR - m_posV;
 	m_fDistance = sqrtf(distPos.x * distPos.x + distPos.z * distPos.z);
@@ -65,11 +64,6 @@ void CCamera::Uninit(void)
 //=============================================================================
 void CCamera::Update(void)
 {
-	//if (m_Type == 0)
-	//{
-	//	m_posV.x += 1.1f;
-	//	m_posR.x += 1.1f;
-	//}
 }
 
 //=============================================================================
@@ -121,22 +115,6 @@ void CCamera::Set(int Type)
 
 	// “K—p
 	pDevice->SetTransform(D3DTS_PROJECTION, &m_MtxProject);
-}
-
-//=============================================================================
-// GetPos
-//=============================================================================
-D3DXVECTOR3* CCamera::GetPos()
-{
-	return &m_posV;
-}
-
-//=============================================================================
-// GetRot
-//=============================================================================
-D3DXVECTOR3* CCamera::GetRot()
-{
-	return &m_rot;
 }
 
 //=============================================================================

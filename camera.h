@@ -10,7 +10,6 @@
 //-----------------------------------------------------------------------------
 // include
 //-----------------------------------------------------------------------------
-#include "renderer.h"
 #include "task.h"
 
 //=============================================================================
@@ -32,8 +31,8 @@ public:
 	// Getter
 	D3DXMATRIX* GetMtxProje();
 	D3DXMATRIX* GetMtxView();
-	D3DXVECTOR3* GetPos();
-	D3DXVECTOR3* GetRot();
+	const D3DXVECTOR3& GetPos() { return m_posV; }
+	const D3DXVECTOR3& GetRot() { return m_rot; }
 
 private:
 	D3DXVECTOR3 m_posV;			// 位置
@@ -49,7 +48,6 @@ private:
 	D3DXMATRIX m_MtxView;		// ビューマトリックス//ポリゴンの位置や回転行列すべてをつめてるナニカ
 	float m_Speed;				// 移動速度
 	float m_rotSpeed;			// 回転速度
-	float m_rotSpeed2;			// 回転速度2
 	float m_fDistance;			// 距離
 	float m_fDistanceY;			// Y軸の距離
 	int m_Type;

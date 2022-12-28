@@ -17,7 +17,6 @@
 //-----------------------------------------------------------------------------
 // 静的メンバ変数
 //-----------------------------------------------------------------------------
-int CObjectPolygon3D::m_maxPolygon;
 const D3DXVECTOR3 CObjectPolygon3D::m_Vtx[4] =
 {
 	D3DXVECTOR3(-1.0f, +1.0f, 0.0f),
@@ -50,7 +49,7 @@ HRESULT CObjectPolygon3D::Init()
 {
 	m_size = D3DXVECTOR3(50.0f, 50.0f, 0.0f);
 	m_scale = 10.0f;
-	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	SetRot(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	m_time = 0;
 	
 	LPDIRECT3DDEVICE9 pDevice = CApplication::GetInstance()->GetRenderer()->GetDevice();	//デバイスの取得
@@ -104,12 +103,6 @@ void CObjectPolygon3D::Uninit()
 //=============================================================================
 void CObjectPolygon3D::NormalUpdate()
 {
-	m_time++;
-	m_rot.z = -D3DXToRadian(TIMER);
-
-	m_maxPolygon++;
-
-	m_pos.z = -0.01f*m_maxPolygon;
 }
 
 //=============================================================================
@@ -160,15 +153,6 @@ CObjectPolygon3D *CObjectPolygon3D::Create(CTaskGroup::EPriority list)
 	}
 
 	return pObject;
-}
-
-//=============================================================================
-// SetPos関数
-//=============================================================================
-void CObjectPolygon3D::SetPos(const D3DXVECTOR3 &pos)
-{
-	m_pos.x = pos.x;
-	m_pos.y = pos.y;
 }
 
 //---------------------------------------

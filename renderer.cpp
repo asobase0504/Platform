@@ -156,7 +156,6 @@ void CRenderer::Uninit()
 //=============================================================================
 void CRenderer::Update()
 {
-	CObjectPolygon3D::PolygonReset();
 	CApplication::GetInstance()->GetTaskGroup()->Update();
 }
 

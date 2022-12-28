@@ -27,7 +27,7 @@ struct PositionVec4
 //=============================================================================
 class CObject2d : public CObject
 {
-public:
+private:
 	// 頂点フォーマット
 	const DWORD FVF_VERTEX_2D = (D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1);
 
@@ -65,7 +65,6 @@ private:
 	void Animation();
 
 protected:
-	int  m_nTimer;
 	float m_nScale;
 	D3DXMATRIX m_mtxWorld;	// マトリックス
 
